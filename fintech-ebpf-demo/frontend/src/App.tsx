@@ -16,6 +16,7 @@ import Trading from './pages/Trading';
 import Portfolio from './pages/Portfolio';
 import Risk from './pages/Risk';
 import Security from './pages/Security';
+import SecurityTesting from './pages/Security/SecurityTesting';
 import Monitoring from './pages/Monitoring';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
@@ -54,6 +55,7 @@ const AppContent: React.FC = () => {
                 <Route path="portfolio" element={<Portfolio />} />
                 <Route path="risk" element={<Risk />} />
                 <Route path="security" element={<Security />} />
+                <Route path="security-testing" element={<SecurityTesting />} />
                 <Route path="monitoring" element={<Monitoring />} />
                 <Route path="profile" element={<Profile />} />
                 <Route path="settings" element={<Settings />} />

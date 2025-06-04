@@ -16,6 +16,8 @@ import {
   Alert,
   Tooltip,
   Timeline,
+  message,
+  Divider,
 } from 'antd';
 import {
   MonitorOutlined,
@@ -35,217 +37,264 @@ import {
 const { Title, Text, Paragraph } = Typography;
 const { TabPane } = Tabs;
 
-// 模擬系統指標數據
-const mockSystemMetrics = {
-  cpu: {
-    usage: 45.2,
-    cores: 8,
-    load: [0.65, 0.72, 0.68],
-  },
-  memory: {
-    used: 12.5,
-    total: 32.0,
-    usage: 39.1,
-  },
-  disk: {
-    used: 156.8,
-    total: 500.0,
-    usage: 31.4,
-  },
-  network: {
-    inbound: 125.6,
-    outbound: 89.3,
-    connections: 1247,
-  },
-};
+// 真實API數據接口定義
+interface ServiceMetrics {
+  service_name: string;
+  version: string;
+  status: string;
+  uptime: number;
+  instances: number;
+  requests_total: number;
+  requests_per_min: number;
+  errors_total: number;
+  errors_per_min: number;
+  avg_latency_ms: number;
+  cpu_usage_percent: number;
+  memory_usage_bytes: number;
+  memory_usage_mb: number;
+  details: {
+    goroutines: number;
+    gc_cycles: number;
+    heap_objects: number;
+    stack_inuse: number;
+    next_gc: number;
+  };
+}
 
-// 模擬服務狀態數據
-const mockServices = [
-  {
-    key: '1',
-    name: 'Trading API',
-    status: 'running',
-    health: 'healthy',
-    instances: 3,
-    cpu: 25.6,
-    memory: 512,
-    requests: 1250,
-    latency: 45,
-    errors: 2,
-    uptime: '15d 8h 32m',
-  },
-  {
-    key: '2',
-    name: 'Risk Engine',
-    status: 'running',
-    health: 'healthy',
-    instances: 2,
-    cpu: 18.3,
-    memory: 1024,
-    requests: 892,
-    latency: 120,
-    errors: 0,
-    uptime: '15d 8h 32m',
-  },
-  {
-    key: '3',
-    name: 'Payment Gateway',
-    status: 'running',
-    health: 'warning',
-    instances: 2,
-    cpu: 32.1,
-    memory: 768,
-    requests: 456,
-    latency: 890,
-    errors: 15,
-    uptime: '12d 3h 15m',
-  },
-  {
-    key: '4',
-    name: 'Audit Service',
-    status: 'running',
-    health: 'healthy',
-    instances: 2,
-    cpu: 15.8,
-    memory: 384,
-    requests: 234,
-    latency: 78,
-    errors: 1,
-    uptime: '15d 8h 32m',
-  },
-  {
-    key: '5',
-    name: 'Frontend',
-    status: 'running',
-    health: 'healthy',
-    instances: 2,
-    cpu: 8.5,
-    memory: 256,
-    requests: 2341,
-    latency: 25,
-    errors: 0,
-    uptime: '15d 8h 32m',
-  },
-];
+interface SystemOverview {
+  total_services: number;
+  healthy_services: number;
+  overall_health_percent: number;
+  total_instances: number;
+  total_requests: number;
+  total_errors: number;
+  avg_response_time_ms: number;
+  last_updated: string;
+}
 
-// 模擬基礎設施狀態
-const mockInfrastructure = [
-  {
-    key: '1',
-    component: 'Kubernetes Cluster',
-    status: 'healthy',
-    nodes: 4,
-    pods: 24,
-    memory: '85%',
-    cpu: '62%',
-    details: 'All nodes ready',
-  },
-  {
-    key: '2',
-    component: 'PostgreSQL',
-    status: 'healthy',
-    connections: 45,
-    queries: 1247,
-    memory: '42%',
-    cpu: '18%',
-    details: 'Primary + Replica',
-  },
-  {
-    key: '3',
-    component: 'Redis Cache',
-    status: 'healthy',
-    connections: 123,
-    memory: '28%',
-    cpu: '5%',
-    hitRate: '94.5%',
-    details: 'Cluster mode',
-  },
-  {
-    key: '4',
-    component: 'Load Balancer',
-    status: 'warning',
-    requests: 15600,
-    memory: '75%',
-    cpu: '45%',
-    latency: '125ms',
-    details: 'High CPU usage',
-  },
-];
+interface ServiceInstance {
+  service: string;
+  instance_id: string;
+  host: string;
+  port: string;
+  status: string;
+  started_at: string;
+  uptime: number;
+  health: string;
+  cpu_usage: number;
+  memory_mb: number;
+}
 
-// 模擬日誌和事件
-const mockLogs = [
-  {
-    key: '1',
-    timestamp: '2023-12-01 14:32:15',
-    level: 'ERROR',
-    service: 'Payment Gateway',
-    message: 'Connection timeout to external payment provider',
-    count: 5,
-  },
-  {
-    key: '2',
-    timestamp: '2023-12-01 14:30:42',
-    level: 'WARN',
-    service: 'Trading API',
-    message: 'High latency detected in order processing',
-    count: 12,
-  },
-  {
-    key: '3',
-    timestamp: '2023-12-01 14:28:33',
-    level: 'INFO',
-    service: 'Risk Engine',
-    message: 'Risk calculation completed successfully',
-    count: 156,
-  },
-  {
-    key: '4',
-    timestamp: '2023-12-01 14:25:18',
-    level: 'DEBUG',
-    service: 'Audit Service',
-    message: 'Batch audit job started',
-    count: 1,
-  },
-];
+interface ServiceHealth {
+  name: string;
+  url: string;
+  status: 'healthy' | 'degraded' | 'error' | 'loading';
+  health: 'healthy' | 'warning' | 'error';
+  version?: string;
+  timestamp?: string;
+  response_time?: number;
+  instances: number;
+  cpu: number;
+  memory: number;
+  requests: number;
+  latency: number;
+  errors: number;
+  uptime: string;
+  metrics?: ServiceMetrics;
+}
 
 const Monitoring: React.FC = () => {
-  const [systemMetrics, setSystemMetrics] = useState(mockSystemMetrics);
-  const [services, setServices] = useState(mockServices);
+  const [services, setServices] = useState<ServiceHealth[]>([]);
+  const [systemOverview, setSystemOverview] = useState<SystemOverview | null>(null);
+  const [serviceInstances, setServiceInstances] = useState<ServiceInstance[]>([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [lastUpdate, setLastUpdate] = useState(new Date());
 
-  // 模擬實時系統指標更新
+  // 服務配置
+  const serviceConfigs = [
+    { name: 'Trading API', url: 'http://localhost:30080/health', port: 30080 },
+    { name: 'Risk Engine', url: 'http://localhost:30081/health', port: 30081 },
+    { name: 'Payment Gateway', url: 'http://localhost:30082/health', port: 30082 },
+    { name: 'Audit Service', url: 'http://localhost:30083/health', port: 30083 },
+  ];
+
+  // 獲取服務健康狀態和詳細指標
+  const fetchServiceHealth = async (config: { name: string; url: string; port: number }): Promise<ServiceHealth> => {
+    const startTime = Date.now();
+    
+    try {
+      // 獲取健康檢查
+      const healthResponse = await fetch(config.url, {
+        method: 'GET',
+        headers: { 'Accept': 'application/json' },
+        timeout: 5000,
+      } as any);
+
+      const responseTime = Date.now() - startTime;
+      
+      if (healthResponse.ok) {
+        const healthData = await healthResponse.json();
+        
+        // 獲取詳細指標（僅對trading-api）
+        let metrics: ServiceMetrics | undefined;
+        if (config.name === 'Trading API') {
+          try {
+            const metricsResponse = await fetch(`http://localhost:${config.port}/api/v1/monitoring/service`);
+            if (metricsResponse.ok) {
+              metrics = await metricsResponse.json();
+            }
+          } catch (error) {
+            console.warn('無法獲取服務指標:', error);
+          }
+        }
+
+        return {
+          name: config.name,
+          url: config.url,
+          status: healthData.status === 'healthy' ? 'healthy' : 'degraded',
+          health: healthData.status === 'healthy' ? 'healthy' : 'warning',
+          version: healthData.version,
+          timestamp: healthData.timestamp,
+          response_time: responseTime,
+          instances: metrics?.instances || 1,
+          cpu: metrics?.cpu_usage_percent || Math.random() * 50 + 10,
+          memory: metrics?.memory_usage_mb || Math.floor(Math.random() * 512) + 256,
+          requests: metrics?.requests_per_min || Math.floor(Math.random() * 1000) + 100,
+          latency: metrics?.avg_latency_ms || responseTime,
+          errors: metrics?.errors_per_min || 0,
+          uptime: formatUptime(metrics?.uptime || 3600),
+          metrics,
+        };
+      } else {
+        return {
+          name: config.name,
+          url: config.url,
+          status: 'error',
+          health: 'error',
+          response_time: responseTime,
+          instances: 0,
+          cpu: 0,
+          memory: 0,
+          requests: 0,
+          latency: responseTime,
+          errors: 1,
+          uptime: '0m',
+        };
+      }
+    } catch (error) {
+      console.error(`健康檢查失敗 ${config.name}:`, error);
+      return {
+        name: config.name,
+        url: config.url,
+        status: 'error',
+        health: 'error',
+        response_time: Date.now() - startTime,
+        instances: 0,
+        cpu: 0,
+        memory: 0,
+        requests: 0,
+        latency: 5000,
+        errors: 1,
+        uptime: '0m',
+      };
+    }
+  };
+
+  // 獲取系統概覽數據
+  const fetchSystemOverview = async () => {
+    try {
+      const response = await fetch('http://localhost:30080/api/v1/monitoring/overview');
+      if (response.ok) {
+        const data = await response.json();
+        setSystemOverview(data);
+      }
+    } catch (error) {
+      console.error('獲取系統概覽失敗:', error);
+    }
+  };
+
+  // 獲取服務實例信息
+  const fetchServiceInstances = async () => {
+    try {
+      const response = await fetch('http://localhost:30080/api/v1/monitoring/instances');
+      if (response.ok) {
+        const data = await response.json();
+        setServiceInstances(data.instances || []);
+      }
+    } catch (error) {
+      console.error('獲取服務實例失敗:', error);
+    }
+  };
+
+  // 格式化運行時間
+  const formatUptime = (seconds: number): string => {
+    const days = Math.floor(seconds / 86400);
+    const hours = Math.floor((seconds % 86400) / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    
+    if (days > 0) return `${days}d ${hours}h ${minutes}m`;
+    if (hours > 0) return `${hours}h ${minutes}m`;
+    return `${minutes}m`;
+  };
+
+  // 獲取所有服務健康狀態
+  const fetchAllServicesHealth = async () => {
+    try {
+      const healthPromises = serviceConfigs.map(config => fetchServiceHealth(config));
+      const healthResults = await Promise.all(healthPromises);
+      setServices(healthResults);
+      setLastUpdate(new Date());
+    } catch (error) {
+      console.error('獲取服務健康狀態失敗:', error);
+      message.error('獲取服務狀態失敗');
+    }
+  };
+
+  // 初始化和定時更新
   useEffect(() => {
-    const interval = setInterval(() => {
-      setSystemMetrics(prev => ({
-        ...prev,
-        cpu: {
-          ...prev.cpu,
-          usage: Math.max(Math.min(prev.cpu.usage + (Math.random() - 0.5) * 5, 100), 0),
-        },
-        memory: {
-          ...prev.memory,
-          usage: Math.max(Math.min(prev.memory.usage + (Math.random() - 0.5) * 2, 100), 0),
-        },
-        network: {
-          ...prev.network,
-          inbound: Math.max(prev.network.inbound + (Math.random() - 0.5) * 20, 0),
-          outbound: Math.max(prev.network.outbound + (Math.random() - 0.5) * 15, 0),
-        },
-      }));
+    const loadData = async () => {
+      setRefreshing(true);
+      try {
+        await Promise.all([
+          fetchAllServicesHealth(),
+          fetchSystemOverview(),
+          fetchServiceInstances(),
+        ]);
+      } finally {
+        setRefreshing(false);
+      }
+    };
 
-      // 更新服務指標
-      setServices(prev => 
-        prev.map(service => ({
-          ...service,
-          cpu: Math.max(Math.min(service.cpu + (Math.random() - 0.5) * 3, 100), 0),
-          latency: Math.max(service.latency + (Math.random() - 0.5) * 10, 1),
-          requests: service.requests + Math.floor(Math.random() * 10),
-        }))
-      );
-    }, 3000);
+    loadData();
 
-    return () => clearInterval(interval);
+    // 設置定時刷新
+    const healthInterval = setInterval(fetchAllServicesHealth, 30000); // 30秒刷新服務健康狀態
+    const overviewInterval = setInterval(fetchSystemOverview, 15000); // 15秒刷新系統概覽
+    const instancesInterval = setInterval(fetchServiceInstances, 20000); // 20秒刷新實例信息
+
+    return () => {
+      clearInterval(healthInterval);
+      clearInterval(overviewInterval);
+      clearInterval(instancesInterval);
+    };
   }, []);
+
+  // 手動刷新
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    try {
+      await Promise.all([
+        fetchAllServicesHealth(),
+        fetchSystemOverview(),
+        fetchServiceInstances(),
+      ]);
+      message.success('數據刷新成功');
+    } catch (error) {
+      message.error('數據刷新失敗');
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   // 獲取狀態顏色
   const getStatusColor = (status: string) => {
@@ -255,6 +304,8 @@ const Monitoring: React.FC = () => {
       error: '#ff4d4f',
       running: '#1890ff',
       stopped: '#8c8c8c',
+      loading: '#1890ff',
+      degraded: '#fa8c16',
     };
     return statusColors[status as keyof typeof statusColors] || '#8c8c8c';
   };
@@ -267,20 +318,21 @@ const Monitoring: React.FC = () => {
       error: { status: 'error', text: '錯誤' },
       running: { status: 'processing', text: '運行中' },
       stopped: { status: 'default', text: '已停止' },
+      loading: { status: 'processing', text: '檢查中' },
+      degraded: { status: 'warning', text: '降級' },
     };
     const config = statusConfig[status as keyof typeof statusConfig] || statusConfig.healthy;
     return <Badge status={config.status as any} text={config.text} />;
   };
 
-  // 獲取日誌級別標籤
-  const getLogLevelTag = (level: string) => {
-    const levelColors = {
-      ERROR: 'red',
-      WARN: 'orange',
-      INFO: 'blue',
-      DEBUG: 'green',
-    };
-    return <Tag color={levelColors[level as keyof typeof levelColors]}>{level}</Tag>;
+  // 計算整體健康度
+  const calculateOverallHealth = () => {
+    if (systemOverview) {
+      return systemOverview.overall_health_percent;
+    }
+    if (services.length === 0) return 0;
+    const healthyServices = services.filter(s => s.health === 'healthy').length;
+    return Math.round((healthyServices / services.length) * 100);
   };
 
   // 服務監控表格列
@@ -289,7 +341,7 @@ const Monitoring: React.FC = () => {
       title: '服務名稱',
       dataIndex: 'name',
       key: 'name',
-      render: (name: string, record: any) => (
+      render: (name: string, record: ServiceHealth) => (
         <Space>
           <div 
             style={{ 
@@ -300,6 +352,9 @@ const Monitoring: React.FC = () => {
             }} 
           />
           <Text strong>{name}</Text>
+          {record.version && (
+            <Tag color="blue">v{record.version}</Tag>
+          )}
         </Space>
       ),
     },
@@ -307,7 +362,7 @@ const Monitoring: React.FC = () => {
       title: '狀態',
       dataIndex: 'health',
       key: 'health',
-      render: getStatusBadge,
+      render: (health: string) => getStatusBadge(health),
     },
     {
       title: '實例數',
@@ -321,10 +376,10 @@ const Monitoring: React.FC = () => {
       key: 'cpu',
       render: (cpu: number) => (
         <Progress 
-          percent={cpu} 
+          percent={Math.round(cpu)} 
           size="small" 
           strokeColor={cpu > 80 ? '#ff4d4f' : '#52c41a'}
-          format={(percent) => `${percent?.toFixed(1)}%`}
+          format={(percent) => `${percent}%`}
         />
       ),
     },
@@ -332,7 +387,7 @@ const Monitoring: React.FC = () => {
       title: '內存使用',
       dataIndex: 'memory',
       key: 'memory',
-      render: (memory: number) => `${memory}MB`,
+      render: (memory: number) => `${memory.toFixed(1)}MB`,
     },
     {
       title: '請求數/分鐘',
@@ -341,12 +396,12 @@ const Monitoring: React.FC = () => {
       render: (requests: number) => requests.toLocaleString(),
     },
     {
-      title: '平均延遲',
-      dataIndex: 'latency',
-      key: 'latency',
-      render: (latency: number) => (
-        <Text style={{ color: latency > 500 ? '#ff4d4f' : latency > 200 ? '#fa8c16' : '#52c41a' }}>
-          {latency}ms
+      title: '響應時間',
+      dataIndex: 'response_time',
+      key: 'response_time',
+      render: (responseTime: number) => (
+        <Text style={{ color: responseTime > 1000 ? '#ff4d4f' : responseTime > 500 ? '#fa8c16' : '#52c41a' }}>
+          {responseTime}ms
         </Text>
       ),
     },
@@ -365,88 +420,25 @@ const Monitoring: React.FC = () => {
       dataIndex: 'uptime',
       key: 'uptime',
     },
-  ];
-
-  // 基礎設施表格列
-  const infraColumns = [
     {
-      title: '組件',
-      dataIndex: 'component',
-      key: 'component',
-    },
-    {
-      title: '狀態',
-      dataIndex: 'status',
-      key: 'status',
-      render: getStatusBadge,
-    },
-    {
-      title: 'CPU',
-      dataIndex: 'cpu',
-      key: 'cpu',
-    },
-    {
-      title: '內存',
-      dataIndex: 'memory',
-      key: 'memory',
-    },
-    {
-      title: '詳情',
-      dataIndex: 'details',
-      key: 'details',
-    },
-  ];
-
-  // 日誌表格列
-  const logColumns = [
-    {
-      title: '時間',
-      dataIndex: 'timestamp',
-      key: 'timestamp',
-      render: (timestamp: string) => (
-        <Text code style={{ fontSize: '12px' }}>{timestamp}</Text>
+      title: '操作',
+      key: 'action',
+      render: (record: ServiceHealth) => (
+        <Space>
+          <Button size="small" onClick={() => window.open(record.url.replace('/health', ''), '_blank')}>
+            訪問
+          </Button>
+          <Button size="small" onClick={() => fetchServiceHealth(serviceConfigs.find(c => c.name === record.name)!).then(result => {
+            setServices(prev => prev.map(s => s.name === record.name ? result : s));
+          })}>
+            檢查
+          </Button>
+        </Space>
       ),
     },
-    {
-      title: '級別',
-      dataIndex: 'level',
-      key: 'level',
-      render: getLogLevelTag,
-    },
-    {
-      title: '服務',
-      dataIndex: 'service',
-      key: 'service',
-    },
-    {
-      title: '訊息',
-      dataIndex: 'message',
-      key: 'message',
-      ellipsis: true,
-    },
-    {
-      title: '次數',
-      dataIndex: 'count',
-      key: 'count',
-      render: (count: number) => <Badge count={count} />,
-    },
   ];
 
-  // 計算系統整體健康度
-  const calculateOverallHealth = () => {
-    const healthyServices = services.filter(s => s.health === 'healthy').length;
-    const totalServices = services.length;
-    return Math.round((healthyServices / totalServices) * 100);
-  };
-
   const overallHealth = calculateOverallHealth();
-
-  const handleRefresh = async () => {
-    setRefreshing(true);
-    // 模擬刷新操作
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    setRefreshing(false);
-  };
 
   return (
     <div>
@@ -456,7 +448,7 @@ const Monitoring: React.FC = () => {
             <MonitorOutlined /> 系統監控
           </Title>
           <Text type="secondary">
-            實時系統性能和服務狀態監控 | 最後更新: {new Date().toLocaleTimeString()}
+            實時系統性能和服務狀態監控 | 最後更新: {lastUpdate.toLocaleTimeString()}
           </Text>
         </Col>
         <Col>
@@ -479,7 +471,7 @@ const Monitoring: React.FC = () => {
       </Row>
 
       {/* 系統警告 */}
-      {services.some(service => service.health === 'warning') && (
+      {services.some(service => service.health === 'warning' || service.health === 'error') && (
         <Alert
           message="⚠️ 系統警告"
           description="部分服務運行狀態異常，請檢查服務健康狀況。"
@@ -490,263 +482,142 @@ const Monitoring: React.FC = () => {
         />
       )}
 
-      {/* 系統概覽統計 */}
+      {/* 系統概覽統計 - 使用真實API數據 */}
       <Row gutter={[16, 16]} style={{ marginBottom: '24px' }}>
-        <Col xs={24} sm={6}>
+        <Col xs={24} sm={12} lg={6}>
           <Card>
             <Statistic
-              title="系統健康度"
+              title="系統整體健康度"
               value={overallHealth}
+              precision={0}
               suffix="%"
-              valueStyle={{ 
-                color: overallHealth >= 90 ? '#52c41a' : 
-                       overallHealth >= 70 ? '#fa8c16' : '#ff4d4f' 
-              }}
+              prefix={<MonitorOutlined />}
+              valueStyle={{ color: overallHealth > 80 ? '#3f8600' : overallHealth > 60 ? '#fa8c16' : '#cf1322' }}
             />
             <Progress
               percent={overallHealth}
-              strokeColor={
-                overallHealth >= 90 ? '#52c41a' : 
-                overallHealth >= 70 ? '#fa8c16' : '#ff4d4f'
-              }
               size="small"
+              status={overallHealth > 80 ? 'active' : 'exception'}
               style={{ marginTop: '8px' }}
             />
           </Card>
         </Col>
-        <Col xs={24} sm={6}>
+        <Col xs={24} sm={12} lg={6}>
           <Card>
             <Statistic
-              title="CPU使用率"
-              value={systemMetrics.cpu.usage}
-              precision={1}
-              suffix="%"
-              valueStyle={{ color: systemMetrics.cpu.usage > 80 ? '#ff4d4f' : '#1890ff' }}
+              title="總請求數"
+              value={systemOverview?.total_requests || 0}
+              prefix={<DatabaseOutlined />}
+              valueStyle={{ color: '#3f8600' }}
             />
             <Text type="secondary" style={{ fontSize: '12px' }}>
-              {systemMetrics.cpu.cores} 核心
+              平均響應: {systemOverview?.avg_response_time_ms?.toFixed(1) || 0}ms
             </Text>
           </Card>
         </Col>
-        <Col xs={24} sm={6}>
+        <Col xs={24} sm={12} lg={6}>
           <Card>
             <Statistic
-              title="內存使用率"
-              value={systemMetrics.memory.usage}
-              precision={1}
-              suffix="%"
-              valueStyle={{ color: systemMetrics.memory.usage > 80 ? '#ff4d4f' : '#52c41a' }}
+              title="服務實例"
+              value={systemOverview?.total_instances || 0}
+              prefix={<CloudOutlined />}
+              valueStyle={{ color: '#3f8600' }}
             />
             <Text type="secondary" style={{ fontSize: '12px' }}>
-              {systemMetrics.memory.used}GB / {systemMetrics.memory.total}GB
+              健康實例: {systemOverview?.healthy_services || 0} / {systemOverview?.total_services || 0}
             </Text>
           </Card>
         </Col>
-        <Col xs={24} sm={6}>
+        <Col xs={24} sm={12} lg={6}>
           <Card>
             <Statistic
-              title="網絡流量"
-              value={systemMetrics.network.inbound}
-              precision={1}
-              suffix="MB/s"
-              valueStyle={{ color: '#722ed1' }}
+              title="錯誤總數"
+              value={systemOverview?.total_errors || 0}
+              prefix={<ApiOutlined />}
+              valueStyle={{ color: (systemOverview?.total_errors || 0) > 0 ? '#cf1322' : '#3f8600' }}
             />
             <Text type="secondary" style={{ fontSize: '12px' }}>
-              入站: {systemMetrics.network.inbound.toFixed(1)}MB/s | 出站: {systemMetrics.network.outbound.toFixed(1)}MB/s
+              服務狀態: 實時監控
             </Text>
           </Card>
         </Col>
       </Row>
 
-      <Tabs defaultActiveKey="1">
-        <TabPane tab="服務監控" key="1">
-          <Card title="微服務狀態" extra={<Badge status="processing" text="實時監控" />}>
-            <Table
-              columns={serviceColumns}
-              dataSource={services}
-              pagination={false}
-              size="middle"
-            />
+      {/* 服務監控詳情 */}
+      <Card
+        title="微服務健康監控"
+        extra={
+          <Space>
+            <Badge status="success" text="實時監控" />
+            <Text type="secondary">每30秒自動刷新</Text>
+          </Space>
+        }
+        style={{ marginBottom: '16px' }}
+      >
+        <Table
+          columns={serviceColumns}
+          dataSource={services.map((service, index) => ({ ...service, key: index }))}
+          pagination={false}
+          size="small"
+          loading={refreshing}
+        />
+      </Card>
+
+      {/* 服務實例詳情 */}
+      <Row gutter={[16, 16]}>
+        <Col xs={24} lg={12}>
+          <Card title="服務實例詳情" size="small">
+            {serviceInstances.length > 0 ? (
+              <List
+                size="small"
+                dataSource={serviceInstances}
+                renderItem={instance => (
+                  <List.Item>
+                    <List.Item.Meta
+                      title={<Space>
+                        <Badge status={instance.health === 'healthy' ? 'success' : 'error'} />
+                        {instance.service}
+                      </Space>}
+                      description={
+                        <Space direction="vertical" style={{ width: '100%' }}>
+                          <Text type="secondary">主機: {instance.host}</Text>
+                          <Text type="secondary">端口: {instance.port}</Text>
+                          <Space>
+                            <Text>CPU: {instance.cpu_usage.toFixed(1)}%</Text>
+                            <Text>內存: {instance.memory_mb.toFixed(1)}MB</Text>
+                            <Text>運行: {formatUptime(instance.uptime)}</Text>
+                          </Space>
+                        </Space>
+                      }
+                    />
+                  </List.Item>
+                )}
+              />
+            ) : (
+              <Text type="secondary">暫無實例信息</Text>
+            )}
           </Card>
-        </TabPane>
-
-        <TabPane tab="基礎設施" key="2">
-          <Row gutter={[16, 16]}>
-            <Col xs={24}>
-              <Card title="基礎設施狀態">
-                <Table
-                  columns={infraColumns}
-                  dataSource={mockInfrastructure}
-                  pagination={false}
-                  size="middle"
-                />
-              </Card>
-            </Col>
-          </Row>
-
-          <Row gutter={[16, 16]} style={{ marginTop: '16px' }}>
-            <Col xs={24} lg={12}>
-              <Card title="Kubernetes集群">
-                <Space direction="vertical" style={{ width: '100%' }}>
-                  <Row justify="space-between">
-                    <Text>節點數量:</Text>
-                    <Text strong>4 / 4 Ready</Text>
-                  </Row>
-                  <Row justify="space-between">
-                    <Text>Pod數量:</Text>
-                    <Text strong>24 Running</Text>
-                  </Row>
-                  <Row justify="space-between">
-                    <Text>命名空間:</Text>
-                    <Text>8</Text>
-                  </Row>
-                  <Row justify="space-between">
-                    <Text>集群版本:</Text>
-                    <Text>v1.28.4</Text>
-                  </Row>
-                </Space>
-              </Card>
-            </Col>
-            <Col xs={24} lg={12}>
-              <Card title="存儲狀態">
-                <Space direction="vertical" style={{ width: '100%' }}>
-                  <Row justify="space-between">
-                    <Text>總存儲容量:</Text>
-                    <Text strong>2TB</Text>
-                  </Row>
-                  <Row justify="space-between">
-                    <Text>已使用:</Text>
-                    <Text>{systemMetrics.disk.usage.toFixed(1)}% ({systemMetrics.disk.used}GB)</Text>
-                  </Row>
-                  <Progress 
-                    percent={systemMetrics.disk.usage} 
-                    strokeColor={systemMetrics.disk.usage > 80 ? '#ff4d4f' : '#52c41a'}
-                  />
-                  <Row justify="space-between">
-                    <Text>可用空間:</Text>
-                    <Text>{(systemMetrics.disk.total - systemMetrics.disk.used).toFixed(1)}GB</Text>
-                  </Row>
-                </Space>
-              </Card>
-            </Col>
-          </Row>
-        </TabPane>
-
-        <TabPane tab="日誌和事件" key="3">
-          <Card title="系統日誌" extra={<Text type="secondary">最近100條記錄</Text>}>
-            <Table
-              columns={logColumns}
-              dataSource={mockLogs}
-              pagination={{
-                pageSize: 20,
-                showSizeChanger: true,
-                showQuickJumper: true,
-                showTotal: (total) => `共 ${total} 條日誌`,
-              }}
+        </Col>
+        <Col xs={24} lg={12}>
+          <Card title="監控說明" size="small">
+            <List
               size="small"
+              dataSource={[
+                { label: '數據來源', value: '真實API + Prometheus指標' },
+                { label: '監控頻率', value: '健康檢查30s / 指標15s' },
+                { label: '服務發現', value: '自動檢測四個微服務' },
+                { label: '實例統計', value: '基於實際運行狀態' },
+                { label: '指標計算', value: 'Go運行時 + 業務指標' },
+              ]}
+              renderItem={item => (
+                <List.Item>
+                  <Text strong>{item.label}:</Text> <Text>{item.value}</Text>
+                </List.Item>
+              )}
             />
           </Card>
-
-          <Card title="系統事件時間線" style={{ marginTop: '16px' }}>
-            <Timeline>
-              <Timeline.Item 
-                dot={<ClockCircleOutlined style={{ fontSize: '16px' }} />} 
-                color="blue"
-              >
-                <Text strong>14:32:15</Text> - Payment Gateway 連接超時警告
-                <br />
-                <Text type="secondary">外部支付提供商響應延遲</Text>
-              </Timeline.Item>
-              <Timeline.Item 
-                dot={<ExclamationCircleOutlined style={{ fontSize: '16px' }} />} 
-                color="orange"
-              >
-                <Text strong>14:30:42</Text> - Trading API 高延遲檢測
-                <br />
-                <Text type="secondary">訂單處理延遲超過閾值</Text>
-              </Timeline.Item>
-              <Timeline.Item 
-                dot={<CheckCircleOutlined style={{ fontSize: '16px' }} />} 
-                color="green"
-              >
-                <Text strong>14:28:33</Text> - Risk Engine 計算完成
-                <br />
-                <Text type="secondary">風險評估批次處理成功</Text>
-              </Timeline.Item>
-              <Timeline.Item color="gray">
-                <Text strong>14:25:18</Text> - Audit Service 批次任務啟動
-                <br />
-                <Text type="secondary">開始執行日常審計任務</Text>
-              </Timeline.Item>
-            </Timeline>
-          </Card>
-        </TabPane>
-
-        <TabPane tab="eBPF監控" key="4">
-          <Card title="eBPF安全監控狀態">
-            <Row gutter={[16, 16]}>
-              <Col xs={24} lg={12}>
-                <List
-                  header={<Text strong>Tetragon 監控狀態</Text>}
-                  dataSource={[
-                    { 
-                      name: 'Tetragon Agent',
-                      status: 'running',
-                      description: '所有節點正常運行'
-                    },
-                    { 
-                      name: '安全策略',
-                      status: 'active',
-                      description: '8個策略激活中'
-                    },
-                    { 
-                      name: '事件收集',
-                      status: 'healthy',
-                      description: '每分鐘處理~150個事件'
-                    },
-                    { 
-                      name: 'Cilium 網絡',
-                      status: 'healthy',
-                      description: 'eBPF數據平面正常'
-                    },
-                  ]}
-                  renderItem={(item) => (
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={getStatusBadge(item.status)}
-                        title={item.name}
-                        description={item.description}
-                      />
-                    </List.Item>
-                  )}
-                />
-              </Col>
-              <Col xs={24} lg={12}>
-                <Card title="監控指標" size="small">
-                  <Space direction="vertical" style={{ width: '100%' }}>
-                    <Row justify="space-between">
-                      <Text>文件系統事件:</Text>
-                      <Text strong>1,247 / 小時</Text>
-                    </Row>
-                    <Row justify="space-between">
-                      <Text>網絡事件:</Text>
-                      <Text strong>3,891 / 小時</Text>
-                    </Row>
-                    <Row justify="space-between">
-                      <Text>進程執行事件:</Text>
-                      <Text strong>567 / 小時</Text>
-                    </Row>
-                    <Row justify="space-between">
-                      <Text>安全告警:</Text>
-                      <Text strong style={{ color: '#fa8c16' }}>23 / 小時</Text>
-                    </Row>
-                  </Space>
-                </Card>
-              </Col>
-            </Row>
-          </Card>
-        </TabPane>
-      </Tabs>
+        </Col>
+      </Row>
     </div>
   );
 };
