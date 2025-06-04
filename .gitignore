@@ -1,0 +1,30 @@
+# Logs
+*.log
+logs/
+fintech-ebpf-demo/logs/
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build outputs
+dist/
+build/
+*.out
+*.exe 
