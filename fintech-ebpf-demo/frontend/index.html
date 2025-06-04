@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="金融微服務 eBPF 安全演示系統 - 基於 Kubernetes + Cilium + Tetragon 的安全監控平台" />
+    <meta name="keywords" content="fintech,ebpf,security,kubernetes,cilium,tetragon,trading,risk,monitoring" />
+    <meta name="author" content="FinTech Security Team" />
+    
+    <!-- 故意暴露一些元信息用於安全演示 -->
+    <meta name="build-version" content="3.0.0" />
+    <meta name="api-endpoint" content="http://localhost:30080" />
+    <meta name="debug-mode" content="enabled" />
+    
+    <title>金融微服務 eBPF 安全演示</title>
+    
+    <!-- 預加載關鍵資源 -->
+    <link rel="preconnect" href="http://localhost:30080">
+    <link rel="preconnect" href="http://localhost:30081">
+    <link rel="preconnect" href="http://localhost:30082">
+    <link rel="preconnect" href="http://localhost:30083">
+    
+    <!-- 故意添加一些不安全的內聯腳本用於演示 -->
+    <script>
+      // 故意暴露全局變量
+      window.APP_CONFIG = {
+        version: '3.0.0',
+        apiKey: 'demo_api_key_12345',
+        endpoints: {
+          trading: 'http://localhost:30080',
+          risk: 'http://localhost:30081',
+          payment: 'http://localhost:30082',
+          audit: 'http://localhost:30083'
+        }
+      };
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    
+    <!-- 故意添加隱藏的調試信息 -->
+    <div id="debug-info" style="display: none;">
+      <span>Debug Mode: Enabled</span>
+      <span>Build Time: 2023-12-01T10:00:00Z</span>
+      <span>Admin Token: admin_token_67890</span>
+    </div>
+    
+    <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- 故意添加一個不安全的外部腳本引用 -->
+    <script async>
+      console.log('FinTech eBPF Demo App Loaded');
+      console.log('API Endpoints:', window.APP_CONFIG.endpoints);
+    </script>
+  </body>
+</html> 
