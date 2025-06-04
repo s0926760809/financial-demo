@@ -1,47 +1,125 @@
-配置文件未找到，使用默認配置
-time="2025-06-04T06:46:05+08:00" level=info msg="Starting Trading API service" address="0.0.0.0:30080" mode=release service=trading-api
-time="2025-06-04T06:46:12+08:00" level=info msg="HTTP Request" client_ip="::1" cookies="[]" headers="map[Accept:[*/*] User-Agent:[curl/8.7.1]]" method=GET path=/health query= referrer= user_agent=curl/8.7.1
-[GIN] 2025/06/04 - 06:46:12 | 200 |   31.360708ms |             ::1 | GET      "/health"
-time="2025-06-04T06:46:17+08:00" level=info msg="HTTP Request" client_ip="::1" cookies="[]" headers="map[Accept:[*/*] User-Agent:[curl/8.7.1] X-User-Id:[demo_user]]" method=GET path=/api/v1/portfolio query= referrer= user_agent=curl/8.7.1
-{"endpoint":"/api/v1/portfolio","level":"info","msg":"投資組合查詢","time":"2025-06-04T06:46:17+08:00","user_id":"demo_user","user_ip":"::1"}
-{"bank_account":"Wells Fargo **** 1234","credit_score":"785","level":"info","msg":"投資組合數據生成","portfolio_value":357500,"social_security":"123-45-6789","tax_bracket":"35%","time":"2025-06-04T06:46:17+08:00","user_id":"demo_user"}
-[GIN] 2025/06/04 - 06:46:17 | 200 |     559.125µs |             ::1 | GET      "/api/v1/portfolio"
-time="2025-06-04T06:46:22+08:00" level=info msg="HTTP Request" client_ip="::1" cookies="[]" headers="map[Accept:[*/*] Content-Length:[102] Content-Type:[application/json] User-Agent:[curl/8.7.1] X-User-Id:[demo_user]]" method=POST path=/api/v1/orders query= referrer= user_agent=curl/8.7.1
-{"credit_card":"4532-1234-5678-9012","internal_notes":"Order from demo_user with high value","level":"info","msg":"新訂單創建","order_id":"73ad7b9d-d721-4dee-9553-9fca00b1b712","price":150,"quantity":100,"session_token":"","symbol":"AAPL","time":"2025-06-04T06:46:22+08:00","user_agent":"curl/8.7.1","user_id":"demo_user","user_ip":"::1"}
-{"level":"info","msg":"交易事件創建","time":"2025-06-04T06:46:22+08:00","trade_event":{"id":"c18de41c-6a20-43b3-9c1c-c2eea6752fb5","order_id":"73ad7b9d-d721-4dee-9553-9fca00b1b712","user_id":"demo_user","event_type":"ORDER_CREATED","symbol":"AAPL","quantity":100,"price":150,"metadata":{"client_ip":"::1","order_type":"limit","risk_score":76.15287408935227,"session_data":"","user_agent":"curl/8.7.1"},"created_at":"2025-06-04T06:46:22.86754+08:00"}}
-[GIN] 2025/06/04 - 06:46:22 | 201 |   91.930167ms |             ::1 | POST     "/api/v1/orders"
-time="2025-06-04T06:57:27+08:00" level=info msg="HTTP Request" client_ip="::1" cookies="[]" headers="map[Accept:[*/*] User-Agent:[curl/8.7.1]]" method=GET path=/health query= referrer= user_agent=curl/8.7.1
-[GIN] 2025/06/04 - 06:57:27 | 200 |   39.685125ms |             ::1 | GET      "/health"
-time="2025-06-04T06:57:49+08:00" level=info msg="HTTP Request" client_ip="::1" cookies="[]" headers="map[Accept:[*/*] Content-Length:[102] Content-Type:[application/json] User-Agent:[curl/8.7.1] X-User-Id:[demo_user]]" method=POST path=/api/v1/orders query= referrer= user_agent=curl/8.7.1
-{"credit_card":"4532-1234-5678-9012","internal_notes":"Order from demo_user with high value","level":"info","msg":"新訂單創建","order_id":"ddd21be0-ad1b-48e2-b07a-042f17a62bd3","price":235,"quantity":50,"session_token":"","symbol":"TSLA","time":"2025-06-04T06:57:49+08:00","user_agent":"curl/8.7.1","user_id":"demo_user","user_ip":"::1"}
-{"level":"info","msg":"交易事件創建","time":"2025-06-04T06:57:49+08:00","trade_event":{"id":"a6f88341-912d-4cc6-9d3b-d6c496f78ba2","order_id":"ddd21be0-ad1b-48e2-b07a-042f17a62bd3","user_id":"demo_user","event_type":"ORDER_CREATED","symbol":"TSLA","quantity":50,"price":235,"metadata":{"client_ip":"::1","order_type":"market","risk_score":20.461177289493097,"session_data":"","user_agent":"curl/8.7.1"},"created_at":"2025-06-04T06:57:49.863575+08:00"}}
-[GIN] 2025/06/04 - 06:57:49 | 201 |   20.272958ms |             ::1 | POST     "/api/v1/orders"
-time="2025-06-04T07:04:57+08:00" level=info msg="HTTP Request" client_ip="::1" cookies="[]" headers="map[Accept:[*/*] Content-Length:[115] Content-Type:[application/json] User-Agent:[curl/8.7.1] X-User-Id:[demo_user]]" method=POST path=/api/v1/orders query= referrer= user_agent=curl/8.7.1
-{"credit_card":"4532-1234-5678-9012","internal_notes":"Order from demo_user with high value","level":"info","msg":"新訂單創建","order_id":"7dd72acb-296a-4c58-90b1-fd7a43c5f3db","price":2840,"quantity":10,"session_token":"","symbol":"GOOGL","time":"2025-06-04T07:04:57+08:00","user_agent":"curl/8.7.1","user_id":"demo_user","user_ip":"::1"}
-[GIN] 2025/06/04 - 07:04:57 | 400 |    6.777958ms |             ::1 | POST     "/api/v1/orders"
-time="2025-06-04T07:05:08+08:00" level=info msg="HTTP Request" client_ip="::1" cookies="[]" headers="map[Accept:[*/*] Content-Length:[115] Content-Type:[application/json] User-Agent:[curl/8.7.1] X-User-Id:[demo_user]]" method=POST path=/api/v1/orders query= referrer= user_agent=curl/8.7.1
-{"credit_card":"4532-1234-5678-9012","internal_notes":"Order from demo_user with high value","level":"info","msg":"新訂單創建","order_id":"98e6f112-4bca-4423-ab90-2e6035212dbe","price":2840,"quantity":10,"session_token":"","symbol":"GOOGL","time":"2025-06-04T07:05:08+08:00","user_agent":"curl/8.7.1","user_id":"demo_user","user_ip":"::1"}
-{"level":"info","msg":"交易事件創建","time":"2025-06-04T07:05:08+08:00","trade_event":{"id":"fa22a014-0f12-4d1e-83ad-5820663e3e2f","order_id":"98e6f112-4bca-4423-ab90-2e6035212dbe","user_id":"demo_user","event_type":"ORDER_CREATED","symbol":"GOOGL","quantity":10,"price":2840,"metadata":{"client_ip":"::1","order_type":"limit","risk_score":7.386674233132702,"session_data":"","user_agent":"curl/8.7.1"},"created_at":"2025-06-04T07:05:08.845823+08:00"}}
-[GIN] 2025/06/04 - 07:05:08 | 201 |   12.834917ms |             ::1 | POST     "/api/v1/orders"
-time="2025-06-04T07:05:14+08:00" level=info msg="HTTP Request" client_ip="::1" cookies="[]" headers="map[Accept:[*/*] Content-Length:[114] Content-Type:[application/json] User-Agent:[curl/8.7.1] X-User-Id:[demo_user]]" method=POST path=/api/v1/orders query= referrer= user_agent=curl/8.7.1
-{"credit_card":"4532-1234-5678-9012","internal_notes":"Order from demo_user with high value","level":"info","msg":"新訂單創建","order_id":"1863c0db-3c94-4acd-9a25-36324f9b62f8","price":2850,"quantity":5,"session_token":"","symbol":"GOOGL","time":"2025-06-04T07:05:14+08:00","user_agent":"curl/8.7.1","user_id":"demo_user","user_ip":"::1"}
-{"level":"info","msg":"交易事件創建","time":"2025-06-04T07:05:14+08:00","trade_event":{"id":"c938e179-0818-48ef-971c-d93512926b74","order_id":"1863c0db-3c94-4acd-9a25-36324f9b62f8","user_id":"demo_user","event_type":"ORDER_CREATED","symbol":"GOOGL","quantity":5,"price":2850,"metadata":{"client_ip":"::1","order_type":"limit","risk_score":44.88140736988886,"session_data":"","user_agent":"curl/8.7.1"},"created_at":"2025-06-04T07:05:14.962001+08:00"}}
-[GIN] 2025/06/04 - 07:05:14 | 201 |    5.265416ms |             ::1 | POST     "/api/v1/orders"
-time="2025-06-04T08:00:29+08:00" level=info msg="HTTP Request" client_ip="::1" cookies="[]" headers="map[Accept:[*/*] User-Agent:[curl/8.7.1]]" method=GET path=/health query= referrer= user_agent=curl/8.7.1
-[GIN] 2025/06/04 - 08:00:29 | 200 |   16.186959ms |             ::1 | GET      "/health"
-time="2025-06-04T08:14:37+08:00" level=info msg="HTTP Request" client_ip="::1" cookies="[]" headers="map[Accept:[*/*] User-Agent:[curl/8.7.1]]" method=GET path=/health query= referrer= user_agent=curl/8.7.1
-[GIN] 2025/06/04 - 08:14:37 | 200 |   13.052834ms |             ::1 | GET      "/health"
-time="2025-06-04T08:14:43+08:00" level=info msg="HTTP Request" client_ip="::1" cookies="[]" headers="map[Accept:[*/*] User-Agent:[curl/8.7.1]]" method=GET path=/api/v1/market/quote/GOOGL query= referrer= user_agent=curl/8.7.1
-[GIN] 2025/06/04 - 08:14:43 | 404 |       1.363ms |             ::1 | GET      "/api/v1/market/quote/GOOGL"
-time="2025-06-04T08:15:41+08:00" level=info msg="HTTP Request" client_ip="::1" cookies="[]" headers="map[Accept:[*/*] User-Agent:[curl/8.7.1]]" method=GET path=/health query= referrer= user_agent=curl/8.7.1
-[GIN] 2025/06/04 - 08:15:41 | 200 |    8.660791ms |             ::1 | GET      "/health"
-time="2025-06-04T08:16:39+08:00" level=info msg="HTTP Request" client_ip="::1" cookies="[]" headers="map[Accept:[*/*] User-Agent:[curl/8.7.1]]" method=GET path=/api/v1/market/quote/GOOGL query= referrer= user_agent=curl/8.7.1
-[GIN] 2025/06/04 - 08:16:39 | 404 |    5.668458ms |             ::1 | GET      "/api/v1/market/quote/GOOGL"
-time="2025-06-04T08:16:44+08:00" level=info msg="HTTP Request" client_ip="::1" cookies="[]" headers="map[Accept:[*/*] User-Agent:[curl/8.7.1]]" method=GET path=/health query= referrer= user_agent=curl/8.7.1
-[GIN] 2025/06/04 - 08:16:44 | 200 |    3.973083ms |             ::1 | GET      "/health"
-time="2025-06-04T08:16:50+08:00" level=info msg="HTTP Request" client_ip="::1" cookies="[]" headers="map[Accept:[*/*] User-Agent:[curl/8.7.1]]" method=GET path=/health query= referrer= user_agent=curl/8.7.1
-[GIN] 2025/06/04 - 08:16:50 | 200 |    2.632417ms |             ::1 | GET      "/health"
-time="2025-06-04T08:17:43+08:00" level=info msg="HTTP Request" client_ip="::1" cookies="[]" headers="map[Accept:[*/*] User-Agent:[curl/8.7.1]]" method=GET path=/health query= referrer= user_agent=curl/8.7.1
-[GIN] 2025/06/04 - 08:17:43 | 200 |    3.357708ms |             ::1 | GET      "/health"
-time="2025-06-04T08:18:17+08:00" level=info msg="HTTP Request" client_ip="::1" cookies="[]" headers="map[Accept:[*/*] User-Agent:[curl/8.7.1]]" method=GET path=/health query= referrer= user_agent=curl/8.7.1
-[GIN] 2025/06/04 - 08:18:17 | 200 |    1.029417ms |             ::1 | GET      "/health"
+{"level":"info","msg":"交易處理器初始化完成","time":"2025-06-05T04:21:07+08:00"}
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /health                   --> trading-api/handlers.HealthCheck (5 handlers)
+[GIN-debug] POST   /api/v1/orders            --> trading-api/handlers.CreateOrder (5 handlers)
+[GIN-debug] GET    /api/v1/orders/:id        --> trading-api/handlers.GetOrder (5 handlers)
+[GIN-debug] PUT    /api/v1/orders/:id        --> trading-api/handlers.UpdateOrder (5 handlers)
+[GIN-debug] DELETE /api/v1/orders/:id        --> trading-api/handlers.CancelOrder (5 handlers)
+[GIN-debug] GET    /api/v1/orders            --> trading-api/handlers.GetUserOrders (5 handlers)
+[GIN-debug] GET    /api/v1/portfolio         --> trading-api/handlers.GetPortfolio (5 handlers)
+[GIN-debug] GET    /api/v1/trades            --> trading-api/handlers.GetTradingHistory (5 handlers)
+[GIN-debug] GET    /api/v1/trading-stats     --> trading-api/handlers.GetTradingStats (5 handlers)
+[GIN-debug] GET    /api/v1/market/quote/:symbol --> trading-api/handlers.GetStockQuote (5 handlers)
+[GIN-debug] GET    /api/v1/market/stocks     --> trading-api/handlers.GetSupportedStocks (5 handlers)
+[GIN-debug] GET    /api/v1/user/profile      --> trading-api/handlers.GetUserProfile (5 handlers)
+[GIN-debug] PUT    /api/v1/user/profile      --> trading-api/handlers.UpdateUserProfile (5 handlers)
+[GIN-debug] POST   /api/v1/user/reset-account --> trading-api/handlers.ResetAccount (5 handlers)
+[GIN-debug] GET    /api/v1/system/config     --> trading-api/handlers.GetSystemConfig (5 handlers)
+[GIN-debug] PUT    /api/v1/system/config     --> trading-api/handlers.UpdateSystemConfig (5 handlers)
+[GIN-debug] GET    /api/v1/security/tests    --> trading-api/handlers.GetSecurityTestOverview (5 handlers)
+[GIN-debug] POST   /api/v1/security/test/command --> trading-api/handlers.TestCommandInjection (5 handlers)
+[GIN-debug] POST   /api/v1/security/test/file --> trading-api/handlers.TestFileAccess (5 handlers)
+[GIN-debug] POST   /api/v1/security/test/network --> trading-api/handlers.TestNetworkScan (5 handlers)
+[GIN-debug] POST   /api/v1/security/test/sensitive --> trading-api/handlers.TestSensitiveDataLeak (5 handlers)
+[GIN-debug] POST   /api/v1/security/test/sql --> trading-api/handlers.TestSQLInjection (5 handlers)
+[GIN-debug] POST   /api/v1/security/test/privilege --> trading-api/handlers.TestPrivilegeEscalation (5 handlers)
+[GIN-debug] POST   /api/v1/security/test/crypto --> trading-api/handlers.TestCryptoWeakness (5 handlers)
+[GIN-debug] POST   /api/v1/security/test/memory --> trading-api/handlers.TestMemoryDump (5 handlers)
+[GIN-debug] POST   /api/v1/security/test/comprehensive --> trading-api/handlers.RunComprehensiveSecurityTest (5 handlers)
+[GIN-debug] GET    /api/v1/monitoring/service --> main.getServiceMetrics (5 handlers)
+[GIN-debug] GET    /api/v1/monitoring/overview --> main.getSystemOverview (5 handlers)
+[GIN-debug] GET    /api/v1/monitoring/instances --> main.getInstancesInfo (5 handlers)
+[GIN-debug] GET    /metrics                  --> main.main.WrapH.func2 (5 handlers)
+2025/06/05 04:21:07 🚀 Trading API 服務器啟動在端口 30080
+2025/06/05 04:21:07 📊 健康檢查: http://localhost:30080/health
+2025/06/05 04:21:07 📈 API文檔: http://localhost:30080/api/v1/
+2025/06/05 04:21:07 🚨 安全測試: http://localhost:30080/api/v1/security/tests
+2025/06/05 04:21:07 📊 Prometheus指標: http://localhost:30080/metrics
+[GIN] 2025/06/05 - 04:21:23 | 200 |       727.5µs |             ::1 | GET      "/api/v1/monitoring/service"
+{"change":-0.45000000000001705,"changePercent":-0.22138042996999902,"level":"info","msg":"獲取實時股價成功","price":202.82,"symbol":"AAPL","time":"2025-06-05T04:21:32+08:00"}
+[GIN] 2025/06/05 - 04:21:32 | 200 |  150.216875ms |             ::1 | GET      "/health"
+[GIN] 2025/06/05 - 04:21:32 | 200 |  158.885416ms |             ::1 | GET      "/api/v1/monitoring/overview"
+[GIN] 2025/06/05 - 04:21:37 | 200 |      145.75µs |             ::1 | GET      "/api/v1/monitoring/instances"
+[GIN] 2025/06/05 - 04:22:13 | 200 |     410.792µs |             ::1 | GET      "/api/v1/security/tests"
+[GIN] 2025/06/05 - 04:22:13 | 200 |     105.375µs |             ::1 | GET      "/api/v1/security/tests"
+[GIN] 2025/06/05 - 04:22:14 | 200 |      91.625µs |             ::1 | GET      "/api/v1/security/tests"
+[GIN] 2025/06/05 - 04:22:14 | 200 |      50.208µs |             ::1 | GET      "/api/v1/security/tests"
+[GIN] 2025/06/05 - 04:22:16 | 200 |       92.25µs |             ::1 | GET      "/api/v1/security/tests"
+[GIN] 2025/06/05 - 04:22:16 | 200 |       81.25µs |             ::1 | GET      "/api/v1/security/tests"
+[GIN] 2025/06/05 - 04:22:19 | 200 |      67.541µs |             ::1 | GET      "/api/v1/security/tests"
+[GIN] 2025/06/05 - 04:22:19 | 200 |      62.208µs |             ::1 | GET      "/api/v1/security/tests"
+[GIN] 2025/06/05 - 04:22:57 | 200 |     700.542µs |             ::1 | GET      "/api/v1/monitoring/service"
+{"change":-0.45000000000001705,"changePercent":-0.22138042996999902,"level":"info","msg":"獲取實時股價成功","price":202.82,"symbol":"AAPL","time":"2025-06-05T04:23:03+08:00"}
+[GIN] 2025/06/05 - 04:23:03 | 200 |    144.7305ms |             ::1 | GET      "/health"
+[GIN] 2025/06/05 - 04:23:03 | 200 |   157.24275ms |             ::1 | GET      "/api/v1/monitoring/overview"
+[GIN] 2025/06/05 - 04:23:09 | 200 |     225.292µs |             ::1 | GET      "/api/v1/monitoring/instances"
+{"change":-0.45000000000001705,"changePercent":-0.22138042996999902,"level":"info","msg":"獲取實時股價成功","price":202.82,"symbol":"AAPL","time":"2025-06-05T04:23:21+08:00"}
+[GIN] 2025/06/05 - 04:23:21 | 200 |   93.000125ms |             ::1 | GET      "/health"
+[GIN] 2025/06/05 - 04:23:38 | 200 |      286.75µs |             ::1 | GET      "/api/v1/security/tests"
+[GIN] 2025/06/05 - 04:23:38 | 200 |     252.416µs |             ::1 | GET      "/api/v1/security/tests"
+[GIN] 2025/06/05 - 04:23:38 | 200 |     5.27875ms |             ::1 | GET      "/api/v1/user/profile"
+[GIN] 2025/06/05 - 04:23:38 | 200 |     408.041µs |             ::1 | GET      "/api/v1/user/profile"
+[GIN] 2025/06/05 - 04:23:40 | 200 |      3.2455ms |             ::1 | GET      "/api/v1/monitoring/instances"
+[GIN] 2025/06/05 - 04:23:40 | 200 |      6.9215ms |             ::1 | GET      "/api/v1/monitoring/instances"
+{"change":-0.45000000000001705,"changePercent":-0.22138042996999902,"level":"info","msg":"獲取實時股價成功","price":202.82,"symbol":"AAPL","time":"2025-06-05T04:23:40+08:00"}
+[GIN] 2025/06/05 - 04:23:40 | 200 |  134.637625ms |             ::1 | GET      "/health"
+[GIN] 2025/06/05 - 04:23:40 | 200 |     180.459µs |             ::1 | GET      "/api/v1/monitoring/service"
+{"change":-0.45000000000001705,"changePercent":-0.22138042996999902,"level":"info","msg":"獲取實時股價成功","price":202.82,"symbol":"AAPL","time":"2025-06-05T04:23:40+08:00"}
+{"change":-0.45000000000001705,"changePercent":-0.22138042996999902,"level":"info","msg":"獲取實時股價成功","price":202.82,"symbol":"AAPL","time":"2025-06-05T04:23:40+08:00"}
+[GIN] 2025/06/05 - 04:23:40 | 200 |   128.79175ms |             ::1 | GET      "/health"
+[GIN] 2025/06/05 - 04:23:40 | 200 |   18.102083ms |             ::1 | GET      "/health"
+[GIN] 2025/06/05 - 04:23:40 | 200 |  152.866084ms |             ::1 | GET      "/api/v1/monitoring/overview"
+[GIN] 2025/06/05 - 04:23:40 | 200 |     974.375µs |             ::1 | GET      "/api/v1/monitoring/service"
+{"change":-0.45000000000001705,"changePercent":-0.22138042996999902,"level":"info","msg":"獲取實時股價成功","price":202.82,"symbol":"AAPL","time":"2025-06-05T04:23:40+08:00"}
+[GIN] 2025/06/05 - 04:23:40 | 200 |   28.947458ms |             ::1 | GET      "/health"
+[GIN] 2025/06/05 - 04:23:40 | 200 |    33.00475ms |             ::1 | GET      "/api/v1/monitoring/overview"
+{"change":-0.45000000000001705,"changePercent":-0.22138042996999902,"level":"info","msg":"獲取實時股價成功","price":202.82,"symbol":"AAPL","time":"2025-06-05T04:23:55+08:00"}
+[GIN] 2025/06/05 - 04:23:55 | 200 |    96.15125ms |             ::1 | GET      "/health"
+[GIN] 2025/06/05 - 04:23:55 | 200 |  109.930208ms |             ::1 | GET      "/api/v1/monitoring/overview"
+[GIN] 2025/06/05 - 04:24:00 | 200 |    1.035875ms |             ::1 | GET      "/api/v1/monitoring/instances"
+{"change":-0.45000000000001705,"changePercent":-0.22138042996999902,"level":"info","msg":"獲取實時股價成功","price":202.82,"symbol":"AAPL","time":"2025-06-05T04:24:10+08:00"}
+[GIN] 2025/06/05 - 04:24:10 | 200 |   93.885792ms |             ::1 | GET      "/health"
+[GIN] 2025/06/05 - 04:24:10 | 200 |     121.209µs |             ::1 | GET      "/api/v1/monitoring/service"
+{"change":-0.45000000000001705,"changePercent":-0.22138042996999902,"level":"info","msg":"獲取實時股價成功","price":202.82,"symbol":"AAPL","time":"2025-06-05T04:24:10+08:00"}
+[GIN] 2025/06/05 - 04:24:10 | 200 |  101.612917ms |             ::1 | GET      "/health"
+[GIN] 2025/06/05 - 04:24:10 | 200 |  108.888125ms |             ::1 | GET      "/api/v1/monitoring/overview"
+[GIN] 2025/06/05 - 04:24:20 | 200 |      813.75µs |             ::1 | GET      "/api/v1/monitoring/instances"
+{"change":-0.45000000000001705,"changePercent":-0.22138042996999902,"level":"info","msg":"獲取實時股價成功","price":202.82,"symbol":"AAPL","time":"2025-06-05T04:24:25+08:00"}
+[GIN] 2025/06/05 - 04:24:25 | 200 |      89.353ms |             ::1 | GET      "/health"
+[GIN] 2025/06/05 - 04:24:25 | 200 |   95.233584ms |             ::1 | GET      "/api/v1/monitoring/overview"
+[GIN] 2025/06/05 - 04:24:40 | 200 |         492µs |             ::1 | GET      "/api/v1/monitoring/instances"
+{"change":-0.45000000000001705,"changePercent":-0.22138042996999902,"level":"info","msg":"獲取實時股價成功","price":202.82,"symbol":"AAPL","time":"2025-06-05T04:24:40+08:00"}
+[GIN] 2025/06/05 - 04:24:40 | 200 |  112.243833ms |             ::1 | GET      "/health"
+[GIN] 2025/06/05 - 04:24:40 | 200 |      87.959µs |             ::1 | GET      "/api/v1/monitoring/service"
+{"change":-0.45000000000001705,"changePercent":-0.22138042996999902,"level":"info","msg":"獲取實時股價成功","price":202.82,"symbol":"AAPL","time":"2025-06-05T04:24:40+08:00"}
+[GIN] 2025/06/05 - 04:24:40 | 200 |  114.081709ms |             ::1 | GET      "/health"
+[GIN] 2025/06/05 - 04:24:40 | 200 |  126.667167ms |             ::1 | GET      "/api/v1/monitoring/overview"
+{"change":-0.45000000000001705,"changePercent":-0.22138042996999902,"level":"info","msg":"獲取實時股價成功","price":202.82,"symbol":"AAPL","time":"2025-06-05T04:24:55+08:00"}
+[GIN] 2025/06/05 - 04:24:55 | 200 |  108.365042ms |             ::1 | GET      "/health"
+[GIN] 2025/06/05 - 04:24:55 | 200 |  130.939583ms |             ::1 | GET      "/api/v1/monitoring/overview"
+[GIN] 2025/06/05 - 04:25:00 | 200 |         609µs |             ::1 | GET      "/api/v1/monitoring/instances"
+{"change":-0.45000000000001705,"changePercent":-0.22138042996999902,"level":"info","msg":"獲取實時股價成功","price":202.82,"symbol":"AAPL","time":"2025-06-05T04:25:10+08:00"}
+[GIN] 2025/06/05 - 04:25:10 | 200 |   85.211333ms |             ::1 | GET      "/health"
+[GIN] 2025/06/05 - 04:25:10 | 200 |     103.666µs |             ::1 | GET      "/api/v1/monitoring/service"
+{"change":-0.45000000000001705,"changePercent":-0.22138042996999902,"level":"info","msg":"獲取實時股價成功","price":202.82,"symbol":"AAPL","time":"2025-06-05T04:25:10+08:00"}
+[GIN] 2025/06/05 - 04:25:10 | 200 |  126.738333ms |             ::1 | GET      "/health"
+[GIN] 2025/06/05 - 04:25:10 | 200 |  131.680292ms |             ::1 | GET      "/api/v1/monitoring/overview"
+[GIN] 2025/06/05 - 04:25:20 | 200 |    1.059208ms |             ::1 | GET      "/api/v1/monitoring/instances"
+{"change":-0.45000000000001705,"changePercent":-0.22138042996999902,"level":"info","msg":"獲取實時股價成功","price":202.82,"symbol":"AAPL","time":"2025-06-05T04:25:25+08:00"}
+[GIN] 2025/06/05 - 04:25:25 | 200 |  108.550667ms |             ::1 | GET      "/health"
+[GIN] 2025/06/05 - 04:25:25 | 200 |  117.386875ms |             ::1 | GET      "/api/v1/monitoring/overview"
+[GIN] 2025/06/05 - 04:25:40 | 200 |     933.125µs |             ::1 | GET      "/api/v1/monitoring/instances"
+{"change":-0.45000000000001705,"changePercent":-0.22138042996999902,"level":"info","msg":"獲取實時股價成功","price":202.82,"symbol":"AAPL","time":"2025-06-05T04:25:40+08:00"}
+[GIN] 2025/06/05 - 04:25:40 | 200 |   98.326166ms |             ::1 | GET      "/health"
+[GIN] 2025/06/05 - 04:25:40 | 200 |      88.292µs |             ::1 | GET      "/api/v1/monitoring/service"
+{"change":-0.45000000000001705,"changePercent":-0.22138042996999902,"level":"info","msg":"獲取實時股價成功","price":202.82,"symbol":"AAPL","time":"2025-06-05T04:25:42+08:00"}
+[GIN] 2025/06/05 - 04:25:42 | 200 |   19.097042ms |             ::1 | GET      "/health"
+[GIN] 2025/06/05 - 04:25:42 | 200 |   33.921583ms |             ::1 | GET      "/api/v1/monitoring/overview"
+{"change":-0.45000000000001705,"changePercent":-0.22138042996999902,"level":"info","msg":"獲取實時股價成功","price":202.82,"symbol":"AAPL","time":"2025-06-05T04:26:10+08:00"}
+[GIN] 2025/06/05 - 04:26:10 | 200 |  106.916209ms |             ::1 | GET      "/health"
+[GIN] 2025/06/05 - 04:26:10 | 200 |     408.583µs |             ::1 | GET      "/api/v1/monitoring/service"

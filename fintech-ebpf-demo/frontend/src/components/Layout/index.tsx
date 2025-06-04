@@ -18,6 +18,7 @@ import {
   PieChartOutlined,
   SafetyOutlined,
   SecurityScanOutlined,
+  ExperimentOutlined,
   MonitorOutlined,
   UserOutlined,
   SettingOutlined,
@@ -93,6 +94,12 @@ const Layout: React.FC = () => {
       icon: <SecurityScanOutlined />,
       label: '安全監控',
       badge: 'eBPF',
+    },
+    {
+      key: '/security-testing',
+      icon: <ExperimentOutlined />,
+      label: '安全測試',
+      badge: '🚨',
     },
     {
       key: '/monitoring',

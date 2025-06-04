@@ -12,6 +12,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
 	"github.com/google/uuid"
@@ -158,7 +159,14 @@ func main() {
 	gin.SetMode(config.Server.Mode)
 	router := gin.New()
 
+	// 配置CORS
+	corsConfig := cors.DefaultConfig()
+	corsConfig.AllowAllOrigins = true
+	corsConfig.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
+	corsConfig.AllowHeaders = []string{"Origin", "Content-Type", "Accept", "Authorization", "X-User-Id"}
+
 	// 中間件
+	router.Use(cors.New(corsConfig))
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
 	router.Use(metricsMiddleware())

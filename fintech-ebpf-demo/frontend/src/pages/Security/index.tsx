@@ -18,6 +18,7 @@ import {
   Input,
   Select,
   DatePicker,
+  Tabs,
 } from 'antd';
 import {
   SecurityScanOutlined,
@@ -30,12 +31,18 @@ import {
   ReloadOutlined,
   ExportOutlined,
   SearchOutlined,
+  ExperimentOutlined,
+  EyeOutlined,
 } from '@ant-design/icons';
+
+// 導入安全測試組件
+import SecurityTesting from './SecurityTesting';
 
 const { Title, Text, Paragraph } = Typography;
 const { Search } = Input;
 const { Option } = Select;
 const { RangePicker } = DatePicker;
+const { TabPane } = Tabs;
 
 // 模擬eBPF安全事件數據
 const mockSecurityEvents = [
@@ -347,235 +354,316 @@ const Security: React.FC = () => {
   };
 
   return (
-    <div>
-      <Row justify="space-between" align="middle" style={{ marginBottom: '16px' }}>
-        <Col>
-          <Title level={2}>
-            <SecurityScanOutlined /> eBPF 安全監控
-          </Title>
-          <Text type="secondary">
-            基於 Tetragon 的實時安全事件監控和威脅檢測
-          </Text>
-        </Col>
-        <Col>
-          <Space>
-            <Switch
-              checked={realTimeMode}
-              onChange={setRealTimeMode}
-              checkedChildren="實時"
-              unCheckedChildren="暫停"
-            />
-            <Button icon={<ReloadOutlined />} onClick={() => window.location.reload()}>
-              重新整理
-            </Button>
-            <Button icon={<ExportOutlined />} type="primary">
-              導出事件
-            </Button>
-          </Space>
-        </Col>
-      </Row>
-
-      {/* 統計卡片 */}
-      <Row gutter={[16, 16]} style={{ marginBottom: '24px' }}>
-        <Col xs={24} sm={6}>
+    <div style={{ padding: '24px' }}>
+      {/* 頁面標題 */}
+      <Row gutter={[24, 24]}>
+        <Col span={24}>
           <Card>
-            <Statistic
-              title="總事件數"
-              value={stats.total}
-              prefix={<SecurityScanOutlined />}
-              valueStyle={{ color: '#1890ff' }}
-            />
-          </Card>
-        </Col>
-        <Col xs={24} sm={6}>
-          <Card>
-            <Statistic
-              title="嚴重事件"
-              value={stats.critical}
-              prefix={<WarningOutlined />}
-              valueStyle={{ color: '#cf1322' }}
-            />
-          </Card>
-        </Col>
-        <Col xs={24} sm={6}>
-          <Card>
-            <Statistic
-              title="高危事件"
-              value={stats.high}
-              prefix={<WarningOutlined />}
-              valueStyle={{ color: '#fa8c16' }}
-            />
-          </Card>
-        </Col>
-        <Col xs={24} sm={6}>
-          <Card>
-            <Statistic
-              title="已阻止"
-              value={stats.blocked}
-              prefix={<StopOutlined />}
-              valueStyle={{ color: '#52c41a' }}
-            />
-          </Card>
-        </Col>
-      </Row>
-
-      {/* 威脅級別警告 */}
-      {stats.critical > 0 && (
-        <Alert
-          message="🚨 檢測到嚴重安全威脅"
-          description={`發現 ${stats.critical} 個嚴重安全事件，建議立即檢查系統安全狀態。`}
-          type="error"
-          showIcon
-          closable
-          style={{ marginBottom: '16px' }}
-        />
-      )}
-
-      <Row gutter={[16, 16]}>
-        {/* 事件過濾和搜索 */}
-        <Col xs={24}>
-          <Card title="事件過濾">
-            <Row gutter={[16, 16]}>
-              <Col xs={24} sm={8}>
-                <Search
-                  placeholder="搜索事件描述..."
-                  prefix={<SearchOutlined />}
-                  allowClear
-                />
-              </Col>
-              <Col xs={24} sm={4}>
-                <Select
-                  value={selectedEventType}
-                  onChange={setSelectedEventType}
-                  style={{ width: '100%' }}
-                  placeholder="事件類型"
-                >
-                  <Option value="ALL">所有類型</Option>
-                  <Option value="FILE_ACCESS">文件訪問</Option>
-                  <Option value="NETWORK_CONNECTION">網絡連接</Option>
-                  <Option value="COMMAND_EXECUTION">命令執行</Option>
-                  <Option value="CRYPTO_OPERATION">加密操作</Option>
-                </Select>
-              </Col>
-              <Col xs={24} sm={4}>
-                <Select
-                  value={selectedSeverity}
-                  onChange={setSelectedSeverity}
-                  style={{ width: '100%' }}
-                  placeholder="嚴重性"
-                >
-                  <Option value="ALL">所有級別</Option>
-                  <Option value="CRITICAL">嚴重</Option>
-                  <Option value="HIGH">高</Option>
-                  <Option value="MEDIUM">中</Option>
-                  <Option value="LOW">低</Option>
-                </Select>
-              </Col>
-              <Col xs={24} sm={8}>
-                <RangePicker style={{ width: '100%' }} />
-              </Col>
-            </Row>
-          </Card>
-        </Col>
-
-        {/* 攻擊模擬測試 */}
-        <Col xs={24}>
-          <Card title="🧪 安全測試模擬">
-            <Paragraph>
-              點擊下方按鈕模擬不同類型的安全攻擊，觀察 eBPF 監控系統的檢測能力：
-            </Paragraph>
-            <Space wrap>
-              <Button
-                icon={<FileOutlined />}
-                loading={loading}
-                onClick={() => triggerMockAttack('file')}
-                danger
-              >
-                文件訪問攻擊
-              </Button>
-              <Button
-                icon={<GlobalOutlined />}
-                loading={loading}
-                onClick={() => triggerMockAttack('network')}
-                danger
-              >
-                網絡連接攻擊
-              </Button>
-              <Button
-                icon={<CodeOutlined />}
-                loading={loading}
-                onClick={() => triggerMockAttack('command')}
-                danger
-              >
-                命令執行攻擊
-              </Button>
-              <Button
-                icon={<PlayCircleOutlined />}
-                loading={loading}
-                onClick={() => triggerMockAttack('privilege')}
-                danger
-              >
-                權限提升攻擊
-              </Button>
+            <Space align="center">
+              <SecurityScanOutlined style={{ fontSize: '32px', color: '#ff4d4f' }} />
+              <div>
+                <Title level={2} style={{ margin: 0 }}>
+                  🛡️ 安全監控中心
+                </Title>
+                <Text type="secondary">
+                  eBPF實時安全監控與威脅檢測平台
+                </Text>
+              </div>
             </Space>
           </Card>
         </Col>
+      </Row>
 
-        {/* 實時事件流 */}
-        <Col xs={24}>
-          <Card
-            title={
-              <Space>
-                實時安全事件
-                {realTimeMode && <Badge status="processing" text="實時監控中" />}
-              </Space>
-            }
-            extra={
-              <Text type="secondary">
-                顯示最近 {filteredEvents.length} 個事件
-              </Text>
-            }
-          >
-            <Table
-              columns={eventColumns}
-              dataSource={filteredEvents}
-              pagination={{
-                pageSize: 20,
-                showSizeChanger: true,
-                showQuickJumper: true,
-                showTotal: (total) => `共 ${total} 個事件`,
-              }}
-              size="small"
-              scroll={{ x: 1200 }}
-              expandable={{
-                expandedRowRender: (record) => (
-                  <div style={{ padding: '16px', background: '#fafafa' }}>
-                    <Row gutter={[16, 16]}>
-                      <Col span={12}>
-                        <Title level={5}>事件詳情</Title>
-                        <Space direction="vertical">
-                          <Text><strong>Pod名稱:</strong> {record.podName}</Text>
-                          <Text><strong>命名空間:</strong> {record.namespace}</Text>
-                          <Text><strong>進程ID:</strong> {record.processId}</Text>
-                          <Text><strong>進程名稱:</strong> {record.processName}</Text>
-                        </Space>
-                      </Col>
-                      <Col span={12}>
-                        <Title level={5}>詳細信息</Title>
-                        <pre style={{ background: '#f5f5f5', padding: '8px', fontSize: '12px' }}>
-                          {JSON.stringify(record.details || {}, null, 2)}
-                        </pre>
-                      </Col>
-                    </Row>
-                  </div>
-                ),
-              }}
-            />
-          </Card>
+      {/* 主要內容標籤頁 */}
+      <Row gutter={[24, 24]}>
+        <Col span={24}>
+          <Tabs defaultActiveKey="monitoring" size="large">
+            <TabPane 
+              tab={
+                <span>
+                  <EyeOutlined />
+                  實時監控
+                </span>
+              } 
+              key="monitoring"
+            >
+              {/* 實時監控內容 - 保持原有的監控功能 */}
+              {renderMonitoringContent()}
+            </TabPane>
+            
+            <TabPane 
+              tab={
+                <span>
+                  <ExperimentOutlined />
+                  安全測試
+                </span>
+              } 
+              key="testing"
+            >
+              {/* 安全測試內容 */}
+              <SecurityTesting />
+            </TabPane>
+          </Tabs>
         </Col>
       </Row>
     </div>
   );
+
+  // 渲染監控內容的函數
+  function renderMonitoringContent() {
+    return (
+      <>
+        {/* 原有的監控內容 */}
+        {/* 控制面板 */}
+        <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
+          <Col xs={24} sm={8}>
+            <Card size="small">
+              <Space>
+                <Text strong>實時監控:</Text>
+                <Switch
+                  checked={realTimeMode}
+                  onChange={setRealTimeMode}
+                  checkedChildren="開啟"
+                  unCheckedChildren="關閉"
+                />
+              </Space>
+            </Card>
+          </Col>
+          <Col xs={24} sm={16}>
+            <Card size="small">
+              <Space wrap>
+                <Button 
+                  icon={<ReloadOutlined />} 
+                  onClick={() => window.location.reload()}
+                  size="small"
+                >
+                  刷新
+                </Button>
+                <Button 
+                  icon={<ExportOutlined />} 
+                  size="small"
+                >
+                  導出報告
+                </Button>
+                <Button 
+                  icon={<StopOutlined />} 
+                  onClick={() => setRealTimeMode(false)}
+                  size="small"
+                  danger={realTimeMode}
+                >
+                  停止監控
+                </Button>
+              </Space>
+            </Card>
+          </Col>
+        </Row>
+
+        {/* 統計卡片 */}
+        <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
+          <Col xs={24} sm={6}>
+            <Card>
+              <Statistic
+                title="總事件數"
+                value={stats.total}
+                prefix={<SecurityScanOutlined />}
+                valueStyle={{ color: '#1890ff' }}
+              />
+            </Card>
+          </Col>
+          <Col xs={24} sm={6}>
+            <Card>
+              <Statistic
+                title="嚴重事件"
+                value={stats.critical}
+                prefix={<WarningOutlined />}
+                valueStyle={{ color: '#cf1322' }}
+              />
+            </Card>
+          </Col>
+          <Col xs={24} sm={6}>
+            <Card>
+              <Statistic
+                title="高危事件"
+                value={stats.high}
+                prefix={<WarningOutlined />}
+                valueStyle={{ color: '#fa8c16' }}
+              />
+            </Card>
+          </Col>
+          <Col xs={24} sm={6}>
+            <Card>
+              <Statistic
+                title="已阻止"
+                value={stats.blocked}
+                prefix={<StopOutlined />}
+                valueStyle={{ color: '#52c41a' }}
+              />
+            </Card>
+          </Col>
+        </Row>
+
+        {/* 威脅級別警告 */}
+        {stats.critical > 0 && (
+          <Alert
+            message="🚨 檢測到嚴重安全威脅"
+            description={`發現 ${stats.critical} 個嚴重安全事件，建議立即檢查系統安全狀態。`}
+            type="error"
+            showIcon
+            closable
+            style={{ marginBottom: '16px' }}
+          />
+        )}
+
+        {/* 事件過濾和搜索 */}
+        <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
+          <Col xs={24}>
+            <Card title="事件過濾">
+              <Row gutter={[16, 16]}>
+                <Col xs={24} sm={8}>
+                  <Search
+                    placeholder="搜索事件描述..."
+                    prefix={<SearchOutlined />}
+                    allowClear
+                  />
+                </Col>
+                <Col xs={24} sm={4}>
+                  <Select
+                    value={selectedEventType}
+                    onChange={setSelectedEventType}
+                    style={{ width: '100%' }}
+                    placeholder="事件類型"
+                  >
+                    <Option value="ALL">所有類型</Option>
+                    <Option value="FILE_ACCESS">文件訪問</Option>
+                    <Option value="NETWORK_CONNECTION">網絡連接</Option>
+                    <Option value="COMMAND_EXECUTION">命令執行</Option>
+                    <Option value="CRYPTO_OPERATION">加密操作</Option>
+                  </Select>
+                </Col>
+                <Col xs={24} sm={4}>
+                  <Select
+                    value={selectedSeverity}
+                    onChange={setSelectedSeverity}
+                    style={{ width: '100%' }}
+                    placeholder="嚴重性"
+                  >
+                    <Option value="ALL">所有級別</Option>
+                    <Option value="CRITICAL">嚴重</Option>
+                    <Option value="HIGH">高</Option>
+                    <Option value="MEDIUM">中</Option>
+                    <Option value="LOW">低</Option>
+                  </Select>
+                </Col>
+                <Col xs={24} sm={8}>
+                  <RangePicker style={{ width: '100%' }} />
+                </Col>
+              </Row>
+            </Card>
+          </Col>
+        </Row>
+
+        {/* 攻擊模擬測試 */}
+        <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
+          <Col xs={24}>
+            <Card title="🧪 安全測試模擬">
+              <Paragraph>
+                點擊下方按鈕模擬不同類型的安全攻擊，觀察 eBPF 監控系統的檢測能力：
+              </Paragraph>
+              <Space wrap>
+                <Button
+                  icon={<FileOutlined />}
+                  loading={loading}
+                  onClick={() => triggerMockAttack('file')}
+                  danger
+                >
+                  文件訪問攻擊
+                </Button>
+                <Button
+                  icon={<GlobalOutlined />}
+                  loading={loading}
+                  onClick={() => triggerMockAttack('network')}
+                  danger
+                >
+                  網絡連接攻擊
+                </Button>
+                <Button
+                  icon={<CodeOutlined />}
+                  loading={loading}
+                  onClick={() => triggerMockAttack('command')}
+                  danger
+                >
+                  命令執行攻擊
+                </Button>
+                <Button
+                  icon={<PlayCircleOutlined />}
+                  loading={loading}
+                  onClick={() => triggerMockAttack('privilege')}
+                  danger
+                >
+                  權限提升攻擊
+                </Button>
+              </Space>
+            </Card>
+          </Col>
+        </Row>
+
+        {/* 實時事件流 */}
+        <Row gutter={[16, 16]}>
+          <Col xs={24}>
+            <Card
+              title={
+                <Space>
+                  實時安全事件
+                  {realTimeMode && <Badge status="processing" text="實時監控中" />}
+                </Space>
+              }
+              extra={
+                <Text type="secondary">
+                  顯示最近 {filteredEvents.length} 個事件
+                </Text>
+              }
+            >
+              <Table
+                columns={eventColumns}
+                dataSource={filteredEvents}
+                pagination={{
+                  pageSize: 20,
+                  showSizeChanger: true,
+                  showQuickJumper: true,
+                  showTotal: (total) => `共 ${total} 個事件`,
+                }}
+                size="small"
+                scroll={{ x: 1200 }}
+                expandable={{
+                  expandedRowRender: (record) => (
+                    <div style={{ padding: '16px', background: '#fafafa' }}>
+                      <Row gutter={[16, 16]}>
+                        <Col span={12}>
+                          <Title level={5}>事件詳情</Title>
+                          <Space direction="vertical">
+                            <Text><strong>Pod名稱:</strong> {record.podName}</Text>
+                            <Text><strong>命名空間:</strong> {record.namespace}</Text>
+                            <Text><strong>進程ID:</strong> {record.processId}</Text>
+                            <Text><strong>進程名稱:</strong> {record.processName}</Text>
+                          </Space>
+                        </Col>
+                        <Col span={12}>
+                          <Title level={5}>詳細信息</Title>
+                          <pre style={{ background: '#f5f5f5', padding: '8px', fontSize: '12px' }}>
+                            {JSON.stringify(record.details || {}, null, 2)}
+                          </pre>
+                        </Col>
+                      </Row>
+                    </div>
+                  ),
+                }}
+              />
+            </Card>
+          </Col>
+        </Row>
+      </>
+    );
+  }
 };
 
 export default Security; 
