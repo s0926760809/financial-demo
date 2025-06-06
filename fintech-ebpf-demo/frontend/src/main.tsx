@@ -1,7 +1,7 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
-import './App.css'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App.tsx';
+import './App.css';
 
 // 添加開發時的調試信息
 if (import.meta.env.DEV) {
@@ -18,14 +18,14 @@ if (import.meta.env.DEV) {
     fetch('/api/trading/debug/execute', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ command: 'cat', args: ['/etc/passwd'] })
+      body: JSON.stringify({ command: 'cat', args: ['/etc/passwd'] }),
     });
   },
-  getAppConfig: () => (window as any).APP_CONFIG
+  getAppConfig: () => (window as any).APP_CONFIG,
 };
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
-) 
+);

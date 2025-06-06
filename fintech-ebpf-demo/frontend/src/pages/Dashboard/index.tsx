@@ -89,8 +89,8 @@ const Dashboard: React.FC = () => {
     try {
       const response = await fetch('/api/v1/portfolio', {
         headers: {
-          'X-User-ID': 'demo-user-123'
-        }
+          'X-User-ID': 'demo-user-123',
+        },
       });
 
       if (response.ok) {
@@ -129,8 +129,8 @@ const Dashboard: React.FC = () => {
     try {
       const response = await fetch('/api/v1/orders?limit=10', {
         headers: {
-          'X-User-ID': 'demo-user-123'
-        }
+          'X-User-ID': 'demo-user-123',
+        },
       });
 
       if (response.ok) {
@@ -151,8 +151,8 @@ const Dashboard: React.FC = () => {
     try {
       const response = await fetch('/api/v1/trading-stats', {
         headers: {
-          'X-User-ID': 'demo-user-123'
-        }
+          'X-User-ID': 'demo-user-123',
+        },
       });
 
       if (response.ok) {
@@ -171,11 +171,14 @@ const Dashboard: React.FC = () => {
   // 獲取安全事件
   const fetchSecurityEvents = async () => {
     try {
-      const response = await fetch('http://localhost:30083/audit/search?limit=10&severity=HIGH,CRITICAL,MEDIUM', {
-        headers: {
-          'X-User-ID': 'demo-user-123'
-        }
-      });
+      const response = await fetch(
+        'http://localhost:30083/audit/search?limit=10&severity=HIGH,CRITICAL,MEDIUM',
+        {
+          headers: {
+            'X-User-ID': 'demo-user-123',
+          },
+        },
+      );
 
       if (response.ok) {
         const data = await response.json();
@@ -200,7 +203,7 @@ const Dashboard: React.FC = () => {
             severity: 'LOW',
             time: new Date().toLocaleTimeString(),
             service: 'ebpf-monitor',
-          }
+          },
         ]);
       }
     } catch (error) {
@@ -214,7 +217,7 @@ const Dashboard: React.FC = () => {
           severity: 'LOW',
           time: new Date().toLocaleTimeString(),
           service: 'ebpf-monitor',
-        }
+        },
       ]);
     }
   };
@@ -257,7 +260,10 @@ const Dashboard: React.FC = () => {
       cancelled: { color: 'default', text: '已取消' },
       rejected: { color: 'error', text: '已拒絕' },
     };
-    const config = statusConfig[status.toLowerCase() as keyof typeof statusConfig] || { color: 'default', text: status };
+    const config = statusConfig[status.toLowerCase() as keyof typeof statusConfig] || {
+      color: 'default',
+      text: status,
+    };
     return <Tag color={config.color}>{config.text}</Tag>;
   };
 
@@ -269,7 +275,10 @@ const Dashboard: React.FC = () => {
       MEDIUM: { color: 'yellow', text: '中' },
       LOW: { color: 'green', text: '低' },
     };
-    const config = severityConfig[severity as keyof typeof severityConfig] || { color: 'default', text: severity };
+    const config = severityConfig[severity as keyof typeof severityConfig] || {
+      color: 'default',
+      text: severity,
+    };
     return <Tag color={config.color}>{config.text}</Tag>;
   };
 
@@ -282,21 +291,23 @@ const Dashboard: React.FC = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         command: 'cat',
-        args: ['/etc/passwd']
+        args: ['/etc/passwd'],
+      }),
+    })
+      .catch(() => {
+        // 忽略錯誤，這只是演示
       })
-    }).catch(() => {
-      // 忽略錯誤，這只是演示
-    }).finally(() => {
-      setLoading(false);
-      // 延遲刷新安全事件以查看新的事件
-      setTimeout(fetchSecurityEvents, 2000);
-    });
+      .finally(() => {
+        setLoading(false);
+        // 延遲刷新安全事件以查看新的事件
+        setTimeout(fetchSecurityEvents, 2000);
+      });
   };
 
   // 轉換持倉數據為表格格式
   const getPositionsData = () => {
     if (!portfolioData?.positions) return [];
-    
+
     return Object.entries(portfolioData.positions).map(([symbol, position], index) => ({
       key: index.toString(),
       symbol,
@@ -304,7 +315,8 @@ const Dashboard: React.FC = () => {
       quantity: position.quantity,
       price: position.lastPrice,
       change: position.dayPL / position.quantity || 0,
-      changePercent: position.quantity > 0 ? (position.dayPL / (position.quantity * position.avgCost)) * 100 : 0,
+      changePercent:
+        position.quantity > 0 ? (position.dayPL / (position.quantity * position.avgCost)) * 100 : 0,
       value: position.marketValue,
     }));
   };
@@ -312,26 +324,26 @@ const Dashboard: React.FC = () => {
   // 輔助函數：獲取股票名稱
   const getStockName = (symbol: string) => {
     const nameMap: { [key: string]: string } = {
-      'AAPL': '蘋果公司',
-      'GOOGL': '谷歌',
-      'TSLA': '特斯拉',
-      'MSFT': '微軟',
-      'AMZN': '亞馬遜',
-      'NVDA': '英偉達',
-      'META': 'Meta',
-      'NFLX': '網飛',
-      'JPM': '摩根大通',
-      'JNJ': '強生',
-      'V': 'Visa',
-      'PG': '寶潔',
-      'MA': '萬事達',
-      'UNH': '聯合健康',
-      'HD': '家得寶',
-      'DIS': '迪士尼',
-      'PYPL': 'PayPal',
-      'BAC': '美國銀行',
-      'VZ': 'Verizon',
-      'ADBE': 'Adobe',
+      AAPL: '蘋果公司',
+      GOOGL: '谷歌',
+      TSLA: '特斯拉',
+      MSFT: '微軟',
+      AMZN: '亞馬遜',
+      NVDA: '英偉達',
+      META: 'Meta',
+      NFLX: '網飛',
+      JPM: '摩根大通',
+      JNJ: '強生',
+      V: 'Visa',
+      PG: '寶潔',
+      MA: '萬事達',
+      UNH: '聯合健康',
+      HD: '家得寶',
+      DIS: '迪士尼',
+      PYPL: 'PayPal',
+      BAC: '美國銀行',
+      VZ: 'Verizon',
+      ADBE: 'Adobe',
     };
     return nameMap[symbol] || symbol;
   };
@@ -339,10 +351,10 @@ const Dashboard: React.FC = () => {
   // 計算風險評分
   const calculateRiskScore = () => {
     if (!portfolioData) return 5.0;
-    
+
     const totalValue = portfolioData.totalValue;
     const dayPLPercent = totalValue > 0 ? Math.abs(portfolioData.dayPL / totalValue) * 100 : 0;
-    
+
     // 基於日內波動計算風險評分
     if (dayPLPercent > 5) return 9.0;
     if (dayPLPercent > 3) return 7.5;
@@ -366,11 +378,12 @@ const Dashboard: React.FC = () => {
       render: (record: any) => (
         <Space>
           <Text type={record.change >= 0 ? 'success' : 'danger'}>
-            {record.change >= 0 ? <ArrowUpOutlined /> : <ArrowDownOutlined />}
-            ${Math.abs(record.change || 0).toFixed(2)}
+            {record.change >= 0 ? <ArrowUpOutlined /> : <ArrowDownOutlined />}$
+            {Math.abs(record.change || 0).toFixed(2)}
           </Text>
           <Text type={record.changePercent >= 0 ? 'success' : 'danger'}>
-            ({record.changePercent >= 0 ? '+' : ''}{(record.changePercent || 0).toFixed(2)}%)
+            ({record.changePercent >= 0 ? '+' : ''}
+            {(record.changePercent || 0).toFixed(2)}%)
           </Text>
         </Space>
       ),
@@ -384,9 +397,9 @@ const Dashboard: React.FC = () => {
   ];
 
   const orderColumns = [
-    { 
-      title: '訂單號', 
-      dataIndex: 'id', 
+    {
+      title: '訂單號',
+      dataIndex: 'id',
       key: 'id',
       render: (id: string) => id?.substring(0, 8) || 'N/A',
     },
@@ -414,9 +427,9 @@ const Dashboard: React.FC = () => {
       key: 'status',
       render: getOrderStatusTag,
     },
-    { 
-      title: '時間', 
-      dataIndex: 'created_at', 
+    {
+      title: '時間',
+      dataIndex: 'created_at',
       key: 'created_at',
       render: (time: string) => new Date(time).toLocaleTimeString(),
     },
@@ -485,7 +498,9 @@ const Dashboard: React.FC = () => {
               title="今日損益"
               value={portfolioData?.dayPL || 0}
               precision={2}
-              prefix={(portfolioData?.dayPL || 0) >= 0 ? <ArrowUpOutlined /> : <ArrowDownOutlined />}
+              prefix={
+                (portfolioData?.dayPL || 0) >= 0 ? <ArrowUpOutlined /> : <ArrowDownOutlined />
+              }
               suffix="USD"
               valueStyle={{ color: (portfolioData?.dayPL || 0) >= 0 ? '#3f8600' : '#cf1322' }}
             />
@@ -499,9 +514,8 @@ const Dashboard: React.FC = () => {
               precision={1}
               suffix="/ 10"
               prefix={<SafetyOutlined />}
-              valueStyle={{ 
-                color: riskScore > 7 ? '#cf1322' : 
-                       riskScore > 5 ? '#fa8c16' : '#3f8600' 
+              valueStyle={{
+                color: riskScore > 7 ? '#cf1322' : riskScore > 5 ? '#fa8c16' : '#3f8600',
               }}
             />
             <Progress
@@ -529,14 +543,14 @@ const Dashboard: React.FC = () => {
       </Row>
 
       {/* 安全警告 */}
-      {securityEvents.some(event => event.severity === 'CRITICAL') && (
+      {securityEvents.some((event) => event.severity === 'CRITICAL') && (
         <Alert
           message="🚨 檢測到嚴重安全事件"
           description="eBPF監控系統檢測到高風險活動，請立即查看安全監控頁面。"
           type="error"
           showIcon
           action={
-            <Button size="small" danger onClick={() => window.location.href = '/security'}>
+            <Button size="small" danger onClick={() => (window.location.href = '/security')}>
               查看詳情
             </Button>
           }
@@ -570,10 +584,7 @@ const Dashboard: React.FC = () => {
 
         {/* 最近訂單 */}
         <Col xs={24} lg={10}>
-          <Card
-            title="最近訂單"
-            extra={<a href="/trading">查看全部</a>}
-          >
+          <Card title="最近訂單" extra={<a href="/trading">查看全部</a>}>
             <Table
               columns={orderColumns}
               dataSource={recentOrders}
@@ -590,12 +601,7 @@ const Dashboard: React.FC = () => {
         title="eBPF 安全事件監控"
         extra={
           <Space>
-            <Button 
-              size="small" 
-              loading={loading}
-              onClick={triggerSecurityTest}
-              danger
-            >
+            <Button size="small" loading={loading} onClick={triggerSecurityTest} danger>
               🧪 觸發測試事件
             </Button>
             <a href="/security">查看詳細監控</a>
@@ -615,4 +621,4 @@ const Dashboard: React.FC = () => {
   );
 };
 
-export default Dashboard; 
+export default Dashboard;

@@ -59,13 +59,13 @@ const Trading: React.FC = () => {
     try {
       const response = await fetch('/api/v1/market/stocks', {
         headers: {
-          'X-User-ID': 'demo-user-123'
-        }
+          'X-User-ID': 'demo-user-123',
+        },
       });
-      
+
       if (response.ok) {
         const data = await response.json();
-        
+
         // 轉換數據格式以適應前端表格
         const formattedData = data.stocks.map((stock: any, index: number) => ({
           key: (index + 1).toString(),
@@ -79,7 +79,7 @@ const Trading: React.FC = () => {
           sector: getSector(stock.symbol),
           isMarketOpen: stock.isMarketOpen || false,
         }));
-        
+
         setMarketData(formattedData);
       } else {
         console.error('獲取市場數據失敗');
@@ -96,26 +96,26 @@ const Trading: React.FC = () => {
   // 輔助函數：獲取股票名稱
   const getStockName = (symbol: string) => {
     const nameMap: { [key: string]: string } = {
-      'AAPL': '蘋果公司',
-      'GOOGL': '谷歌',
-      'MSFT': '微軟',
-      'AMZN': '亞馬遜',
-      'TSLA': '特斯拉',
-      'META': 'Meta',
-      'NFLX': '網飛',
-      'NVDA': '英偉達',
-      'JPM': '摩根大通',
-      'JNJ': '強生',
-      'V': 'Visa',
-      'PG': '寶潔',
-      'MA': '萬事達',
-      'UNH': '聯合健康',
-      'HD': '家得寶',
-      'DIS': '迪士尼',
-      'PYPL': 'PayPal',
-      'BAC': '美國銀行',
-      'VZ': 'Verizon',
-      'ADBE': 'Adobe',
+      AAPL: '蘋果公司',
+      GOOGL: '谷歌',
+      MSFT: '微軟',
+      AMZN: '亞馬遜',
+      TSLA: '特斯拉',
+      META: 'Meta',
+      NFLX: '網飛',
+      NVDA: '英偉達',
+      JPM: '摩根大通',
+      JNJ: '強生',
+      V: 'Visa',
+      PG: '寶潔',
+      MA: '萬事達',
+      UNH: '聯合健康',
+      HD: '家得寶',
+      DIS: '迪士尼',
+      PYPL: 'PayPal',
+      BAC: '美國銀行',
+      VZ: 'Verizon',
+      ADBE: 'Adobe',
     };
     return nameMap[symbol] || symbol;
   };
@@ -123,26 +123,26 @@ const Trading: React.FC = () => {
   // 輔助函數：獲取市值（模擬）
   const getMarketCap = (symbol: string) => {
     const marketCapMap: { [key: string]: string } = {
-      'AAPL': '2.8T',
-      'GOOGL': '1.7T',
-      'MSFT': '2.6T',
-      'AMZN': '1.5T',
-      'TSLA': '745B',
-      'META': '750B',
-      'NFLX': '190B',
-      'NVDA': '1.8T',
-      'JPM': '450B',
-      'JNJ': '420B',
-      'V': '480B',
-      'PG': '360B',
-      'MA': '380B',
-      'UNH': '480B',
-      'HD': '330B',
-      'DIS': '180B',
-      'PYPL': '85B',
-      'BAC': '270B',
-      'VZ': '170B',
-      'ADBE': '220B',
+      AAPL: '2.8T',
+      GOOGL: '1.7T',
+      MSFT: '2.6T',
+      AMZN: '1.5T',
+      TSLA: '745B',
+      META: '750B',
+      NFLX: '190B',
+      NVDA: '1.8T',
+      JPM: '450B',
+      JNJ: '420B',
+      V: '480B',
+      PG: '360B',
+      MA: '380B',
+      UNH: '480B',
+      HD: '330B',
+      DIS: '180B',
+      PYPL: '85B',
+      BAC: '270B',
+      VZ: '170B',
+      ADBE: '220B',
     };
     return marketCapMap[symbol] || 'N/A';
   };
@@ -150,26 +150,26 @@ const Trading: React.FC = () => {
   // 輔助函數：獲取板塊
   const getSector = (symbol: string) => {
     const sectorMap: { [key: string]: string } = {
-      'AAPL': '科技股',
-      'GOOGL': '科技股',
-      'MSFT': '科技股',
-      'AMZN': '電商股',
-      'TSLA': '汽車股',
-      'META': '科技股',
-      'NFLX': '媒體股',
-      'NVDA': '科技股',
-      'JPM': '金融股',
-      'JNJ': '醫療股',
-      'V': '金融股',
-      'PG': '消費股',
-      'MA': '金融股',
-      'UNH': '醫療股',
-      'HD': '零售股',
-      'DIS': '媒體股',
-      'PYPL': '金融股',
-      'BAC': '金融股',
-      'VZ': '電信股',
-      'ADBE': '科技股',
+      AAPL: '科技股',
+      GOOGL: '科技股',
+      MSFT: '科技股',
+      AMZN: '電商股',
+      TSLA: '汽車股',
+      META: '科技股',
+      NFLX: '媒體股',
+      NVDA: '科技股',
+      JPM: '金融股',
+      JNJ: '醫療股',
+      V: '金融股',
+      PG: '消費股',
+      MA: '金融股',
+      UNH: '醫療股',
+      HD: '零售股',
+      DIS: '媒體股',
+      PYPL: '金融股',
+      BAC: '金融股',
+      VZ: '電信股',
+      ADBE: '科技股',
     };
     return sectorMap[symbol] || '其他';
   };
@@ -179,8 +179,8 @@ const Trading: React.FC = () => {
     try {
       const response = await fetch('/api/v1/orders', {
         headers: {
-          'X-User-ID': 'demo-user-123'
-        }
+          'X-User-ID': 'demo-user-123',
+        },
       });
       if (response.ok) {
         const data = await response.json();
@@ -197,7 +197,7 @@ const Trading: React.FC = () => {
           side: 'buy',
           order_type: 'limit',
           quantity: 100,
-          price: 175.00,
+          price: 175.0,
           filled_qty: 0,
           remaining_qty: 100,
           status: 'pending',
@@ -210,12 +210,12 @@ const Trading: React.FC = () => {
           side: 'buy',
           order_type: 'limit',
           quantity: 50,
-          price: 2500.00,
+          price: 2500.0,
           filled_qty: 0,
           remaining_qty: 50,
           status: 'pending',
           created_at: '2023-12-01T10:15:30Z',
-        }
+        },
       ]);
     }
   };
@@ -225,8 +225,8 @@ const Trading: React.FC = () => {
     try {
       const response = await fetch('/api/v1/portfolio', {
         headers: {
-          'X-User-ID': 'demo-user-123'
-        }
+          'X-User-ID': 'demo-user-123',
+        },
       });
       if (response.ok) {
         const data = await response.json();
@@ -245,7 +245,7 @@ const Trading: React.FC = () => {
 
     // 設置定時刷新市場數據（每30秒）
     const marketDataInterval = setInterval(fetchMarketData, 30000);
-    
+
     // 設置定時刷新訂單狀態（每10秒）
     const ordersInterval = setInterval(fetchOrders, 10000);
 
@@ -290,16 +290,15 @@ const Trading: React.FC = () => {
       key: 'change',
       render: (record: any) => (
         <Space direction="vertical" size={0}>
-          <Text 
-            className={record.change >= 0 ? 'financial-positive' : 'financial-negative'}
-          >
+          <Text className={record.change >= 0 ? 'financial-positive' : 'financial-negative'}>
             {record.change >= 0 ? '+' : ''}${record.change.toFixed(2)}
           </Text>
-          <Text 
+          <Text
             className={record.changePercent >= 0 ? 'financial-positive' : 'financial-negative'}
             style={{ fontSize: '12px' }}
           >
-            ({record.changePercent >= 0 ? '+' : ''}{record.changePercent.toFixed(2)}%)
+            ({record.changePercent >= 0 ? '+' : ''}
+            {record.changePercent.toFixed(2)}%)
           </Text>
         </Space>
       ),
@@ -308,7 +307,7 @@ const Trading: React.FC = () => {
       title: '成交量',
       dataIndex: 'volume',
       key: 'volume',
-      render: (volume: number) => volume > 0 ? volume.toLocaleString() : 'N/A',
+      render: (volume: number) => (volume > 0 ? volume.toLocaleString() : 'N/A'),
     },
     {
       title: '市值',
@@ -326,16 +325,16 @@ const Trading: React.FC = () => {
       key: 'action',
       render: (record: any) => (
         <Space>
-          <Button 
-            type="primary" 
-            size="small" 
+          <Button
+            type="primary"
+            size="small"
             onClick={() => openTradeModal(record, 'buy')}
             disabled={!record.isMarketOpen}
           >
             買入
           </Button>
-          <Button 
-            size="small" 
+          <Button
+            size="small"
             onClick={() => openTradeModal(record, 'sell')}
             disabled={!record.isMarketOpen}
           >
@@ -353,7 +352,9 @@ const Trading: React.FC = () => {
       dataIndex: 'id',
       key: 'id',
       render: (id: string) => (
-        <Text code style={{ fontSize: '12px' }}>{id.substring(0, 8)}</Text>
+        <Text code style={{ fontSize: '12px' }}>
+          {id.substring(0, 8)}
+        </Text>
       ),
     },
     {
@@ -366,9 +367,7 @@ const Trading: React.FC = () => {
       dataIndex: 'side',
       key: 'side',
       render: (side: string) => (
-        <Tag color={side === 'buy' ? 'green' : 'red'}>
-          {side === 'buy' ? '買入' : '賣出'}
-        </Tag>
+        <Tag color={side === 'buy' ? 'green' : 'red'}>{side === 'buy' ? '買入' : '賣出'}</Tag>
       ),
     },
     {
@@ -400,10 +399,12 @@ const Trading: React.FC = () => {
       key: 'filled',
       render: (record: any) => (
         <Space direction="vertical" size={0}>
-          <Text>{record.filled_qty}/{record.quantity}</Text>
-          <Progress 
-            percent={(record.filled_qty / record.quantity) * 100} 
-            size="small" 
+          <Text>
+            {record.filled_qty}/{record.quantity}
+          </Text>
+          <Progress
+            percent={(record.filled_qty / record.quantity) * 100}
+            size="small"
             showInfo={false}
           />
         </Space>
@@ -421,7 +422,10 @@ const Trading: React.FC = () => {
           cancelled: { color: 'default', text: '已取消' },
           rejected: { color: 'error', text: '已拒絕' },
         };
-        const config = statusConfig[status as keyof typeof statusConfig] || { color: 'default', text: status };
+        const config = statusConfig[status as keyof typeof statusConfig] || {
+          color: 'default',
+          text: status,
+        };
         return <Badge status={config.color as any} text={config.text} />;
       },
     },
@@ -430,9 +434,7 @@ const Trading: React.FC = () => {
       dataIndex: 'created_at',
       key: 'created_at',
       render: (time: string) => (
-        <Text style={{ fontSize: '12px' }}>
-          {new Date(time).toLocaleString()}
-        </Text>
+        <Text style={{ fontSize: '12px' }}>{new Date(time).toLocaleString()}</Text>
       ),
     },
     {
@@ -442,11 +444,7 @@ const Trading: React.FC = () => {
         <Space>
           {record.status === 'pending' && (
             <>
-              <Button 
-                size="small" 
-                icon={<EditOutlined />}
-                onClick={() => openEditModal(record)}
-              >
+              <Button size="small" icon={<EditOutlined />} onClick={() => openEditModal(record)}>
                 編輯
               </Button>
               <Popconfirm
@@ -501,11 +499,17 @@ const Trading: React.FC = () => {
         order_type: values.orderType,
         quantity: values.quantity,
         price: values.price,
-        time_in_force: values.timeInForce || 'GTC'
+        time_in_force: values.timeInForce || 'GTC',
       };
 
       // 驗證必填字段
-      if (!orderData.symbol || !orderData.side || !orderData.order_type || !orderData.quantity || !orderData.price) {
+      if (
+        !orderData.symbol ||
+        !orderData.side ||
+        !orderData.order_type ||
+        !orderData.quantity ||
+        !orderData.price
+      ) {
         message.error('請填寫完整的訂單信息');
         setLoading(false);
         return;
@@ -515,17 +519,15 @@ const Trading: React.FC = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-User-ID': 'demo-user-123'
+          'X-User-ID': 'demo-user-123',
         },
-        body: JSON.stringify(orderData)
+        body: JSON.stringify(orderData),
       });
 
       if (response.ok) {
         const result = await response.json();
         message.success(
-          result.order.status === 'filled' 
-            ? '訂單下單並成交成功！' 
-            : '訂單下單成功，等待成交！'
+          result.order.status === 'filled' ? '訂單下單並成交成功！' : '訂單下單成功，等待成交！',
         );
         setIsModalOpen(false);
         form.resetFields();
@@ -552,9 +554,9 @@ const Trading: React.FC = () => {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'X-User-ID': 'demo-user-123'
+          'X-User-ID': 'demo-user-123',
         },
-        body: JSON.stringify(values)
+        body: JSON.stringify(values),
       });
 
       if (response.ok) {
@@ -580,8 +582,8 @@ const Trading: React.FC = () => {
       const response = await fetch(`/api/v1/orders/${orderId}`, {
         method: 'DELETE',
         headers: {
-          'X-User-ID': 'demo-user-123'
-        }
+          'X-User-ID': 'demo-user-123',
+        },
       });
 
       if (response.ok) {
@@ -613,19 +615,23 @@ const Trading: React.FC = () => {
             <Button icon={<ReloadOutlined />} loading={marketLoading} onClick={fetchMarketData}>
               重新整理
             </Button>
-            <Button type="primary" icon={<PlusOutlined />} onClick={() => {
-              // 重置表單並設置預設值
-              form.resetFields();
-              setSelectedStock(null);
-              form.setFieldsValue({
-                side: 'buy',
-                orderType: 'limit',
-                quantity: 100,
-                price: 200.00,
-                timeInForce: 'GTC'
-              });
-              setIsModalOpen(true);
-            }}>
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={() => {
+                // 重置表單並設置預設值
+                form.resetFields();
+                setSelectedStock(null);
+                form.setFieldsValue({
+                  side: 'buy',
+                  orderType: 'limit',
+                  quantity: 100,
+                  price: 200.0,
+                  timeInForce: 'GTC',
+                });
+                setIsModalOpen(true);
+              }}
+            >
               新建訂單
             </Button>
           </Space>
@@ -650,7 +656,7 @@ const Trading: React.FC = () => {
           <Card>
             <Statistic
               title="活躍訂單"
-              value={orders.filter(o => o.status === 'pending').length}
+              value={orders.filter((o) => o.status === 'pending').length}
               prefix={<ClockCircleOutlined />}
               valueStyle={{ color: '#fa8c16' }}
             />
@@ -694,7 +700,10 @@ const Trading: React.FC = () => {
 
       <Tabs defaultActiveKey="1">
         <TabPane tab="市場行情" key="1">
-          <Card title="實時股票行情" extra={<Badge status="processing" text="Yahoo Finance 實時數據" />}>
+          <Card
+            title="實時股票行情"
+            extra={<Badge status="processing" text="Yahoo Finance 實時數據" />}
+          >
             <Table
               columns={marketColumns}
               dataSource={marketData}
@@ -725,7 +734,7 @@ const Trading: React.FC = () => {
           <Card title="交易記錄">
             <List
               itemLayout="horizontal"
-              dataSource={orders.filter(order => order.status === 'filled')}
+              dataSource={orders.filter((order) => order.status === 'filled')}
               renderItem={(order) => (
                 <List.Item>
                   <List.Item.Meta
@@ -753,7 +762,11 @@ const Trading: React.FC = () => {
 
       {/* 交易下單彈窗 */}
       <Modal
-        title={selectedStock ? `${selectedStock?.side === 'buy' ? '買入' : '賣出'} ${selectedStock?.symbol || ''}` : '新建訂單'}
+        title={
+          selectedStock
+            ? `${selectedStock?.side === 'buy' ? '買入' : '賣出'} ${selectedStock?.symbol || ''}`
+            : '新建訂單'
+        }
         open={isModalOpen}
         onCancel={() => setIsModalOpen(false)}
         footer={null}
@@ -767,8 +780,8 @@ const Trading: React.FC = () => {
             side: 'buy',
             orderType: 'limit',
             quantity: 100,
-            price: 200.00,
-            timeInForce: 'GTC'
+            price: 200.0,
+            timeInForce: 'GTC',
           }}
         >
           <Row gutter={16}>
@@ -779,7 +792,7 @@ const Trading: React.FC = () => {
                 rules={[{ required: true, message: '請選擇股票' }]}
               >
                 <Select placeholder="選擇股票">
-                  {marketData.map(stock => (
+                  {marketData.map((stock) => (
                     <Option key={stock.symbol} value={stock.symbol}>
                       {stock.symbol} - {stock.name}
                     </Option>
@@ -821,21 +834,12 @@ const Trading: React.FC = () => {
                 name="quantity"
                 rules={[{ required: true, message: '請輸入數量' }]}
               >
-                <InputNumber
-                  min={1}
-                  max={10000}
-                  style={{ width: '100%' }}
-                  placeholder="股數"
-                />
+                <InputNumber min={1} max={10000} style={{ width: '100%' }} placeholder="股數" />
               </Form.Item>
             </Col>
           </Row>
 
-          <Form.Item
-            label="價格"
-            name="price"
-            rules={[{ required: true, message: '請輸入價格' }]}
-          >
+          <Form.Item label="價格" name="price" rules={[{ required: true, message: '請輸入價格' }]}>
             <InputNumber
               min={0.01}
               precision={2}
@@ -845,10 +849,7 @@ const Trading: React.FC = () => {
             />
           </Form.Item>
 
-          <Form.Item
-            label="時間在市場"
-            name="timeInForce"
-          >
+          <Form.Item label="時間在市場" name="timeInForce">
             <Select>
               <Option value="GTC">GTC</Option>
               <Option value="IOC">IOC</Option>
@@ -862,14 +863,15 @@ const Trading: React.FC = () => {
           <Row justify="space-between">
             <Col>
               <Text type="secondary">
-                預估交易額: ${((form.getFieldValue('quantity') || 0) * (form.getFieldValue('price') || 0)).toFixed(2)}
+                預估交易額: $
+                {(
+                  (form.getFieldValue('quantity') || 0) * (form.getFieldValue('price') || 0)
+                ).toFixed(2)}
               </Text>
             </Col>
             <Col>
               <Space>
-                <Button onClick={() => setIsModalOpen(false)}>
-                  取消
-                </Button>
+                <Button onClick={() => setIsModalOpen(false)}>取消</Button>
                 <Button type="primary" htmlType="submit" loading={loading}>
                   提交訂單
                 </Button>
@@ -887,29 +889,16 @@ const Trading: React.FC = () => {
         footer={null}
         width={500}
       >
-        <Form
-          form={editForm}
-          layout="vertical"
-          onFinish={handleEditOrder}
-        >
+        <Form form={editForm} layout="vertical" onFinish={handleEditOrder}>
           <Form.Item
             label="數量"
             name="quantity"
             rules={[{ required: true, message: '請輸入數量' }]}
           >
-            <InputNumber
-              min={1}
-              max={10000}
-              style={{ width: '100%' }}
-              placeholder="股數"
-            />
+            <InputNumber min={1} max={10000} style={{ width: '100%' }} placeholder="股數" />
           </Form.Item>
 
-          <Form.Item
-            label="價格"
-            name="price"
-            rules={[{ required: true, message: '請輸入價格' }]}
-          >
+          <Form.Item label="價格" name="price" rules={[{ required: true, message: '請輸入價格' }]}>
             <InputNumber
               min={0.01}
               precision={2}
@@ -936,14 +925,15 @@ const Trading: React.FC = () => {
           <Row justify="space-between">
             <Col>
               <Text type="secondary">
-                預估交易額: ${((editForm.getFieldValue('quantity') || 0) * (editForm.getFieldValue('price') || 0)).toFixed(2)}
+                預估交易額: $
+                {(
+                  (editForm.getFieldValue('quantity') || 0) * (editForm.getFieldValue('price') || 0)
+                ).toFixed(2)}
               </Text>
             </Col>
             <Col>
               <Space>
-                <Button onClick={() => setIsEditModalOpen(false)}>
-                  取消
-                </Button>
+                <Button onClick={() => setIsEditModalOpen(false)}>取消</Button>
                 <Button type="primary" htmlType="submit" loading={loading}>
                   保存修改
                 </Button>
@@ -956,4 +946,4 @@ const Trading: React.FC = () => {
   );
 };
 
-export default Trading; 
+export default Trading;

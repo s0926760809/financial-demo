@@ -57,10 +57,10 @@ const Settings: React.FC = () => {
     try {
       const response = await fetch('/api/v1/system/config', {
         headers: {
-          'X-User-ID': 'demo-user-123'
-        }
+          'X-User-ID': 'demo-user-123',
+        },
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         setSystemConfig(data.config);
@@ -96,9 +96,9 @@ const Settings: React.FC = () => {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'X-User-ID': 'demo-user-123'
+          'X-User-ID': 'demo-user-123',
         },
-        body: JSON.stringify(values)
+        body: JSON.stringify(values),
       });
 
       if (response.ok) {
@@ -124,19 +124,19 @@ const Settings: React.FC = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-User-ID': 'demo-user-123'
+          'X-User-ID': 'demo-user-123',
         },
         body: JSON.stringify({
           reset_balance: systemConfig?.initial_balance || 100000,
           clear_positions: true,
           clear_trades: false, // 保留交易歷史記錄
-        })
+        }),
       });
 
       if (response.ok) {
         const result = await response.json();
         message.success('帳戶重置成功！資金已恢復至初始金額，所有持股已清零。');
-        
+
         // 顯示重置詳情
         Modal.info({
           title: '帳戶重置完成',
@@ -145,9 +145,7 @@ const Settings: React.FC = () => {
               <p>✅ 資金餘額已重置為：${result.new_balance?.toLocaleString() || '100,000'}</p>
               <p>✅ 所有持股已清零</p>
               <p>ℹ️ 交易歷史記錄已保留</p>
-              <p style={{ marginTop: '16px', color: '#666' }}>
-                您可以重新開始進行交易投資。
-              </p>
+              <p style={{ marginTop: '16px', color: '#666' }}>您可以重新開始進行交易投資。</p>
             </div>
           ),
         });
@@ -179,9 +177,7 @@ const Settings: React.FC = () => {
             <Title level={2}>
               <SettingOutlined /> 系統設置
             </Title>
-            <Text type="secondary">
-              管理系統配置和帳戶設置
-            </Text>
+            <Text type="secondary">管理系統配置和帳戶設置</Text>
           </Col>
         </Row>
 
@@ -189,35 +185,21 @@ const Settings: React.FC = () => {
           {/* 交易配置 */}
           <TabPane tab="交易配置" key="1">
             <Card title="交易系統配置" extra={<ApiOutlined />}>
-              <Form
-                form={form}
-                layout="vertical"
-                onFinish={handleSubmit}
-              >
+              <Form form={form} layout="vertical" onFinish={handleSubmit}>
                 <Row gutter={[16, 16]}>
                   <Col xs={24} sm={12}>
-                    <Form.Item
-                      label="啟用交易功能"
-                      name="trading_enabled"
-                      valuePropName="checked"
-                    >
-                      <Switch
-                        checkedChildren="開啟"
-                        unCheckedChildren="關閉"
-                      />
+                    <Form.Item label="啟用交易功能" name="trading_enabled" valuePropName="checked">
+                      <Switch checkedChildren="開啟" unCheckedChildren="關閉" />
                     </Form.Item>
                   </Col>
-                  
+
                   <Col xs={24} sm={12}>
                     <Form.Item
                       label="使用Yahoo Finance實時數據"
                       name="yahoo_finance_enabled"
                       valuePropName="checked"
                     >
-                      <Switch
-                        checkedChildren="開啟"
-                        unCheckedChildren="關閉"
-                      />
+                      <Switch checkedChildren="開啟" unCheckedChildren="關閉" />
                     </Form.Item>
                   </Col>
                 </Row>
@@ -232,7 +214,7 @@ const Settings: React.FC = () => {
                       <Input placeholder="09:30" />
                     </Form.Item>
                   </Col>
-                  
+
                   <Col xs={24} sm={12}>
                     <Form.Item
                       label="市場關閉時間"
@@ -261,18 +243,14 @@ const Settings: React.FC = () => {
                       />
                     </Form.Item>
                   </Col>
-                  
+
                   <Col xs={24} sm={12}>
                     <Form.Item
                       label="單筆訂單最大數量"
                       name="max_order_size"
                       rules={[{ required: true, message: '請輸入最大數量' }]}
                     >
-                      <InputNumber
-                        min={1}
-                        style={{ width: '100%' }}
-                        placeholder="10000"
-                      />
+                      <InputNumber min={1} style={{ width: '100%' }} placeholder="10000" />
                     </Form.Item>
                   </Col>
                 </Row>
@@ -293,17 +271,14 @@ const Settings: React.FC = () => {
                       />
                     </Form.Item>
                   </Col>
-                  
+
                   <Col xs={24} sm={12}>
                     <Form.Item
                       label="實時價格交易"
                       name="real_price_trading"
                       valuePropName="checked"
                     >
-                      <Switch
-                        checkedChildren="開啟"
-                        unCheckedChildren="關閉"
-                      />
+                      <Switch checkedChildren="開啟" unCheckedChildren="關閉" />
                     </Form.Item>
                   </Col>
                 </Row>
@@ -322,7 +297,7 @@ const Settings: React.FC = () => {
             <Row gutter={[24, 24]}>
               {/* 帳戶重置 */}
               <Col xs={24}>
-                <Card 
+                <Card
                   title={
                     <Space>
                       <DeleteOutlined />
@@ -365,11 +340,12 @@ const Settings: React.FC = () => {
                     title="確認重置帳戶"
                     description={
                       <div style={{ maxWidth: '300px' }}>
-                        <Paragraph>
-                          您確定要重置帳戶嗎？此操作將：
-                        </Paragraph>
+                        <Paragraph>您確定要重置帳戶嗎？此操作將：</Paragraph>
                         <ul style={{ paddingLeft: '20px', margin: 0 }}>
-                          <li>將資金重置為 ${systemConfig?.initial_balance?.toLocaleString() || '100,000'} USD</li>
+                          <li>
+                            將資金重置為 $
+                            {systemConfig?.initial_balance?.toLocaleString() || '100,000'} USD
+                          </li>
                           <li>清除所有股票持倉</li>
                           <li>保留交易歷史</li>
                         </ul>
@@ -384,12 +360,7 @@ const Settings: React.FC = () => {
                     okButtonProps={{ danger: true }}
                     icon={<ExclamationCircleOutlined style={{ color: '#ff4d4f' }} />}
                   >
-                    <Button
-                      danger
-                      size="large"
-                      loading={resetLoading}
-                      icon={<ReloadOutlined />}
-                    >
+                    <Button danger size="large" loading={resetLoading} icon={<ReloadOutlined />}>
                       重置帳戶至初始狀態
                     </Button>
                   </Popconfirm>
@@ -400,7 +371,14 @@ const Settings: React.FC = () => {
 
           {/* 安全設置 */}
           <TabPane tab="安全設置" key="3">
-            <Card title={<Space><SafetyOutlined />安全配置</Space>}>
+            <Card
+              title={
+                <Space>
+                  <SafetyOutlined />
+                  安全配置
+                </Space>
+              }
+            >
               <Alert
                 message="安全模式已啟用"
                 description="當前處於eBPF安全監控演示環境，所有交易活動都受到實時監控和審計。"
@@ -428,7 +406,14 @@ const Settings: React.FC = () => {
 
           {/* 實驗功能 */}
           <TabPane tab="實驗功能" key="4">
-            <Card title={<Space><ExperimentOutlined />實驗性功能</Space>}>
+            <Card
+              title={
+                <Space>
+                  <ExperimentOutlined />
+                  實驗性功能
+                </Space>
+              }
+            >
               <Alert
                 message="實驗性功能"
                 description="以下功能僅供演示和測試使用，可能不穩定或包含已知問題。"
@@ -470,4 +455,4 @@ const Settings: React.FC = () => {
   );
 };
 
-export default Settings; 
+export default Settings;

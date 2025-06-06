@@ -50,10 +50,10 @@ const Profile: React.FC = () => {
     try {
       const response = await fetch('/api/v1/user/profile', {
         headers: {
-          'X-User-ID': 'demo-user-123'
-        }
+          'X-User-ID': 'demo-user-123',
+        },
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         setUserProfile(data.user);
@@ -93,12 +93,12 @@ const Profile: React.FC = () => {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'X-User-ID': 'demo-user-123'
+          'X-User-ID': 'demo-user-123',
         },
         body: JSON.stringify({
           display_name: values.display_name,
           email: values.email,
-        })
+        }),
       });
 
       if (response.ok) {
@@ -141,9 +141,7 @@ const Profile: React.FC = () => {
           <Title level={2}>
             <UserOutlined /> 個人資料
           </Title>
-          <Text type="secondary">
-            管理您的個人信息和帳戶設置
-          </Text>
+          <Text type="secondary">管理您的個人信息和帳戶設置</Text>
         </Col>
       </Row>
 
@@ -161,18 +159,14 @@ const Profile: React.FC = () => {
             }
           >
             {editing ? (
-              <Form
-                form={form}
-                layout="vertical"
-                onFinish={handleSubmit}
-              >
+              <Form form={form} layout="vertical" onFinish={handleSubmit}>
                 <Form.Item
                   label="顯示名稱"
                   name="display_name"
                   rules={[
                     { required: true, message: '請輸入顯示名稱' },
                     { min: 2, message: '名稱至少需要2個字符' },
-                    { max: 50, message: '名稱不能超過50個字符' }
+                    { max: 50, message: '名稱不能超過50個字符' },
                   ]}
                 >
                   <Input placeholder="請輸入您的顯示名稱" />
@@ -183,7 +177,7 @@ const Profile: React.FC = () => {
                   name="email"
                   rules={[
                     { required: true, message: '請輸入電子郵件' },
-                    { type: 'email', message: '請輸入有效的電子郵件地址' }
+                    { type: 'email', message: '請輸入有效的電子郵件地址' },
                   ]}
                 >
                   <Input placeholder="請輸入您的電子郵件" />
@@ -191,12 +185,15 @@ const Profile: React.FC = () => {
 
                 <Form.Item>
                   <Space>
-                    <Button type="primary" htmlType="submit" loading={loading} icon={<SaveOutlined />}>
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      loading={loading}
+                      icon={<SaveOutlined />}
+                    >
                       保存修改
                     </Button>
-                    <Button onClick={handleCancel}>
-                      取消
-                    </Button>
+                    <Button onClick={handleCancel}>取消</Button>
                   </Space>
                 </Form.Item>
               </Form>
@@ -217,12 +214,18 @@ const Profile: React.FC = () => {
                 <Descriptions.Item label="註冊時間">
                   <Space>
                     <CalendarOutlined />
-                    <Text>{userProfile?.created_at ? new Date(userProfile.created_at).toLocaleString() : 'N/A'}</Text>
+                    <Text>
+                      {userProfile?.created_at
+                        ? new Date(userProfile.created_at).toLocaleString()
+                        : 'N/A'}
+                    </Text>
                   </Space>
                 </Descriptions.Item>
                 <Descriptions.Item label="最後更新">
                   <Text type="secondary">
-                    {userProfile?.updated_at ? new Date(userProfile.updated_at).toLocaleString() : 'N/A'}
+                    {userProfile?.updated_at
+                      ? new Date(userProfile.updated_at).toLocaleString()
+                      : 'N/A'}
                   </Text>
                 </Descriptions.Item>
               </Descriptions>
@@ -242,20 +245,21 @@ const Profile: React.FC = () => {
                 suffix="USD"
                 valueStyle={{ color: '#1890ff' }}
               />
-              
+
               <Statistic
                 title="當前餘額"
                 value={userProfile?.current_balance || 0}
                 precision={2}
                 prefix={<DollarOutlined />}
                 suffix="USD"
-                valueStyle={{ 
-                  color: (userProfile?.current_balance || 0) >= (userProfile?.initial_balance || 0) 
-                    ? '#52c41a' 
-                    : '#ff4d4f' 
+                valueStyle={{
+                  color:
+                    (userProfile?.current_balance || 0) >= (userProfile?.initial_balance || 0)
+                      ? '#52c41a'
+                      : '#ff4d4f',
                 }}
               />
-              
+
               <Statistic
                 title="總交易次數"
                 value={userProfile?.total_trades || 0}
@@ -293,4 +297,4 @@ const Profile: React.FC = () => {
   );
 };
 
-export default Profile; 
+export default Profile;

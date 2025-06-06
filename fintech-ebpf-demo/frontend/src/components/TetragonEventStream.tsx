@@ -1,13 +1,27 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Card, List, Tag, Badge, Typography, Space, Button, Select, Switch, notification, Statistic, Row, Col } from 'antd';
-import { 
-  ExclamationCircleOutlined, 
-  EyeOutlined, 
-  BugOutlined, 
+import {
+  Card,
+  List,
+  Tag,
+  Badge,
+  Typography,
+  Space,
+  Button,
+  Select,
+  Switch,
+  notification,
+  Statistic,
+  Row,
+  Col,
+} from 'antd';
+import {
+  ExclamationCircleOutlined,
+  EyeOutlined,
+  BugOutlined,
   SafetyCertificateOutlined,
   ReloadOutlined,
   PauseCircleOutlined,
-  PlayCircleOutlined
+  PlayCircleOutlined,
 } from '@ant-design/icons';
 
 const { Title, Text } = Typography;
@@ -87,9 +101,11 @@ const TetragonEventStream: React.FC = () => {
   const [selectedEventType, setSelectedEventType] = useState<string>('');
   const [maxEvents, setMaxEvents] = useState(50);
   const [enableAlerts, setEnableAlerts] = useState(true);
-  
+
   const wsRef = useRef<WebSocket | null>(null);
-  const [connectionStatus, setConnectionStatus] = useState<'connecting' | 'connected' | 'disconnected'>('disconnected');
+  const [connectionStatus, setConnectionStatus] = useState<
+    'connecting' | 'connected' | 'disconnected'
+  >('disconnected');
   const isManualDisconnect = useRef(false);
 
   // WebSocket 連接管理
@@ -114,7 +130,7 @@ const TetragonEventStream: React.FC = () => {
     }
 
     setConnectionStatus('connecting');
-    
+
     // 構建WebSocket URL
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const host = window.location.hostname;
@@ -138,20 +154,20 @@ const TetragonEventStream: React.FC = () => {
     wsRef.current.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data);
-        
+
         switch (data.type) {
           case 'welcome':
             console.log('WebSocket 歡迎消息:', data.message);
             break;
-            
+
           case 'recent_events':
             setEvents(data.events || []);
             break;
-            
+
           case 'security_event':
             addNewEvent(data.event);
             break;
-            
+
           default:
             console.log('未知消息類型:', data);
         }
@@ -163,7 +179,7 @@ const TetragonEventStream: React.FC = () => {
     wsRef.current.onclose = () => {
       setConnected(false);
       setConnectionStatus('disconnected');
-      
+
       if (!isManualDisconnect.current && isRunning) {
         console.log('WebSocket 意外斷線，3秒後嘗試重連...');
         setTimeout(() => {
@@ -201,17 +217,25 @@ const TetragonEventStream: React.FC = () => {
       return;
     }
 
-    setEvents(prevEvents => {
+    setEvents((prevEvents) => {
       const updated = [newEvent, ...prevEvents].slice(0, maxEvents);
       return updated;
     });
 
-    if (isRunning && enableAlerts && (newEvent.severity === 'CRITICAL' || newEvent.severity === 'HIGH')) {
+    if (
+      isRunning &&
+      enableAlerts &&
+      (newEvent.severity === 'CRITICAL' || newEvent.severity === 'HIGH')
+    ) {
       notification.warning({
         message: `${newEvent.severity} 安全事件`,
         description: newEvent.description,
         duration: 8,
-        icon: <ExclamationCircleOutlined style={{ color: newEvent.severity === 'CRITICAL' ? '#ff4d4f' : '#faad14' }} />,
+        icon: (
+          <ExclamationCircleOutlined
+            style={{ color: newEvent.severity === 'CRITICAL' ? '#ff4d4f' : '#faad14' }}
+          />
+        ),
       });
     }
   };
@@ -225,10 +249,13 @@ const TetragonEventStream: React.FC = () => {
       if (selectedEventType) eventsParams.append('event_type', selectedEventType);
       eventsParams.append('limit', maxEvents.toString());
 
-      const eventsResponse = await fetch(`/api/trading/api/v1/tetragon/events?${eventsParams.toString()}`);
+      const eventsResponse = await fetch(
+        `/api/trading/api/v1/tetragon/events?${eventsParams.toString()}`,
+      );
       if (eventsResponse.ok) {
         const eventsData = await eventsResponse.json();
-        if (!connected) { // 只有在WebSocket未連接時才更新
+        if (!connected) {
+          // 只有在WebSocket未連接時才更新
           setEvents(eventsData.events || []);
         }
       }
@@ -290,7 +317,7 @@ const TetragonEventStream: React.FC = () => {
       connected: { status: 'success', text: '已連接' },
       disconnected: { status: 'error', text: '已斷線' },
     };
-    
+
     const config = statusConfig[connectionStatus];
     return <Badge status={config.status as any} text={config.text} />;
   };
@@ -347,7 +374,7 @@ const TetragonEventStream: React.FC = () => {
       <Card style={{ marginBottom: '24px' }}>
         <Space size="middle" wrap>
           <span>連接狀態: {getConnectionBadge()}</span>
-          
+
           <Switch
             checked={isRunning}
             onChange={setIsRunning}
@@ -388,11 +415,7 @@ const TetragonEventStream: React.FC = () => {
             <Option value="process_kprobe">內核探針</Option>
           </Select>
 
-          <Select
-            style={{ width: 100 }}
-            value={maxEvents}
-            onChange={setMaxEvents}
-          >
+          <Select style={{ width: 100 }} value={maxEvents} onChange={setMaxEvents}>
             <Option value={25}>25</Option>
             <Option value={50}>50</Option>
             <Option value={100}>100</Option>
@@ -434,30 +457,39 @@ const TetragonEventStream: React.FC = () => {
                       <div>
                         <Text type="secondary">節點: </Text>
                         <Text code>{event.node_name}</Text>
-                        <Text type="secondary" style={{ marginLeft: '16px' }}>類型: </Text>
+                        <Text type="secondary" style={{ marginLeft: '16px' }}>
+                          類型:{' '}
+                        </Text>
                         <Tag>{event.event_type}</Tag>
                       </div>
-                      
+
                       {event.process_exec && (
                         <div>
                           <Text type="secondary">進程: </Text>
                           <Text code>{event.process_exec.process.binary}</Text>
-                          <Text type="secondary" style={{ marginLeft: '16px' }}>參數: </Text>
+                          <Text type="secondary" style={{ marginLeft: '16px' }}>
+                            參數:{' '}
+                          </Text>
                           <Text code>{event.process_exec.process.arguments}</Text>
                           {event.process_exec.process.pod && (
                             <div style={{ marginTop: '4px' }}>
                               <Text type="secondary">Pod: </Text>
-                              <Text code>{event.process_exec.process.pod.namespace}/{event.process_exec.process.pod.name}</Text>
+                              <Text code>
+                                {event.process_exec.process.pod.namespace}/
+                                {event.process_exec.process.pod.name}
+                              </Text>
                             </div>
                           )}
                         </div>
                       )}
-                      
+
                       {event.process_kprobe && (
                         <div>
                           <Text type="secondary">函數: </Text>
                           <Text code>{event.process_kprobe.function_name}</Text>
-                          <Text type="secondary" style={{ marginLeft: '16px' }}>進程: </Text>
+                          <Text type="secondary" style={{ marginLeft: '16px' }}>
+                            進程:{' '}
+                          </Text>
                           <Text code>{event.process_kprobe.process.binary}</Text>
                           {event.process_kprobe.args && (
                             <div style={{ marginTop: '4px' }}>
@@ -474,7 +506,7 @@ const TetragonEventStream: React.FC = () => {
             </List.Item>
           )}
           locale={{
-            emptyText: '暫無安全事件'
+            emptyText: '暫無安全事件',
           }}
         />
       </Card>
@@ -487,7 +519,11 @@ const TetragonEventStream: React.FC = () => {
             renderItem={(alert: SecurityAlert) => (
               <List.Item>
                 <List.Item.Meta
-                  avatar={<ExclamationCircleOutlined style={{ color: getSeverityColor(alert.severity), fontSize: '20px' }} />}
+                  avatar={
+                    <ExclamationCircleOutlined
+                      style={{ color: getSeverityColor(alert.severity), fontSize: '20px' }}
+                    />
+                  }
                   title={
                     <Space>
                       <Text strong style={{ color: getSeverityColor(alert.severity) }}>
@@ -516,4 +552,4 @@ const TetragonEventStream: React.FC = () => {
   );
 };
 
-export default TetragonEventStream; 
+export default TetragonEventStream;

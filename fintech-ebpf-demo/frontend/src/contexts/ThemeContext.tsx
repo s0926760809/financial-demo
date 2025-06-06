@@ -39,7 +39,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
 
   const getThemeConfig = () => {
     const { defaultAlgorithm, darkAlgorithm } = theme;
-    
+
     return {
       algorithm: isDarkMode ? darkAlgorithm : defaultAlgorithm,
       token: {
@@ -84,4 +84,4 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   };
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
-}; 
+};

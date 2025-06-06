@@ -1,6 +1,6 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import path from 'path'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import path from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -43,30 +43,30 @@ export default defineConfig({
       '/api/trading': {
         target: 'http://localhost:30080',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api\/trading/, '/api/v1')
+        rewrite: (path) => path.replace(/^\/api\/trading/, '/api/v1'),
       },
       '/api/risk': {
         target: 'http://localhost:30081',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api\/risk/, '')
+        rewrite: (path) => path.replace(/^\/api\/risk/, ''),
       },
       '/api/payment': {
         target: 'http://localhost:30082',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api\/payment/, '')
+        rewrite: (path) => path.replace(/^\/api\/payment/, ''),
       },
       '/api/audit': {
         target: 'http://localhost:30083',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api\/audit/, '')
+        rewrite: (path) => path.replace(/^\/api\/audit/, ''),
       },
       // WebSocket代理
       '/ws': {
         target: 'ws://localhost:30083',
         ws: true,
-        changeOrigin: true
-      }
-    }
+        changeOrigin: true,
+      },
+    },
   },
   build: {
     outDir: 'dist',
@@ -113,4 +113,4 @@ export default defineConfig({
       'dayjs',
     ],
   },
-}) 
+});

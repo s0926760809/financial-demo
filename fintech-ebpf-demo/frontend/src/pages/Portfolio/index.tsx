@@ -37,12 +37,65 @@ const { Option } = Select;
 const { RangePicker } = DatePicker;
 const { TabPane } = Tabs;
 
+// 型別定義
+interface Position {
+  quantity: number;
+  avgCost: number;
+  lastPrice: number;
+  marketValue: number;
+  unrealizedPL: number;
+  dayPL?: number;
+  isMarketOpen?: boolean;
+}
+
+interface PortfolioData {
+  userID: string;
+  positions: Record<string, Position>;
+  cashBalance: number;
+  totalValue: number;
+  totalPL: number;
+  dayPL: number;
+  lastUpdated: string;
+}
+
+interface Holding {
+  key: string;
+  symbol: string;
+  name: string;
+  quantity: number;
+  avgPrice: number;
+  currentPrice: number;
+  marketValue: number;
+  unrealizedPnL: number;
+  unrealizedPnLPercent: number;
+  weight: number;
+  sector: string;
+  logo: string;
+  dayPL: number;
+  isMarketOpen: boolean;
+}
+
+interface Trade {
+  executedAt: string;
+  symbol: string;
+  side: string;
+  quantity: number;
+  price: number;
+  amount: number;
+  commission: number;
+}
+
+interface Stats {
+  totalTrades: number;
+  winRate: number;
+}
+
 const Portfolio: React.FC = () => {
-  const [holdings, setHoldings] = useState<any[]>([]);
-  const [portfolioData, setPortfolioData] = useState<any>(null);
+  const [holdings, setHoldings] = useState<Holding[]>([]);
+  const [portfolioData, setPortfolioData] = useState<PortfolioData | null>(null);
   const [loading, setLoading] = useState(false);
-  const [trades, setTrades] = useState<any[]>([]);
-  const [stats, setStats] = useState<any>(null);
+  const [trades, setTrades] = useState<Trade[]>([]);
+  const [stats, setStats] = useState<Stats | null>(null);
   const [selectedPeriod, setSelectedPeriod] = useState('1M');
 
   // 獲取投資組合數據
@@ -51,32 +104,40 @@ const Portfolio: React.FC = () => {
     try {
       const response = await fetch('/api/v1/portfolio', {
         headers: {
-          'X-User-ID': 'demo-user-123'
-        }
+          'X-User-ID': 'demo-user-123',
+        },
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         setPortfolioData(data.portfolio);
-        
+
         // 轉換持倉數據格式
-        const positions = Object.entries(data.portfolio.positions || {}).map(([symbol, position]: [string, any]) => ({
-          key: symbol,
-          symbol: symbol,
-          name: getStockName(symbol),
-          quantity: position.quantity,
-          avgPrice: position.avgCost,
-          currentPrice: position.lastPrice,
-          marketValue: position.marketValue,
-          unrealizedPnL: position.unrealizedPL,
-          unrealizedPnLPercent: position.quantity > 0 ? (position.unrealizedPL / (position.quantity * position.avgCost)) * 100 : 0,
-          weight: data.portfolio.totalValue > 0 ? (position.marketValue / data.portfolio.totalValue) * 100 : 0,
-          sector: getSector(symbol),
-          logo: getStockLogo(symbol),
-          dayPL: position.dayPL || 0,
-          isMarketOpen: position.isMarketOpen || false,
-        }));
-        
+        const positions = (Object.entries(data.portfolio.positions || {}) as [string, Position][]).map(
+          ([symbol, position]) => ({
+            key: symbol,
+            symbol: symbol,
+            name: getStockName(symbol),
+            quantity: position.quantity,
+            avgPrice: position.avgCost,
+            currentPrice: position.lastPrice,
+            marketValue: position.marketValue,
+            unrealizedPnL: position.unrealizedPL,
+            unrealizedPnLPercent:
+              position.quantity > 0
+                ? (position.unrealizedPL / (position.quantity * position.avgCost)) * 100
+                : 0,
+            weight:
+              data.portfolio.totalValue > 0
+                ? (position.marketValue / data.portfolio.totalValue) * 100
+                : 0,
+            sector: getSector(symbol),
+            logo: getStockLogo(symbol),
+            dayPL: position.dayPL || 0,
+            isMarketOpen: position.isMarketOpen || false,
+          }),
+        );
+
         setHoldings(positions);
       } else {
         message.error('獲取投資組合失敗');
@@ -116,10 +177,10 @@ const Portfolio: React.FC = () => {
     try {
       const response = await fetch('/api/v1/trades?limit=50', {
         headers: {
-          'X-User-ID': 'demo-user-123'
-        }
+          'X-User-ID': 'demo-user-123',
+        },
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         setTrades(data.trades || []);
@@ -134,10 +195,10 @@ const Portfolio: React.FC = () => {
     try {
       const response = await fetch('/api/v1/stats', {
         headers: {
-          'X-User-ID': 'demo-user-123'
-        }
+          'X-User-ID': 'demo-user-123',
+        },
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         setStats(data.stats);
@@ -150,26 +211,26 @@ const Portfolio: React.FC = () => {
   // 輔助函數：獲取股票名稱
   const getStockName = (symbol: string) => {
     const nameMap: { [key: string]: string } = {
-      'AAPL': '蘋果公司',
-      'GOOGL': '谷歌',
-      'TSLA': '特斯拉',
-      'MSFT': '微軟',
-      'AMZN': '亞馬遜',
-      'NVDA': '英偉達',
-      'META': 'Meta',
-      'NFLX': '網飛',
-      'JPM': '摩根大通',
-      'JNJ': '強生',
-      'V': 'Visa',
-      'PG': '寶潔',
-      'MA': '萬事達',
-      'UNH': '聯合健康',
-      'HD': '家得寶',
-      'DIS': '迪士尼',
-      'PYPL': 'PayPal',
-      'BAC': '美國銀行',
-      'VZ': 'Verizon',
-      'ADBE': 'Adobe',
+      AAPL: '蘋果公司',
+      GOOGL: '谷歌',
+      TSLA: '特斯拉',
+      MSFT: '微軟',
+      AMZN: '亞馬遜',
+      NVDA: '英偉達',
+      META: 'Meta',
+      NFLX: '網飛',
+      JPM: '摩根大通',
+      JNJ: '強生',
+      V: 'Visa',
+      PG: '寶潔',
+      MA: '萬事達',
+      UNH: '聯合健康',
+      HD: '家得寶',
+      DIS: '迪士尼',
+      PYPL: 'PayPal',
+      BAC: '美國銀行',
+      VZ: 'Verizon',
+      ADBE: 'Adobe',
     };
     return nameMap[symbol] || symbol;
   };
@@ -177,26 +238,26 @@ const Portfolio: React.FC = () => {
   // 輔助函數：獲取板塊
   const getSector = (symbol: string) => {
     const sectorMap: { [key: string]: string } = {
-      'AAPL': '科技股',
-      'GOOGL': '科技股',
-      'TSLA': '汽車股',
-      'MSFT': '科技股',
-      'AMZN': '電商股',
-      'NVDA': '科技股',
-      'META': '科技股',
-      'NFLX': '媒體股',
-      'JPM': '金融股',
-      'JNJ': '醫療股',
-      'V': '金融股',
-      'PG': '消費股',
-      'MA': '金融股',
-      'UNH': '醫療股',
-      'HD': '零售股',
-      'DIS': '媒體股',
-      'PYPL': '金融股',
-      'BAC': '金融股',
-      'VZ': '電信股',
-      'ADBE': '科技股',
+      AAPL: '科技股',
+      GOOGL: '科技股',
+      TSLA: '汽車股',
+      MSFT: '科技股',
+      AMZN: '電商股',
+      NVDA: '科技股',
+      META: '科技股',
+      NFLX: '媒體股',
+      JPM: '金融股',
+      JNJ: '醫療股',
+      V: '金融股',
+      PG: '消費股',
+      MA: '金融股',
+      UNH: '醫療股',
+      HD: '零售股',
+      DIS: '媒體股',
+      PYPL: '金融股',
+      BAC: '金融股',
+      VZ: '電信股',
+      ADBE: '科技股',
     };
     return sectorMap[symbol] || '其他';
   };
@@ -204,26 +265,26 @@ const Portfolio: React.FC = () => {
   // 輔助函數：獲取股票圖標
   const getStockLogo = (symbol: string) => {
     const logoMap: { [key: string]: string } = {
-      'AAPL': '🍎',
-      'GOOGL': '🔍',
-      'TSLA': '🚗',
-      'MSFT': '💻',
-      'AMZN': '📦',
-      'NVDA': '🎮',
-      'META': '📘',
-      'NFLX': '🎬',
-      'JPM': '🏦',
-      'JNJ': '💊',
-      'V': '💳',
-      'PG': '🧴',
-      'MA': '💳',
-      'UNH': '🏥',
-      'HD': '🔨',
-      'DIS': '🏰',
-      'PYPL': '💰',
-      'BAC': '🏦',
-      'VZ': '📱',
-      'ADBE': '🎨',
+      AAPL: '🍎',
+      GOOGL: '🔍',
+      TSLA: '🚗',
+      MSFT: '💻',
+      AMZN: '📦',
+      NVDA: '🎮',
+      META: '📘',
+      NFLX: '🎬',
+      JPM: '🏦',
+      JNJ: '💊',
+      V: '💳',
+      PG: '🧴',
+      MA: '💳',
+      UNH: '🏥',
+      HD: '🔨',
+      DIS: '🏰',
+      PYPL: '💰',
+      BAC: '🏦',
+      VZ: '📱',
+      ADBE: '🎨',
     };
     return logoMap[symbol] || '📈';
   };
@@ -233,7 +294,7 @@ const Portfolio: React.FC = () => {
     fetchPortfolio();
     fetchTradingHistory();
     fetchTradingStats();
-    
+
     // 每30秒刷新一次投資組合數據
     const interval = setInterval(fetchPortfolio, 30000);
     return () => clearInterval(interval);
@@ -252,7 +313,7 @@ const Portfolio: React.FC = () => {
     {
       title: '股票',
       key: 'stock',
-      render: (record: any) => (
+      render: (record: Holding) => (
         <Space>
           <Avatar size="small" style={{ backgroundColor: '#1890ff' }}>
             {record.logo}
@@ -283,13 +344,17 @@ const Portfolio: React.FC = () => {
       title: '當前價格',
       dataIndex: 'currentPrice',
       key: 'currentPrice',
-      render: (price: number, record: any) => (
+      render: (price: number, record: Holding) => (
         <Space direction="vertical" size={0}>
           <Text className="financial-number">${price.toFixed(2)}</Text>
           {record.isMarketOpen ? (
-            <Text type="secondary" style={{ fontSize: '10px' }}>實時</Text>
+            <Text type="secondary" style={{ fontSize: '10px' }}>
+              實時
+            </Text>
           ) : (
-            <Text type="secondary" style={{ fontSize: '10px' }}>休市</Text>
+            <Text type="secondary" style={{ fontSize: '10px' }}>
+              休市
+            </Text>
           )}
         </Space>
       ),
@@ -305,18 +370,19 @@ const Portfolio: React.FC = () => {
     {
       title: '未實現盈虧',
       key: 'unrealizedPnL',
-      render: (record: any) => (
+      render: (record: Holding) => (
         <Space direction="vertical" size={0}>
-          <Text 
-            className={record.unrealizedPnL >= 0 ? 'financial-positive' : 'financial-negative'}
-          >
+          <Text className={record.unrealizedPnL >= 0 ? 'financial-positive' : 'financial-negative'}>
             {record.unrealizedPnL >= 0 ? '+' : ''}${record.unrealizedPnL.toFixed(2)}
           </Text>
-          <Text 
-            className={record.unrealizedPnLPercent >= 0 ? 'financial-positive' : 'financial-negative'}
+          <Text
+            className={
+              record.unrealizedPnLPercent >= 0 ? 'financial-positive' : 'financial-negative'
+            }
             style={{ fontSize: '12px' }}
           >
-            ({record.unrealizedPnLPercent >= 0 ? '+' : ''}{record.unrealizedPnLPercent.toFixed(2)}%)
+            ({record.unrealizedPnLPercent >= 0 ? '+' : ''}
+            {record.unrealizedPnLPercent.toFixed(2)}%)
           </Text>
         </Space>
       ),
@@ -338,9 +404,9 @@ const Portfolio: React.FC = () => {
       render: (weight: number) => (
         <div>
           <Text>{weight.toFixed(1)}%</Text>
-          <Progress 
-            percent={weight} 
-            size="small" 
+          <Progress
+            percent={weight}
+            size="small"
             showInfo={false}
             strokeColor={weight > 20 ? '#ff4d4f' : '#1890ff'}
           />
@@ -362,9 +428,7 @@ const Portfolio: React.FC = () => {
       dataIndex: 'executedAt',
       key: 'executedAt',
       render: (time: string) => (
-        <Text style={{ fontSize: '12px' }}>
-          {new Date(time).toLocaleString()}
-        </Text>
+        <Text style={{ fontSize: '12px' }}>{new Date(time).toLocaleString()}</Text>
       ),
     },
     {
@@ -378,9 +442,7 @@ const Portfolio: React.FC = () => {
       dataIndex: 'side',
       key: 'side',
       render: (side: string) => (
-        <Tag color={side === 'buy' ? 'green' : 'red'}>
-          {side === 'buy' ? '買入' : '賣出'}
-        </Tag>
+        <Tag color={side === 'buy' ? 'green' : 'red'}>{side === 'buy' ? '買入' : '賣出'}</Tag>
       ),
     },
     {
@@ -418,7 +480,10 @@ const Portfolio: React.FC = () => {
               <PieChartOutlined /> 投資組合
             </Title>
             <Text type="secondary">
-              實時投資組合分析和績效追蹤 | 最後更新: {portfolioData?.lastUpdated ? new Date(portfolioData.lastUpdated).toLocaleString() : '未更新'}
+              實時投資組合分析和績效追蹤 | 最後更新:{' '}
+              {portfolioData?.lastUpdated
+                ? new Date(portfolioData.lastUpdated).toLocaleString()
+                : '未更新'}
             </Text>
           </Col>
           <Col>
@@ -426,9 +491,7 @@ const Portfolio: React.FC = () => {
               <Button icon={<ReloadOutlined />} loading={loading} onClick={fetchPortfolio}>
                 重新整理
               </Button>
-              <Button icon={<DownloadOutlined />}>
-                導出報告
-              </Button>
+              <Button icon={<DownloadOutlined />}>導出報告</Button>
             </Space>
           </Col>
         </Row>
@@ -467,8 +530,8 @@ const Portfolio: React.FC = () => {
                 precision={2}
                 prefix={totalUnrealizedPnL >= 0 ? <RiseOutlined /> : <FallOutlined />}
                 suffix={`USD (${totalUnrealizedPnLPercent.toFixed(2)}%)`}
-                valueStyle={{ 
-                  color: totalUnrealizedPnL >= 0 ? '#52c41a' : '#ff4d4f' 
+                valueStyle={{
+                  color: totalUnrealizedPnL >= 0 ? '#52c41a' : '#ff4d4f',
                 }}
               />
             </Card>
@@ -481,8 +544,8 @@ const Portfolio: React.FC = () => {
                 precision={2}
                 prefix={dayPL >= 0 ? <RiseOutlined /> : <FallOutlined />}
                 suffix="USD"
-                valueStyle={{ 
-                  color: dayPL >= 0 ? '#52c41a' : '#ff4d4f' 
+                valueStyle={{
+                  color: dayPL >= 0 ? '#52c41a' : '#ff4d4f',
                 }}
               />
             </Card>
@@ -543,8 +606,8 @@ const Portfolio: React.FC = () => {
                     precision={2}
                     suffix="%"
                     prefix={totalUnrealizedPnL >= 0 ? <RiseOutlined /> : <FallOutlined />}
-                    valueStyle={{ 
-                      color: totalUnrealizedPnL >= 0 ? '#52c41a' : '#ff4d4f' 
+                    valueStyle={{
+                      color: totalUnrealizedPnL >= 0 ? '#52c41a' : '#ff4d4f',
                     }}
                   />
                 </Col>
@@ -565,9 +628,9 @@ const Portfolio: React.FC = () => {
                   />
                 </Col>
               </Row>
-              
+
               <Divider />
-              
+
               <div style={{ textAlign: 'center', padding: '20px' }}>
                 <Text type="secondary">績效圖表功能開發中...</Text>
               </div>
@@ -579,4 +642,4 @@ const Portfolio: React.FC = () => {
   );
 };
 
-export default Portfolio; 
+export default Portfolio;

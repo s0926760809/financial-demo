@@ -37,20 +37,20 @@ const { TabPane } = Tabs;
 // 模擬風險指標數據
 const mockRiskMetrics = {
   var: {
-    value: 15678.90,
+    value: 15678.9,
     threshold: 20000,
     confidence: 95,
     timeHorizon: 1,
   },
   sharpeRatio: {
     value: 1.85,
-    benchmark: 1.20,
+    benchmark: 1.2,
     rating: 'excellent',
   },
   beta: {
     value: 1.15,
-    target: 1.00,
-    tolerance: 0.20,
+    target: 1.0,
+    tolerance: 0.2,
   },
   volatility: {
     value: 15.2,
@@ -119,28 +119,28 @@ const mockStressScenarios = [
   {
     name: '市場崩盤 (-20%)',
     portfolioImpact: -18.5,
-    varImpact: 45678.90,
+    varImpact: 45678.9,
     probability: 'low',
     description: '類似2008年金融危機',
   },
   {
     name: '科技股回調 (-30%)',
     portfolioImpact: -25.2,
-    varImpact: 35421.80,
+    varImpact: 35421.8,
     probability: 'medium',
     description: '科技泡沫破裂情景',
   },
   {
     name: '利率急升 (+300bp)',
     portfolioImpact: -12.8,
-    varImpact: 18765.40,
+    varImpact: 18765.4,
     probability: 'medium',
     description: '央行激進加息',
   },
   {
     name: '地緣政治風險',
     portfolioImpact: -15.6,
-    varImpact: 22143.60,
+    varImpact: 22143.6,
     probability: 'high',
     description: '國際貿易衝突加劇',
   },
@@ -155,7 +155,7 @@ const Risk: React.FC = () => {
   // 模擬實時風險指標更新
   useEffect(() => {
     const interval = setInterval(() => {
-      setRiskMetrics(prev => ({
+      setRiskMetrics((prev) => ({
         ...prev,
         var: {
           ...prev.var,
@@ -206,7 +206,7 @@ const Risk: React.FC = () => {
       key: 'current',
       render: (record: any) => {
         const isPercentage = record.type !== '日均交易額';
-        return isPercentage 
+        return isPercentage
           ? `${record.current.toFixed(1)}%`
           : `$${record.current.toLocaleString()}`;
       },
@@ -216,9 +216,7 @@ const Risk: React.FC = () => {
       key: 'limit',
       render: (record: any) => {
         const isPercentage = record.type !== '日均交易額';
-        return isPercentage 
-          ? `${record.limit.toFixed(1)}%`
-          : `$${record.limit.toLocaleString()}`;
+        return isPercentage ? `${record.limit.toFixed(1)}%` : `$${record.limit.toLocaleString()}`;
       },
     },
     {
@@ -251,9 +249,15 @@ const Risk: React.FC = () => {
   // 計算總體風險評分
   const calculateRiskScore = () => {
     const varScore = Math.min((riskMetrics.var.value / riskMetrics.var.threshold) * 100, 100);
-    const volatilityScore = Math.min((riskMetrics.volatility.value / riskMetrics.volatility.threshold) * 100, 100);
-    const drawdownScore = Math.min((riskMetrics.maxDrawdown.value / riskMetrics.maxDrawdown.threshold) * 100, 100);
-    
+    const volatilityScore = Math.min(
+      (riskMetrics.volatility.value / riskMetrics.volatility.threshold) * 100,
+      100,
+    );
+    const drawdownScore = Math.min(
+      (riskMetrics.maxDrawdown.value / riskMetrics.maxDrawdown.threshold) * 100,
+      100,
+    );
+
     return Math.round((varScore + volatilityScore + drawdownScore) / 3);
   };
 
@@ -278,9 +282,7 @@ const Risk: React.FC = () => {
               checkedChildren="警報開啟"
               unCheckedChildren="警報關閉"
             />
-            <Button icon={<SettingOutlined />}>
-              風險設置
-            </Button>
+            <Button icon={<SettingOutlined />}>風險設置</Button>
             <Button icon={<ReloadOutlined />} onClick={() => window.location.reload()}>
               重新整理
             </Button>
@@ -289,7 +291,7 @@ const Risk: React.FC = () => {
       </Row>
 
       {/* 風險警告 */}
-      {limits.some(limit => limit.status === 'danger') && (
+      {limits.some((limit) => limit.status === 'danger') && (
         <Alert
           message="🚨 風險限額突破"
           description="檢測到多個風險指標超出設定限額，建議立即採取風險控制措施。"
@@ -300,7 +302,7 @@ const Risk: React.FC = () => {
         />
       )}
 
-      {limits.some(limit => limit.status === 'warning') && (
+      {limits.some((limit) => limit.status === 'warning') && (
         <Alert
           message="⚠️ 風險警告"
           description="部分風險指標接近限額，請密切關注市場變化。"
@@ -319,16 +321,15 @@ const Risk: React.FC = () => {
               title="綜合風險評分"
               value={overallRiskScore}
               suffix="/ 100"
-              valueStyle={{ 
-                color: overallRiskScore > 80 ? '#ff4d4f' : 
-                       overallRiskScore > 60 ? '#fa8c16' : '#52c41a' 
+              valueStyle={{
+                color:
+                  overallRiskScore > 80 ? '#ff4d4f' : overallRiskScore > 60 ? '#fa8c16' : '#52c41a',
               }}
             />
             <Progress
               percent={overallRiskScore}
               strokeColor={
-                overallRiskScore > 80 ? '#ff4d4f' : 
-                overallRiskScore > 60 ? '#fa8c16' : '#52c41a'
+                overallRiskScore > 80 ? '#ff4d4f' : overallRiskScore > 60 ? '#fa8c16' : '#52c41a'
               }
               size="small"
               style={{ marginTop: '8px' }}
@@ -382,12 +383,7 @@ const Risk: React.FC = () => {
       <Tabs defaultActiveKey="1">
         <TabPane tab="限額監控" key="1">
           <Card title="風險限額狀態">
-            <Table
-              columns={limitColumns}
-              dataSource={limits}
-              pagination={false}
-              size="middle"
-            />
+            <Table columns={limitColumns} dataSource={limits} pagination={false} size="middle" />
           </Card>
         </TabPane>
 
@@ -403,14 +399,14 @@ const Risk: React.FC = () => {
                       <Text type="secondary">(基準: {riskMetrics.sharpeRatio.benchmark})</Text>
                     </Space>
                   </Row>
-                  <Progress 
-                    percent={(riskMetrics.sharpeRatio.value / 3) * 100} 
+                  <Progress
+                    percent={(riskMetrics.sharpeRatio.value / 3) * 100}
                     strokeColor="#52c41a"
                     showInfo={false}
                   />
-                  
+
                   <Divider />
-                  
+
                   <Row justify="space-between" align="middle">
                     <Text>貝塔係數:</Text>
                     <Space>
@@ -418,14 +414,19 @@ const Risk: React.FC = () => {
                       <Text type="secondary">(目標: {riskMetrics.beta.target})</Text>
                     </Space>
                   </Row>
-                  <Progress 
-                    percent={(riskMetrics.beta.value / 2) * 100} 
-                    strokeColor={Math.abs(riskMetrics.beta.value - riskMetrics.beta.target) <= riskMetrics.beta.tolerance ? '#52c41a' : '#fa8c16'}
+                  <Progress
+                    percent={(riskMetrics.beta.value / 2) * 100}
+                    strokeColor={
+                      Math.abs(riskMetrics.beta.value - riskMetrics.beta.target) <=
+                      riskMetrics.beta.tolerance
+                        ? '#52c41a'
+                        : '#fa8c16'
+                    }
                     showInfo={false}
                   />
-                  
+
                   <Divider />
-                  
+
                   <Row justify="space-between">
                     <Text>相關性分析:</Text>
                   </Row>
@@ -450,7 +451,7 @@ const Risk: React.FC = () => {
                 </Space>
               </Card>
             </Col>
-            
+
             <Col xs={24} lg={12}>
               <Card title="風險偏好設定">
                 <Space direction="vertical" style={{ width: '100%' }}>
@@ -469,35 +470,62 @@ const Risk: React.FC = () => {
                       10: '激進',
                     }}
                   />
-                  
+
                   <Divider />
-                  
+
                   <Paragraph>
                     <Text strong>當前風險評估:</Text>
                   </Paragraph>
-                  
+
                   <List
                     size="small"
                     dataSource={[
-                      { 
-                        icon: overallRiskScore <= 50 ? <CheckCircleOutlined style={{ color: '#52c41a' }} /> : <ExclamationCircleOutlined style={{ color: '#fa8c16' }} />,
+                      {
+                        icon:
+                          overallRiskScore <= 50 ? (
+                            <CheckCircleOutlined style={{ color: '#52c41a' }} />
+                          ) : (
+                            <ExclamationCircleOutlined style={{ color: '#fa8c16' }} />
+                          ),
                         text: `綜合風險評分: ${overallRiskScore}/100`,
-                        status: overallRiskScore <= 50 ? 'success' : 'warning'
+                        status: overallRiskScore <= 50 ? 'success' : 'warning',
                       },
-                      { 
-                        icon: riskMetrics.var.value <= riskMetrics.var.threshold ? <CheckCircleOutlined style={{ color: '#52c41a' }} /> : <CloseCircleOutlined style={{ color: '#ff4d4f' }} />,
+                      {
+                        icon:
+                          riskMetrics.var.value <= riskMetrics.var.threshold ? (
+                            <CheckCircleOutlined style={{ color: '#52c41a' }} />
+                          ) : (
+                            <CloseCircleOutlined style={{ color: '#ff4d4f' }} />
+                          ),
                         text: `風險價值在限額內`,
-                        status: riskMetrics.var.value <= riskMetrics.var.threshold ? 'success' : 'error'
+                        status:
+                          riskMetrics.var.value <= riskMetrics.var.threshold ? 'success' : 'error',
                       },
-                      { 
-                        icon: riskMetrics.volatility.value <= riskMetrics.volatility.threshold ? <CheckCircleOutlined style={{ color: '#52c41a' }} /> : <CloseCircleOutlined style={{ color: '#ff4d4f' }} />,
+                      {
+                        icon:
+                          riskMetrics.volatility.value <= riskMetrics.volatility.threshold ? (
+                            <CheckCircleOutlined style={{ color: '#52c41a' }} />
+                          ) : (
+                            <CloseCircleOutlined style={{ color: '#ff4d4f' }} />
+                          ),
                         text: `波動率控制良好`,
-                        status: riskMetrics.volatility.value <= riskMetrics.volatility.threshold ? 'success' : 'error'
+                        status:
+                          riskMetrics.volatility.value <= riskMetrics.volatility.threshold
+                            ? 'success'
+                            : 'error',
                       },
-                      { 
-                        icon: riskMetrics.maxDrawdown.value <= riskMetrics.maxDrawdown.threshold ? <CheckCircleOutlined style={{ color: '#52c41a' }} /> : <CloseCircleOutlined style={{ color: '#ff4d4f' }} />,
+                      {
+                        icon:
+                          riskMetrics.maxDrawdown.value <= riskMetrics.maxDrawdown.threshold ? (
+                            <CheckCircleOutlined style={{ color: '#52c41a' }} />
+                          ) : (
+                            <CloseCircleOutlined style={{ color: '#ff4d4f' }} />
+                          ),
                         text: `回撤在可控範圍`,
-                        status: riskMetrics.maxDrawdown.value <= riskMetrics.maxDrawdown.threshold ? 'success' : 'error'
+                        status:
+                          riskMetrics.maxDrawdown.value <= riskMetrics.maxDrawdown.threshold
+                            ? 'success'
+                            : 'error',
                       },
                     ]}
                     renderItem={(item) => (
@@ -517,10 +545,8 @@ const Risk: React.FC = () => {
 
         <TabPane tab="壓力測試" key="3">
           <Card title="壓力測試情景分析">
-            <Paragraph>
-              以下是基於不同市場情景的投資組合影響分析：
-            </Paragraph>
-            
+            <Paragraph>以下是基於不同市場情景的投資組合影響分析：</Paragraph>
+
             <Row gutter={[16, 16]}>
               {mockStressScenarios.map((scenario, index) => (
                 <Col xs={24} sm={12} lg={6} key={index}>
@@ -528,31 +554,34 @@ const Risk: React.FC = () => {
                     size="small"
                     title={scenario.name}
                     extra={
-                      <Tag color={
-                        scenario.probability === 'low' ? 'green' :
-                        scenario.probability === 'medium' ? 'orange' : 'red'
-                      }>
-                        {scenario.probability === 'low' ? '低' :
-                         scenario.probability === 'medium' ? '中' : '高'}概率
+                      <Tag
+                        color={
+                          scenario.probability === 'low'
+                            ? 'green'
+                            : scenario.probability === 'medium'
+                              ? 'orange'
+                              : 'red'
+                        }
+                      >
+                        {scenario.probability === 'low'
+                          ? '低'
+                          : scenario.probability === 'medium'
+                            ? '中'
+                            : '高'}
+                        概率
                       </Tag>
                     }
                   >
                     <Space direction="vertical" style={{ width: '100%' }}>
                       <Row justify="space-between">
                         <Text>組合影響:</Text>
-                        <Text 
-                          strong 
-                          style={{ color: '#ff4d4f' }}
-                        >
+                        <Text strong style={{ color: '#ff4d4f' }}>
                           {scenario.portfolioImpact}%
                         </Text>
                       </Row>
                       <Row justify="space-between">
                         <Text>潛在損失:</Text>
-                        <Text 
-                          strong 
-                          style={{ color: '#ff4d4f' }}
-                        >
+                        <Text strong style={{ color: '#ff4d4f' }}>
                           ${scenario.varImpact.toLocaleString()}
                         </Text>
                       </Row>
@@ -564,9 +593,9 @@ const Risk: React.FC = () => {
                 </Col>
               ))}
             </Row>
-            
+
             <Divider />
-            
+
             <Card title="壓力測試建議" size="small">
               <List
                 size="small"
@@ -594,4 +623,4 @@ const Risk: React.FC = () => {
   );
 };
 
-export default Risk; 
+export default Risk;

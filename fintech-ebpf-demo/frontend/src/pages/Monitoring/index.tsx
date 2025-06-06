@@ -119,27 +119,33 @@ const Monitoring: React.FC = () => {
   ];
 
   // 獲取服務健康狀態和詳細指標
-  const fetchServiceHealth = async (config: { name: string; url: string; port: number }): Promise<ServiceHealth> => {
+  const fetchServiceHealth = async (config: {
+    name: string;
+    url: string;
+    port: number;
+  }): Promise<ServiceHealth> => {
     const startTime = Date.now();
-    
+
     try {
       // 獲取健康檢查
       const healthResponse = await fetch(config.url, {
         method: 'GET',
-        headers: { 'Accept': 'application/json' },
+        headers: { Accept: 'application/json' },
         timeout: 5000,
       } as any);
 
       const responseTime = Date.now() - startTime;
-      
+
       if (healthResponse.ok) {
         const healthData = await healthResponse.json();
-        
+
         // 獲取詳細指標（僅對trading-api）
         let metrics: ServiceMetrics | undefined;
         if (config.name === 'Trading API') {
           try {
-            const metricsResponse = await fetch(`http://localhost:${config.port}/api/v1/monitoring/service`);
+            const metricsResponse = await fetch(
+              `http://localhost:${config.port}/api/v1/monitoring/service`,
+            );
             if (metricsResponse.ok) {
               metrics = await metricsResponse.json();
             }
@@ -231,7 +237,7 @@ const Monitoring: React.FC = () => {
     const days = Math.floor(seconds / 86400);
     const hours = Math.floor((seconds % 86400) / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
-    
+
     if (days > 0) return `${days}d ${hours}h ${minutes}m`;
     if (hours > 0) return `${hours}h ${minutes}m`;
     return `${minutes}m`;
@@ -240,7 +246,7 @@ const Monitoring: React.FC = () => {
   // 獲取所有服務健康狀態
   const fetchAllServicesHealth = async () => {
     try {
-      const healthPromises = serviceConfigs.map(config => fetchServiceHealth(config));
+      const healthPromises = serviceConfigs.map((config) => fetchServiceHealth(config));
       const healthResults = await Promise.all(healthPromises);
       setServices(healthResults);
       setLastUpdate(new Date());
@@ -283,11 +289,7 @@ const Monitoring: React.FC = () => {
   const handleRefresh = async () => {
     setRefreshing(true);
     try {
-      await Promise.all([
-        fetchAllServicesHealth(),
-        fetchSystemOverview(),
-        fetchServiceInstances(),
-      ]);
+      await Promise.all([fetchAllServicesHealth(), fetchSystemOverview(), fetchServiceInstances()]);
       message.success('數據刷新成功');
     } catch (error) {
       message.error('數據刷新失敗');
@@ -331,7 +333,7 @@ const Monitoring: React.FC = () => {
       return systemOverview.overall_health_percent;
     }
     if (services.length === 0) return 0;
-    const healthyServices = services.filter(s => s.health === 'healthy').length;
+    const healthyServices = services.filter((s) => s.health === 'healthy').length;
     return Math.round((healthyServices / services.length) * 100);
   };
 
@@ -343,18 +345,16 @@ const Monitoring: React.FC = () => {
       key: 'name',
       render: (name: string, record: ServiceHealth) => (
         <Space>
-          <div 
-            style={{ 
-              width: 8, 
-              height: 8, 
+          <div
+            style={{
+              width: 8,
+              height: 8,
               borderRadius: '50%',
-              backgroundColor: getStatusColor(record.health)
-            }} 
+              backgroundColor: getStatusColor(record.health),
+            }}
           />
           <Text strong>{name}</Text>
-          {record.version && (
-            <Tag color="blue">v{record.version}</Tag>
-          )}
+          {record.version && <Tag color="blue">v{record.version}</Tag>}
         </Space>
       ),
     },
@@ -375,9 +375,9 @@ const Monitoring: React.FC = () => {
       dataIndex: 'cpu',
       key: 'cpu',
       render: (cpu: number) => (
-        <Progress 
-          percent={Math.round(cpu)} 
-          size="small" 
+        <Progress
+          percent={Math.round(cpu)}
+          size="small"
           strokeColor={cpu > 80 ? '#ff4d4f' : '#52c41a'}
           format={(percent) => `${percent}%`}
         />
@@ -400,7 +400,11 @@ const Monitoring: React.FC = () => {
       dataIndex: 'response_time',
       key: 'response_time',
       render: (responseTime: number) => (
-        <Text style={{ color: responseTime > 1000 ? '#ff4d4f' : responseTime > 500 ? '#fa8c16' : '#52c41a' }}>
+        <Text
+          style={{
+            color: responseTime > 1000 ? '#ff4d4f' : responseTime > 500 ? '#fa8c16' : '#52c41a',
+          }}
+        >
           {responseTime}ms
         </Text>
       ),
@@ -425,12 +429,22 @@ const Monitoring: React.FC = () => {
       key: 'action',
       render: (record: ServiceHealth) => (
         <Space>
-          <Button size="small" onClick={() => window.open(record.url.replace('/health', ''), '_blank')}>
+          <Button
+            size="small"
+            onClick={() => window.open(record.url.replace('/health', ''), '_blank')}
+          >
             訪問
           </Button>
-          <Button size="small" onClick={() => fetchServiceHealth(serviceConfigs.find(c => c.name === record.name)!).then(result => {
-            setServices(prev => prev.map(s => s.name === record.name ? result : s));
-          })}>
+          <Button
+            size="small"
+            onClick={() =>
+              fetchServiceHealth(serviceConfigs.find((c) => c.name === record.name)!).then(
+                (result) => {
+                  setServices((prev) => prev.map((s) => (s.name === record.name ? result : s)));
+                },
+              )
+            }
+          >
             檢查
           </Button>
         </Space>
@@ -453,17 +467,9 @@ const Monitoring: React.FC = () => {
         </Col>
         <Col>
           <Space>
-            <Button icon={<LineChartOutlined />}>
-              監控圖表
-            </Button>
-            <Button icon={<SettingOutlined />}>
-              監控設置
-            </Button>
-            <Button 
-              icon={<ReloadOutlined />} 
-              loading={refreshing}
-              onClick={handleRefresh}
-            >
+            <Button icon={<LineChartOutlined />}>監控圖表</Button>
+            <Button icon={<SettingOutlined />}>監控設置</Button>
+            <Button icon={<ReloadOutlined />} loading={refreshing} onClick={handleRefresh}>
               重新整理
             </Button>
           </Space>
@@ -471,7 +477,7 @@ const Monitoring: React.FC = () => {
       </Row>
 
       {/* 系統警告 */}
-      {services.some(service => service.health === 'warning' || service.health === 'error') && (
+      {services.some((service) => service.health === 'warning' || service.health === 'error') && (
         <Alert
           message="⚠️ 系統警告"
           description="部分服務運行狀態異常，請檢查服務健康狀況。"
@@ -492,7 +498,9 @@ const Monitoring: React.FC = () => {
               precision={0}
               suffix="%"
               prefix={<MonitorOutlined />}
-              valueStyle={{ color: overallHealth > 80 ? '#3f8600' : overallHealth > 60 ? '#fa8c16' : '#cf1322' }}
+              valueStyle={{
+                color: overallHealth > 80 ? '#3f8600' : overallHealth > 60 ? '#fa8c16' : '#cf1322',
+              }}
             />
             <Progress
               percent={overallHealth}
@@ -524,7 +532,8 @@ const Monitoring: React.FC = () => {
               valueStyle={{ color: '#3f8600' }}
             />
             <Text type="secondary" style={{ fontSize: '12px' }}>
-              健康實例: {systemOverview?.healthy_services || 0} / {systemOverview?.total_services || 0}
+              健康實例: {systemOverview?.healthy_services || 0} /{' '}
+              {systemOverview?.total_services || 0}
             </Text>
           </Card>
         </Col>
@@ -534,7 +543,9 @@ const Monitoring: React.FC = () => {
               title="錯誤總數"
               value={systemOverview?.total_errors || 0}
               prefix={<ApiOutlined />}
-              valueStyle={{ color: (systemOverview?.total_errors || 0) > 0 ? '#cf1322' : '#3f8600' }}
+              valueStyle={{
+                color: (systemOverview?.total_errors || 0) > 0 ? '#cf1322' : '#3f8600',
+              }}
             />
             <Text type="secondary" style={{ fontSize: '12px' }}>
               服務狀態: 實時監控
@@ -571,13 +582,15 @@ const Monitoring: React.FC = () => {
               <List
                 size="small"
                 dataSource={serviceInstances}
-                renderItem={instance => (
+                renderItem={(instance) => (
                   <List.Item>
                     <List.Item.Meta
-                      title={<Space>
-                        <Badge status={instance.health === 'healthy' ? 'success' : 'error'} />
-                        {instance.service}
-                      </Space>}
+                      title={
+                        <Space>
+                          <Badge status={instance.health === 'healthy' ? 'success' : 'error'} />
+                          {instance.service}
+                        </Space>
+                      }
                       description={
                         <Space direction="vertical" style={{ width: '100%' }}>
                           <Text type="secondary">主機: {instance.host}</Text>
@@ -609,7 +622,7 @@ const Monitoring: React.FC = () => {
                 { label: '實例統計', value: '基於實際運行狀態' },
                 { label: '指標計算', value: 'Go運行時 + 業務指標' },
               ]}
-              renderItem={item => (
+              renderItem={(item) => (
                 <List.Item>
                   <Text strong>{item.label}:</Text> <Text>{item.value}</Text>
                 </List.Item>
@@ -622,4 +635,4 @@ const Monitoring: React.FC = () => {
   );
 };
 
-export default Monitoring; 
+export default Monitoring;

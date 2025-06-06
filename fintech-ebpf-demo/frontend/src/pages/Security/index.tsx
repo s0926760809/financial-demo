@@ -73,7 +73,12 @@ interface CryptoOperationDetails {
 }
 
 // 聯合類型
-type EventDetails = NetworkConnectionDetails | FileAccessDetails | CommandExecutionDetails | CryptoOperationDetails | Record<string, any>;
+type EventDetails =
+  | NetworkConnectionDetails
+  | FileAccessDetails
+  | CommandExecutionDetails
+  | CryptoOperationDetails
+  | Record<string, any>;
 
 // 安全事件接口
 interface SecurityEvent {
@@ -186,7 +191,7 @@ const Security: React.FC = () => {
       const selectedProcess = processNames[Math.floor(Math.random() * processNames.length)];
       const services = ['trading-api', 'risk-engine', 'payment-gateway', 'audit-service'];
       const selectedService = services[Math.floor(Math.random() * services.length)];
-      
+
       // 根據事件類型生成對應的詳細信息
       let details: EventDetails;
       switch (selectedEventType) {
@@ -225,7 +230,7 @@ const Security: React.FC = () => {
           hour: '2-digit',
           minute: '2-digit',
           second: '2-digit',
-          hour12: false
+          hour12: false,
         }),
         processId: Math.floor(Math.random() * 99999),
         processName: selectedProcess,
@@ -239,7 +244,7 @@ const Security: React.FC = () => {
         action: ['ALLOWED', 'BLOCKED', 'MONITORED'][Math.floor(Math.random() * 3)],
       };
 
-      setEvents(prev => {
+      setEvents((prev) => {
         // 確保不超過50個事件，避免性能問題
         const newEvents = [newEvent, ...prev];
         return newEvents.length > 50 ? newEvents.slice(0, 50) : newEvents;
@@ -254,15 +259,15 @@ const Security: React.FC = () => {
   // 過濾事件
   useEffect(() => {
     let filtered = events;
-    
+
     if (selectedEventType !== 'ALL') {
-      filtered = filtered.filter(event => event.eventType === selectedEventType);
+      filtered = filtered.filter((event) => event.eventType === selectedEventType);
     }
-    
+
     if (selectedSeverity !== 'ALL') {
-      filtered = filtered.filter(event => event.severity === selectedSeverity);
+      filtered = filtered.filter((event) => event.severity === selectedSeverity);
     }
-    
+
     setFilteredEvents(filtered);
   }, [events, selectedEventType, selectedSeverity]);
 
@@ -274,7 +279,10 @@ const Security: React.FC = () => {
       MEDIUM: { color: 'yellow', text: '中' },
       LOW: { color: 'green', text: '低' },
     };
-    const config = severityConfig[severity as keyof typeof severityConfig] || { color: 'default', text: severity };
+    const config = severityConfig[severity as keyof typeof severityConfig] || {
+      color: 'default',
+      text: severity,
+    };
     return <Tag color={config.color}>{config.text}</Tag>;
   };
 
@@ -286,10 +294,10 @@ const Security: React.FC = () => {
       COMMAND_EXECUTION: { color: 'red', icon: <CodeOutlined />, text: '命令執行' },
       CRYPTO_OPERATION: { color: 'gold', icon: <SecurityScanOutlined />, text: '加密操作' },
     };
-    const config = typeConfig[eventType as keyof typeof typeConfig] || { 
-      color: 'default', 
-      icon: <WarningOutlined />, 
-      text: eventType 
+    const config = typeConfig[eventType as keyof typeof typeConfig] || {
+      color: 'default',
+      icon: <WarningOutlined />,
+      text: eventType,
     };
     return (
       <Tag color={config.color} icon={config.icon}>
@@ -305,7 +313,10 @@ const Security: React.FC = () => {
       BLOCKED: { color: 'red', text: '阻止' },
       MONITORED: { color: 'blue', text: '監控' },
     };
-    const config = actionConfig[action as keyof typeof actionConfig] || { color: 'default', text: action };
+    const config = actionConfig[action as keyof typeof actionConfig] || {
+      color: 'default',
+      text: action,
+    };
     return <Tag color={config.color}>{config.text}</Tag>;
   };
 
@@ -319,10 +330,13 @@ const Security: React.FC = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           command: attackType === 'file' ? 'cat' : attackType === 'network' ? 'curl' : 'sh',
-          args: attackType === 'file' ? ['/etc/shadow'] : 
-                attackType === 'network' ? ['http://malicious-site.com'] : 
-                ['-c', 'rm -rf / --no-preserve-root']
-        })
+          args:
+            attackType === 'file'
+              ? ['/etc/shadow']
+              : attackType === 'network'
+                ? ['http://malicious-site.com']
+                : ['-c', 'rm -rf / --no-preserve-root'],
+        }),
       });
     } catch (error) {
       console.log('模擬攻擊觸發:', attackType);
@@ -395,9 +409,9 @@ const Security: React.FC = () => {
   // 統計數據
   const stats = {
     total: filteredEvents.length,
-    critical: filteredEvents.filter(e => e.severity === 'CRITICAL').length,
-    high: filteredEvents.filter(e => e.severity === 'HIGH').length,
-    blocked: filteredEvents.filter(e => e.action === 'BLOCKED').length,
+    critical: filteredEvents.filter((e) => e.severity === 'CRITICAL').length,
+    high: filteredEvents.filter((e) => e.severity === 'HIGH').length,
+    blocked: filteredEvents.filter((e) => e.action === 'BLOCKED').length,
   };
 
   return (
@@ -412,9 +426,7 @@ const Security: React.FC = () => {
                 <Title level={2} style={{ margin: 0 }}>
                   🛡️ 安全監控中心
                 </Title>
-                <Text type="secondary">
-                  eBPF實時安全監控與威脅檢測平台
-                </Text>
+                <Text type="secondary">eBPF實時安全監控與威脅檢測平台</Text>
               </div>
             </Space>
           </Card>
@@ -425,39 +437,39 @@ const Security: React.FC = () => {
       <Row gutter={[24, 24]}>
         <Col span={24}>
           <Tabs defaultActiveKey="monitoring" size="large">
-            <TabPane 
+            <TabPane
               tab={
                 <span>
                   <EyeOutlined />
                   實時監控
                 </span>
-              } 
+              }
               key="monitoring"
             >
               {/* 實時監控內容 - 保持原有的監控功能 */}
               {renderMonitoringContent()}
             </TabPane>
-            
-            <TabPane 
+
+            <TabPane
               tab={
                 <span>
                   <ExperimentOutlined />
                   安全測試
                 </span>
-              } 
+              }
               key="testing"
             >
               {/* 安全測試內容 */}
               <SecurityTesting />
             </TabPane>
 
-            <TabPane 
+            <TabPane
               tab={
                 <span>
                   <SafetyCertificateOutlined />
                   Tetragon事件流
                 </span>
-              } 
+              }
               key="tetragon"
             >
               {/* Tetragon事件流內容 */}
@@ -492,21 +504,18 @@ const Security: React.FC = () => {
           <Col xs={24} sm={16}>
             <Card size="small">
               <Space wrap>
-                <Button 
-                  icon={<ReloadOutlined />} 
+                <Button
+                  icon={<ReloadOutlined />}
                   onClick={() => window.location.reload()}
                   size="small"
                 >
                   刷新
                 </Button>
-                <Button 
-                  icon={<ExportOutlined />} 
-                  size="small"
-                >
+                <Button icon={<ExportOutlined />} size="small">
                   導出報告
                 </Button>
-                <Button 
-                  icon={<StopOutlined />} 
+                <Button
+                  icon={<StopOutlined />}
                   onClick={() => setRealTimeMode(false)}
                   size="small"
                   danger={realTimeMode}
@@ -580,11 +589,7 @@ const Security: React.FC = () => {
             <Card title="事件過濾">
               <Row gutter={[16, 16]}>
                 <Col xs={24} sm={8}>
-                  <Search
-                    placeholder="搜索事件描述..."
-                    prefix={<SearchOutlined />}
-                    allowClear
-                  />
+                  <Search placeholder="搜索事件描述..." prefix={<SearchOutlined />} allowClear />
                 </Col>
                 <Col xs={24} sm={4}>
                   <Select
@@ -677,11 +682,7 @@ const Security: React.FC = () => {
                   {realTimeMode && <Badge status="processing" text="實時監控中" />}
                 </Space>
               }
-              extra={
-                <Text type="secondary">
-                  顯示最近 {filteredEvents.length} 個事件
-                </Text>
-              }
+              extra={<Text type="secondary">顯示最近 {filteredEvents.length} 個事件</Text>}
             >
               <Table
                 columns={eventColumns}
@@ -701,10 +702,18 @@ const Security: React.FC = () => {
                         <Col span={12}>
                           <Title level={5}>事件詳情</Title>
                           <Space direction="vertical">
-                            <Text><strong>Pod名稱:</strong> {record.podName}</Text>
-                            <Text><strong>命名空間:</strong> {record.namespace}</Text>
-                            <Text><strong>進程ID:</strong> {record.processId}</Text>
-                            <Text><strong>進程名稱:</strong> {record.processName}</Text>
+                            <Text>
+                              <strong>Pod名稱:</strong> {record.podName}
+                            </Text>
+                            <Text>
+                              <strong>命名空間:</strong> {record.namespace}
+                            </Text>
+                            <Text>
+                              <strong>進程ID:</strong> {record.processId}
+                            </Text>
+                            <Text>
+                              <strong>進程名稱:</strong> {record.processName}
+                            </Text>
                           </Space>
                         </Col>
                         <Col span={12}>
@@ -726,4 +735,4 @@ const Security: React.FC = () => {
   }
 };
 
-export default Security; 
+export default Security;

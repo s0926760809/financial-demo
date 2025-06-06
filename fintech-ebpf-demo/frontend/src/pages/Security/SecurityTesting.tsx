@@ -119,7 +119,7 @@ const SecurityTesting: React.FC = () => {
         timestamp: new Date().toISOString(),
       };
 
-      setTestResults(prev => [result, ...prev]);
+      setTestResults((prev) => [result, ...prev]);
       setTestModalVisible(false);
       form.resetFields();
 
@@ -133,7 +133,6 @@ const SecurityTesting: React.FC = () => {
       // 自動顯示結果詳情
       setSelectedResult(result);
       setResultModalVisible(true);
-
     } catch (error: any) {
       message.error(`執行 ${test.name} 失敗: ${error.response?.data?.error || error.message}`);
     } finally {
@@ -145,14 +144,18 @@ const SecurityTesting: React.FC = () => {
   const executeComprehensiveTest = async () => {
     try {
       setLoading(true);
-      const response = await axios.post('http://localhost:30080/api/v1/security/test/comprehensive', {
-        test_suite: ['command_injection', 'file_access', 'sensitive_data', 'sql_injection'],
-        severity: 'high',
-      }, {
-        headers: {
-          'X-User-ID': 'security-tester',
+      const response = await axios.post(
+        'http://localhost:30080/api/v1/security/test/comprehensive',
+        {
+          test_suite: ['command_injection', 'file_access', 'sensitive_data', 'sql_injection'],
+          severity: 'high',
         },
-      });
+        {
+          headers: {
+            'X-User-ID': 'security-tester',
+          },
+        },
+      );
 
       const result: TestResult = {
         id: Date.now().toString(),
@@ -168,11 +171,10 @@ const SecurityTesting: React.FC = () => {
         timestamp: new Date().toISOString(),
       };
 
-      setTestResults(prev => [result, ...prev]);
+      setTestResults((prev) => [result, ...prev]);
       setSelectedResult(result);
       setResultModalVisible(true);
       message.success('綜合安全測試執行完成');
-
     } catch (error: any) {
       message.error(`綜合安全測試失敗: ${error.response?.data?.error || error.message}`);
     } finally {
@@ -304,10 +306,7 @@ const SecurityTesting: React.FC = () => {
               label="SQL查詢"
               rules={[{ required: true, message: '請輸入SQL查詢' }]}
             >
-              <TextArea 
-                rows={3} 
-                placeholder="例如: admin' OR '1'='1, 1; DROP TABLE users--" 
-              />
+              <TextArea rows={3} placeholder="例如: admin' OR '1'='1, 1; DROP TABLE users--" />
             </Form.Item>
             <Form.Item name="test_type" label="攻擊類型">
               <Select placeholder="選擇攻擊類型" defaultValue="union">
@@ -353,10 +352,7 @@ const SecurityTesting: React.FC = () => {
               </Select>
             </Form.Item>
             <Form.Item name="data" label="測試數據">
-              <TextArea 
-                rows={2} 
-                placeholder="可選：輸入要加密的數據" 
-              />
+              <TextArea rows={2} placeholder="可選：輸入要加密的數據" />
             </Form.Item>
           </>
         );
@@ -389,11 +385,16 @@ const SecurityTesting: React.FC = () => {
   // 獲取風險等級標籤顏色
   const getRiskLevelColor = (level: string) => {
     switch (level) {
-      case 'CRITICAL': return 'red';
-      case 'HIGH': return 'orange';
-      case 'MEDIUM': return 'yellow';
-      case 'LOW': return 'green';
-      default: return 'default';
+      case 'CRITICAL':
+        return 'red';
+      case 'HIGH':
+        return 'orange';
+      case 'MEDIUM':
+        return 'yellow';
+      case 'LOW':
+        return 'green';
+      default:
+        return 'default';
     }
   };
 
@@ -410,15 +411,13 @@ const SecurityTesting: React.FC = () => {
             {response.test_name}
           </Descriptions.Item>
           <Descriptions.Item label="執行狀態">
-            <Badge 
-              status={response.success ? "success" : "error"} 
-              text={response.success ? "成功" : "失敗"} 
+            <Badge
+              status={response.success ? 'success' : 'error'}
+              text={response.success ? '成功' : '失敗'}
             />
           </Descriptions.Item>
           <Descriptions.Item label="風險等級" span={2}>
-            <Tag color={getRiskLevelColor(response.risk_level)}>
-              {response.risk_level}
-            </Tag>
+            <Tag color={getRiskLevelColor(response.risk_level)}>{response.risk_level}</Tag>
           </Descriptions.Item>
           <Descriptions.Item label="執行時間">
             {new Date(response.timestamp).toLocaleString('zh-TW')}
@@ -445,15 +444,17 @@ const SecurityTesting: React.FC = () => {
           <div style={{ marginTop: 16 }}>
             <Title level={5}>詳細數據</Title>
             <Card size="small">
-              <pre style={{ 
-                background: '#f5f5f5', 
-                padding: 12, 
-                borderRadius: 4,
-                maxHeight: 300,
-                overflow: 'auto',
-                fontSize: '12px',
-                lineHeight: 1.4,
-              }}>
+              <pre
+                style={{
+                  background: '#f5f5f5',
+                  padding: 12,
+                  borderRadius: 4,
+                  maxHeight: 300,
+                  overflow: 'auto',
+                  fontSize: '12px',
+                  lineHeight: 1.4,
+                }}
+              >
                 {JSON.stringify(response.data, null, 2)}
               </pre>
             </Card>
@@ -471,9 +472,7 @@ const SecurityTesting: React.FC = () => {
       key: 'timestamp',
       width: 160,
       render: (timestamp: string) => (
-        <Text style={{ fontSize: '12px' }}>
-          {new Date(timestamp).toLocaleString('zh-TW')}
-        </Text>
+        <Text style={{ fontSize: '12px' }}>{new Date(timestamp).toLocaleString('zh-TW')}</Text>
       ),
     },
     {
@@ -487,9 +486,7 @@ const SecurityTesting: React.FC = () => {
       dataIndex: ['response', 'risk_level'],
       key: 'riskLevel',
       width: 100,
-      render: (level: string) => (
-        <Tag color={getRiskLevelColor(level)}>{level}</Tag>
-      ),
+      render: (level: string) => <Tag color={getRiskLevelColor(level)}>{level}</Tag>,
     },
     {
       title: '狀態',
@@ -497,10 +494,7 @@ const SecurityTesting: React.FC = () => {
       key: 'success',
       width: 80,
       render: (success: boolean) => (
-        <Badge 
-          status={success ? "success" : "error"} 
-          text={success ? "成功" : "失敗"} 
-        />
+        <Badge status={success ? 'success' : 'error'} text={success ? '成功' : '失敗'} />
       ),
     },
     {
@@ -515,9 +509,9 @@ const SecurityTesting: React.FC = () => {
       width: 120,
       render: (_: any, record: TestResult) => (
         <Space>
-          <Button 
-            type="link" 
-            size="small" 
+          <Button
+            type="link"
+            size="small"
             icon={<EyeOutlined />}
             onClick={() => {
               setSelectedResult(record);
@@ -547,9 +541,7 @@ const SecurityTesting: React.FC = () => {
                 <Title level={2} style={{ margin: 0 }}>
                   🚨 安全測試中心
                 </Title>
-                <Text type="secondary">
-                  eBPF安全監控演示 - 故意的安全漏洞測試工具
-                </Text>
+                <Text type="secondary">eBPF安全監控演示 - 故意的安全漏洞測試工具</Text>
               </div>
             </Space>
           </Card>
@@ -574,8 +566,8 @@ const SecurityTesting: React.FC = () => {
         <Col span={24}>
           <Card title="快速操作" size="small">
             <Space wrap>
-              <Button 
-                type="primary" 
+              <Button
+                type="primary"
                 danger
                 icon={<ThunderboltOutlined />}
                 onClick={executeComprehensiveTest}
@@ -583,17 +575,10 @@ const SecurityTesting: React.FC = () => {
               >
                 執行綜合安全測試
               </Button>
-              <Button 
-                icon={<ReloadOutlined />}
-                onClick={fetchSecurityTests}
-                loading={loading}
-              >
+              <Button icon={<ReloadOutlined />} onClick={fetchSecurityTests} loading={loading}>
                 刷新測試列表
               </Button>
-              <Button 
-                icon={<HistoryOutlined />}
-                onClick={() => setTestResults([])}
-              >
+              <Button icon={<HistoryOutlined />} onClick={() => setTestResults([])}>
                 清除測試記錄
               </Button>
             </Space>
@@ -608,25 +593,23 @@ const SecurityTesting: React.FC = () => {
             <Row gutter={[16, 16]}>
               {tests.map((test) => (
                 <Col span={12} key={test.id}>
-                  <Card 
+                  <Card
                     size="small"
                     hoverable
                     actions={[
-                      <Button 
-                        type="primary" 
+                      <Button
+                        type="primary"
                         size="small"
                         icon={<PlayCircleOutlined />}
                         onClick={() => openTestModal(test)}
                       >
                         執行測試
-                      </Button>
+                      </Button>,
                     ]}
                   >
                     <Card.Meta
                       avatar={
-                        <Tag color={getRiskLevelColor(test.risk_level)}>
-                          {test.risk_level}
-                        </Tag>
+                        <Tag color={getRiskLevelColor(test.risk_level)}>{test.risk_level}</Tag>
                       }
                       title={test.name}
                       description={
@@ -652,17 +635,12 @@ const SecurityTesting: React.FC = () => {
           <Card title="測試統計">
             <Space direction="vertical" style={{ width: '100%' }}>
               <Descriptions size="small" column={1}>
-                <Descriptions.Item label="總測試數">
-                  {tests.length}
-                </Descriptions.Item>
-                <Descriptions.Item label="執行記錄">
-                  {testResults.length}
-                </Descriptions.Item>
+                <Descriptions.Item label="總測試數">{tests.length}</Descriptions.Item>
+                <Descriptions.Item label="執行記錄">{testResults.length}</Descriptions.Item>
                 <Descriptions.Item label="成功率">
-                  {testResults.length > 0 
-                    ? `${Math.round(testResults.filter(r => r.response.success).length / testResults.length * 100)}%`
-                    : '0%'
-                  }
+                  {testResults.length > 0
+                    ? `${Math.round((testResults.filter((r) => r.response.success).length / testResults.length) * 100)}%`
+                    : '0%'}
                 </Descriptions.Item>
               </Descriptions>
 
@@ -670,8 +648,8 @@ const SecurityTesting: React.FC = () => {
 
               <div>
                 <Text strong>風險等級分佈</Text>
-                {['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'].map(level => {
-                  const count = tests.filter(t => t.risk_level === level).length;
+                {['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'].map((level) => {
+                  const count = tests.filter((t) => t.risk_level === level).length;
                   return (
                     <div key={level} style={{ marginTop: 8 }}>
                       <Space>
@@ -720,11 +698,7 @@ const SecurityTesting: React.FC = () => {
       >
         {selectedTest && (
           <div>
-            <Alert
-              message={selectedTest.description}
-              type="info"
-              style={{ marginBottom: 16 }}
-            />
+            <Alert message={selectedTest.description} type="info" style={{ marginBottom: 16 }} />
             <Form
               form={form}
               layout="vertical"
@@ -744,7 +718,7 @@ const SecurityTesting: React.FC = () => {
         footer={[
           <Button key="close" onClick={() => setResultModalVisible(false)}>
             關閉
-          </Button>
+          </Button>,
         ]}
         width={800}
       >
@@ -754,4 +728,4 @@ const SecurityTesting: React.FC = () => {
   );
 };
 
-export default SecurityTesting; 
+export default SecurityTesting;

@@ -40,7 +40,7 @@ const Layout: React.FC = () => {
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
   const [userName, setUserName] = useState('演示用戶');
-  
+
   // 使用主題Context
   const { isDarkMode, toggleDarkMode } = useTheme();
 
@@ -49,10 +49,10 @@ const Layout: React.FC = () => {
     try {
       const response = await fetch('/api/v1/user/profile', {
         headers: {
-          'X-User-ID': 'demo-user-123'
-        }
+          'X-User-ID': 'demo-user-123',
+        },
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         setUserName(data.user?.display_name || '演示用戶');
@@ -155,13 +155,7 @@ const Layout: React.FC = () => {
   return (
     <AntLayout style={{ minHeight: '100vh' }}>
       {/* 側邊欄 */}
-      <Sider
-        collapsible
-        collapsed={collapsed}
-        onCollapse={setCollapsed}
-        theme="dark"
-        width={240}
-      >
+      <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed} theme="dark" width={240}>
         <div
           style={{
             height: 64,
@@ -187,7 +181,7 @@ const Layout: React.FC = () => {
           theme="dark"
           mode="inline"
           selectedKeys={[location.pathname]}
-          items={menuItems.map(item => ({
+          items={menuItems.map((item) => ({
             ...item,
             label: item.badge ? (
               <Space>
@@ -202,7 +196,9 @@ const Layout: React.FC = () => {
                   }}
                 />
               </Space>
-            ) : item.label,
+            ) : (
+              item.label
+            ),
           }))}
           onClick={handleMenuClick}
         />
@@ -241,9 +237,7 @@ const Layout: React.FC = () => {
             {/* 主題切換 */}
             <Space>
               {isDarkMode ? <MoonOutlined /> : <SunOutlined />}
-              <Text type="secondary">
-                {isDarkMode ? '暗色' : '亮色'}模式
-              </Text>
+              <Text type="secondary">{isDarkMode ? '暗色' : '亮色'}模式</Text>
               <Switch
                 checked={isDarkMode}
                 onChange={toggleDarkMode}
@@ -300,4 +294,4 @@ const Layout: React.FC = () => {
   );
 };
 
-export default Layout; 
+export default Layout;
