@@ -1,0 +1,39 @@
+{
+    "timestamp": "2025-06-06T11:47:53+08:00",
+    "test_suite": "Comprehensive API Testing",
+    "services_tested": [
+        {
+            "name": "Trading API",
+            "port": 30080,
+            "endpoints_tested": ["/health", "/api/v1/orders", "/api/v1/market/stocks", "/api/v1/tetragon/statistics"]
+        },
+        {
+            "name": "Risk API", 
+            "port": 30081,
+            "endpoints_tested": ["/health", "/api/v1/risk/assessment", "/api/v1/risk/limits"]
+        },
+        {
+            "name": "Payment API",
+            "port": 30082, 
+            "endpoints_tested": ["/health", "/api/v1/payments", "/api/v1/balance"]
+        },
+        {
+            "name": "Audit API",
+            "port": 30083,
+            "endpoints_tested": ["/health", "/api/v1/audit/logs", "/api/v1/compliance"]
+        }
+    ],
+    "test_categories": [
+        "Health Checks",
+        "API Functionality", 
+        "Integration Testing",
+        "Performance Testing",
+        "Security Testing"
+    ],
+    "environment": {
+        "test_runner": "tujenwei",
+        "hostname": "durenweideMacBook-Pro.local",
+        "os": "Darwin",
+        "timestamp": "Fri Jun  6 11:47:53 CST 2025"
+    }
+}

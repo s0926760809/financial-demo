@@ -513,7 +513,7 @@ const SecurityTesting: React.FC = () => {
       title: '操作',
       key: 'action',
       width: 120,
-      render: (_, record: TestResult) => (
+      render: (_: any, record: TestResult) => (
         <Space>
           <Button 
             type="link" 

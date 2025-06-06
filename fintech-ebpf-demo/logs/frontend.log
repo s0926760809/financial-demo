@@ -3,152 +3,301 @@
 > vite
 
 
-  VITE v5.4.19  ready in 381 ms
+  VITE v5.4.19  ready in 561 ms
 
-  ➜  Local:   http://localhost:5173/
-  ➜  Network: http://172.25.137.0:5173/
-  ➜  Network: http://192.168.192.245:5173/
-  ➜  Network: http://10.211.55.2:5173/
-  ➜  Network: http://10.37.129.2:5173/
-Sending Request to the Target: GET /api/v1/portfolio
-Sending Request to the Target: GET /api/v1/trades?limit=50
-Sending Request to the Target: GET /api/v1/stats
-Sending Request to the Target: GET /api/v1/user/profile
-Received Response from the Target: 404 /api/v1/stats
-Sending Request to the Target: GET /api/v1/stats
-Received Response from the Target: 404 /api/v1/stats
-Sending Request to the Target: GET /api/v1/user/profile
-Sending Request to the Target: GET /api/v1/trades?limit=50
-Received Response from the Target: 200 /api/v1/user/profile
-Received Response from the Target: 200 /api/v1/trades?limit=50
-Received Response from the Target: 200 /api/v1/user/profile
-Received Response from the Target: 200 /api/v1/trades?limit=50
-Received Response from the Target: 200 /api/v1/portfolio
-Sending Request to the Target: GET /api/v1/portfolio
-Sending Request to the Target: GET /api/v1/trades?limit=50
-Sending Request to the Target: GET /api/v1/stats
-Sending Request to the Target: GET /api/v1/user/profile
-Received Response from the Target: 404 /api/v1/stats
-Sending Request to the Target: GET /api/v1/stats
-Received Response from the Target: 200 /api/v1/user/profile
-Sending Request to the Target: GET /api/v1/user/profile
-Received Response from the Target: 200 /api/v1/trades?limit=50
-Received Response from the Target: 404 /api/v1/stats
-Received Response from the Target: 200 /api/v1/user/profile
-Sending Request to the Target: GET /api/v1/trades?limit=50
-Received Response from the Target: 200 /api/v1/trades?limit=50
-Received Response from the Target: 200 /api/v1/portfolio
-Sending Request to the Target: GET /api/v1/portfolio
-Received Response from the Target: 200 /api/v1/portfolio
+  ➜  Local:   http://localhost:3000/
+  ➜  Network: http://172.25.137.66:3000/
+  ➜  Network: http://192.168.192.245:3000/
+  ➜  Network: http://10.211.55.2:3000/
+  ➜  Network: http://10.37.129.2:3000/
 Sending Request to the Target: GET /api/v1/user/profile
 Received Response from the Target: 200 /api/v1/user/profile
 Sending Request to the Target: GET /api/v1/user/profile
 Received Response from the Target: 200 /api/v1/user/profile
 Sending Request to the Target: GET /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/trading-stats
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/trading-stats
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/trading-stats
+Received Response from the Target: 200 /api/v1/trading-stats
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/market/stocks
+Sending Request to the Target: GET /api/v1/orders
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders
+Sending Request to the Target: GET /api/v1/orders
+Received Response from the Target: 200 /api/v1/orders
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/trading-stats
+Received Response from the Target: 200 /api/v1/trading-stats
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/trading-stats
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/trading-stats
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/market/stocks
+Sending Request to the Target: GET /api/v1/market/stocks
+Received Response from the Target: 200 /api/v1/market/stocks
+Sending Request to the Target: GET /api/v1/market/stocks
+Sending Request to the Target: GET /api/v1/orders
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders
+Sending Request to the Target: GET /api/v1/orders
+Received Response from the Target: 200 /api/v1/orders
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/market/stocks
+Sending Request to the Target: GET /api/v1/market/stocks
+Received Response from the Target: 200 /api/v1/market/stocks
+Sending Request to the Target: GET /api/v1/portfolio
 Sending Request to the Target: GET /api/v1/trades?limit=50
+Sending Request to the Target: GET /api/v1/stats
+Received Response from the Target: 404 /api/v1/stats
 Sending Request to the Target: GET /api/v1/stats
 Received Response from the Target: 404 /api/v1/stats
 Received Response from the Target: 200 /api/v1/trades?limit=50
-Sending Request to the Target: GET /api/v1/stats
 Sending Request to the Target: GET /api/v1/trades?limit=50
-Received Response from the Target: 404 /api/v1/stats
 Received Response from the Target: 200 /api/v1/trades?limit=50
 Received Response from the Target: 200 /api/v1/portfolio
 Sending Request to the Target: GET /api/v1/portfolio
 Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/trades?limit=50
+Sending Request to the Target: GET /api/v1/stats
+Received Response from the Target: 404 /api/v1/stats
+Sending Request to the Target: GET /api/v1/stats
+Received Response from the Target: 200 /api/v1/trades?limit=50
+Received Response from the Target: 404 /api/v1/stats
+Sending Request to the Target: GET /api/v1/trades?limit=50
+Received Response from the Target: 200 /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/trades?limit=50
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/trading-stats
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/trading-stats
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/trading-stats
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/trading-stats
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/portfolio
+11:38:18 AM [vite] hmr update /src/pages/Security/index.tsx
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/portfolio
+11:38:39 AM [vite] hmr update /src/pages/Security/index.tsx
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/portfolio
+11:39:02 AM [vite] hmr update /src/pages/Security/index.tsx
+11:39:23 AM [vite] page reload src/main.tsx
+11:39:23 AM [vite] Pre-transform error: Failed to resolve import "./index.css" from "src/main.tsx". Does the file exist?
+11:39:23 AM [vite] Internal server error: Failed to resolve import "./index.css" from "src/main.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/src/main.tsx:4:7
+  3  |  import ReactDOM from "react-dom/client";
+  4  |  import App from "./App.tsx";
+  5  |  import "./index.css";
+     |          ^
+  6  |  if (import.meta.env?.DEV) {
+  7  |    console.log("🚀 FinTech eBPF Demo 前端應用啟動");
+      at TransformPluginContext._formatError (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:49258:41)
+      at TransformPluginContext.error (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:49253:16)
+      at normalizeUrl (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:64291:23)
+      at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+      at async file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:64423:39
+      at async Promise.all (index 4)
+      at async TransformPluginContext.transform (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:64350:7)
+      at async PluginContainer.transform (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:49099:18)
+      at async loadAndTransform (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:51977:27)
+      at async viteTransformMiddleware (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:62105:24)
+11:39:24 AM [vite] Pre-transform error: Failed to resolve import "./index.css" from "src/main.tsx". Does the file exist?
+11:39:24 AM [vite] Pre-transform error: Failed to resolve import "./index.css" from "src/main.tsx". Does the file exist?
+11:39:28 AM [vite] page reload src/vite-env.d.ts
+11:39:28 AM [vite] Pre-transform error: Failed to resolve import "./index.css" from "src/main.tsx". Does the file exist?
+11:39:28 AM [vite] Internal server error: Failed to resolve import "./index.css" from "src/main.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/src/main.tsx:4:7
+  3  |  import ReactDOM from "react-dom/client";
+  4  |  import App from "./App.tsx";
+  5  |  import "./index.css";
+     |          ^
+  6  |  if (import.meta.env?.DEV) {
+  7  |    console.log("🚀 FinTech eBPF Demo 前端應用啟動");
+      at TransformPluginContext._formatError (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:49258:41)
+      at TransformPluginContext.error (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:49253:16)
+      at normalizeUrl (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:64291:23)
+      at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+      at async file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:64423:39
+      at async Promise.all (index 4)
+      at async TransformPluginContext.transform (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:64350:7)
+      at async PluginContainer.transform (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:49099:18)
+      at async loadAndTransform (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:51977:27)
+      at async viteTransformMiddleware (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:62105:24)
+11:39:29 AM [vite] Pre-transform error: Failed to resolve import "./index.css" from "src/main.tsx". Does the file exist?
+11:39:29 AM [vite] Pre-transform error: Failed to resolve import "./index.css" from "src/main.tsx". Does the file exist?
+11:39:48 AM [vite] page reload src/main.tsx
+11:39:48 AM [vite] Pre-transform error: Failed to resolve import "./index.css" from "src/main.tsx". Does the file exist?
+11:39:48 AM [vite] Internal server error: Failed to resolve import "./index.css" from "src/main.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/src/main.tsx:4:7
+  3  |  import ReactDOM from "react-dom/client";
+  4  |  import App from "./App.tsx";
+  5  |  import "./index.css";
+     |          ^
+  6  |  if (import.meta.env.DEV) {
+  7  |    console.log("🚀 FinTech eBPF Demo 前端應用啟動");
+      at TransformPluginContext._formatError (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:49258:41)
+      at TransformPluginContext.error (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:49253:16)
+      at normalizeUrl (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:64291:23)
+      at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+      at async file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:64423:39
+      at async Promise.all (index 4)
+      at async TransformPluginContext.transform (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:64350:7)
+      at async PluginContainer.transform (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:49099:18)
+      at async loadAndTransform (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:51977:27)
+      at async viteTransformMiddleware (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:62105:24)
+11:39:49 AM [vite] Pre-transform error: Failed to resolve import "./index.css" from "src/main.tsx". Does the file exist?
+11:39:49 AM [vite] Pre-transform error: Failed to resolve import "./index.css" from "src/main.tsx". Does the file exist?
+11:40:04 AM [vite] hmr update /src/pages/Security/SecurityTesting.tsx
+11:40:05 AM [vite] Pre-transform error: Failed to resolve import "./index.css" from "src/main.tsx". Does the file exist?
+11:40:05 AM [vite] Internal server error: Failed to resolve import "./index.css" from "src/main.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/src/main.tsx:4:7
+  3  |  import ReactDOM from "react-dom/client";
+  4  |  import App from "./App.tsx";
+  5  |  import "./index.css";
+     |          ^
+  6  |  if (import.meta.env.DEV) {
+  7  |    console.log("🚀 FinTech eBPF Demo 前端應用啟動");
+      at TransformPluginContext._formatError (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:49258:41)
+      at TransformPluginContext.error (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:49253:16)
+      at normalizeUrl (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:64291:23)
+      at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+      at async file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:64423:39
+      at async Promise.all (index 4)
+      at async TransformPluginContext.transform (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:64350:7)
+      at async PluginContainer.transform (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:49099:18)
+      at async loadAndTransform (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:51977:27)
+      at async viteTransformMiddleware (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:62105:24)
+11:40:05 AM [vite] Pre-transform error: Failed to resolve import "./index.css" from "src/main.tsx". Does the file exist?
+11:40:05 AM [vite] Pre-transform error: Failed to resolve import "./index.css" from "src/main.tsx". Does the file exist?
+11:40:44 AM [vite] page reload src/main.tsx
+Sending Request to the Target: GET /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/trading-stats
 Sending Request to the Target: GET /api/v1/user/profile
 Received Response from the Target: 200 /api/v1/user/profile
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/trading-stats
 Sending Request to the Target: GET /api/v1/user/profile
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/trading-stats
 Received Response from the Target: 200 /api/v1/user/profile
-Sending Request to the Target: GET /api/v1/portfolio
-Sending Request to the Target: GET /api/v1/trades?limit=50
-Sending Request to the Target: GET /api/v1/stats
-Received Response from the Target: 404 /api/v1/stats
-Sending Request to the Target: GET /api/v1/stats
-Received Response from the Target: 404 /api/v1/stats
-Received Response from the Target: 200 /api/v1/trades?limit=50
-Sending Request to the Target: GET /api/v1/trades?limit=50
-Received Response from the Target: 200 /api/v1/trades?limit=50
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/trading-stats
 Received Response from the Target: 200 /api/v1/portfolio
 Sending Request to the Target: GET /api/v1/portfolio
 Received Response from the Target: 200 /api/v1/portfolio
-Sending Request to the Target: GET /api/v1/system/config
-Received Response from the Target: 200 /api/v1/system/config
-Sending Request to the Target: GET /api/v1/system/config
-Received Response from the Target: 200 /api/v1/system/config
-Sending Request to the Target: POST /api/v1/user/reset-account
-Received Response from the Target: 200 /api/v1/user/reset-account
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
 Sending Request to the Target: GET /api/v1/portfolio
-Sending Request to the Target: GET /api/v1/trades?limit=50
-Sending Request to the Target: GET /api/v1/stats
-Received Response from the Target: 404 /api/v1/stats
-Sending Request to the Target: GET /api/v1/stats
-Received Response from the Target: 404 /api/v1/stats
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
 Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
 Sending Request to the Target: GET /api/v1/portfolio
-Received Response from the Target: 200 /api/v1/trades?limit=50
-Sending Request to the Target: GET /api/v1/trades?limit=50
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
 Received Response from the Target: 200 /api/v1/portfolio
-Received Response from the Target: 200 /api/v1/trades?limit=50
-Sending Request to the Target: GET /api/v1/market/stocks
-Sending Request to the Target: GET /api/v1/orders
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
 Sending Request to the Target: GET /api/v1/portfolio
 Received Response from the Target: 200 /api/v1/portfolio
 Sending Request to the Target: GET /api/v1/portfolio
 Received Response from the Target: 200 /api/v1/portfolio
-Received Response from the Target: 200 /api/v1/orders
-Sending Request to the Target: GET /api/v1/orders
-Received Response from the Target: 200 /api/v1/orders
-Received Response from the Target: 200 /api/v1/market/stocks
-Sending Request to the Target: GET /api/v1/market/stocks
-Received Response from the Target: 200 /api/v1/market/stocks
-Sending Request to the Target: GET /api/v1/orders
-Received Response from the Target: 200 /api/v1/orders
-Sending Request to the Target: GET /api/v1/orders
-Received Response from the Target: 200 /api/v1/orders
-Sending Request to the Target: GET /api/v1/market/stocks
-Sending Request to the Target: GET /api/v1/orders
-Received Response from the Target: 200 /api/v1/orders
-Received Response from the Target: 200 /api/v1/market/stocks
-Sending Request to the Target: GET /api/v1/orders
-Received Response from the Target: 200 /api/v1/orders
-Sending Request to the Target: GET /api/v1/orders
-Received Response from the Target: 200 /api/v1/orders
-Sending Request to the Target: GET /api/v1/market/stocks
-Sending Request to the Target: GET /api/v1/orders
-Received Response from the Target: 200 /api/v1/orders
-Received Response from the Target: 200 /api/v1/market/stocks
-Sending Request to the Target: GET /api/v1/orders
-Received Response from the Target: 200 /api/v1/orders
-Sending Request to the Target: GET /api/v1/orders
-Received Response from the Target: 200 /api/v1/orders
-Sending Request to the Target: GET /api/v1/market/stocks
-Sending Request to the Target: GET /api/v1/orders
-Received Response from the Target: 200 /api/v1/orders
-Received Response from the Target: 200 /api/v1/market/stocks
-Sending Request to the Target: GET /api/v1/orders
-Received Response from the Target: 200 /api/v1/orders
-Sending Request to the Target: GET /api/v1/market/stocks
-Received Response from the Target: 200 /api/v1/market/stocks
-Sending Request to the Target: GET /api/v1/market/stocks
-Received Response from the Target: 200 /api/v1/market/stocks
-Sending Request to the Target: GET /api/v1/orders
-Received Response from the Target: 200 /api/v1/orders
-Sending Request to the Target: GET /api/v1/market/stocks
-Received Response from the Target: 200 /api/v1/market/stocks
-Sending Request to the Target: GET /api/v1/orders
-Sending Request to the Target: GET /api/v1/market/stocks
-Received Response from the Target: 200 /api/v1/orders
-Received Response from the Target: 200 /api/v1/market/stocks
-Sending Request to the Target: GET /api/v1/orders
-Sending Request to the Target: GET /api/v1/market/stocks
-Received Response from the Target: 200 /api/v1/orders
-Received Response from the Target: 200 /api/v1/market/stocks
-Sending Request to the Target: GET /api/v1/orders
-Sending Request to the Target: GET /api/v1/market/stocks
-Received Response from the Target: 200 /api/v1/orders
-Received Response from the Target: 200 /api/v1/market/stocks
-Sending Request to the Target: GET /api/v1/orders
-Sending Request to the Target: GET /api/v1/market/stocks
-Received Response from the Target: 200 /api/v1/orders
-Received Response from the Target: 200 /api/v1/market/stocks
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+11:51:24 AM [vite] hmr update /src/pages/Security/index.tsx
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio

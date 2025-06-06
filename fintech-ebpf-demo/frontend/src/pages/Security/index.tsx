@@ -33,10 +33,13 @@ import {
   SearchOutlined,
   ExperimentOutlined,
   EyeOutlined,
+  SafetyCertificateOutlined,
 } from '@ant-design/icons';
 
 // 導入安全測試組件
 import SecurityTesting from './SecurityTesting';
+// 導入Tetragon事件流組件
+import TetragonEventStream from '../../components/TetragonEventStream';
 
 const { Title, Text, Paragraph } = Typography;
 const { Search } = Input;
@@ -44,8 +47,52 @@ const { Option } = Select;
 const { RangePicker } = DatePicker;
 const { TabPane } = Tabs;
 
+// 定義事件詳情的類型
+interface NetworkConnectionDetails {
+  destination: string;
+  port: number;
+  protocol: string;
+}
+
+interface FileAccessDetails {
+  filename: string;
+  mode: string;
+  userId: number;
+}
+
+interface CommandExecutionDetails {
+  command: string;
+  parentProcess: string;
+  args: string[];
+}
+
+interface CryptoOperationDetails {
+  operation: string;
+  keyfile: string;
+  algorithm: string;
+}
+
+// 聯合類型
+type EventDetails = NetworkConnectionDetails | FileAccessDetails | CommandExecutionDetails | CryptoOperationDetails | Record<string, any>;
+
+// 安全事件接口
+interface SecurityEvent {
+  key: string;
+  timestamp: string;
+  processId: number;
+  processName: string;
+  eventType: string;
+  description: string;
+  details: EventDetails;
+  severity: string;
+  service: string;
+  podName: string;
+  namespace: string;
+  action: string;
+}
+
 // 模擬eBPF安全事件數據
-const mockSecurityEvents = [
+const mockSecurityEvents: SecurityEvent[] = [
   {
     key: '1',
     timestamp: '2023-12-01 10:45:12.123',
@@ -122,8 +169,8 @@ const mockSecurityEvents = [
 
 const Security: React.FC = () => {
   const [realTimeMode, setRealTimeMode] = useState(true);
-  const [events, setEvents] = useState(mockSecurityEvents);
-  const [filteredEvents, setFilteredEvents] = useState(mockSecurityEvents);
+  const [events, setEvents] = useState<SecurityEvent[]>(mockSecurityEvents);
+  const [filteredEvents, setFilteredEvents] = useState<SecurityEvent[]>(mockSecurityEvents);
   const [loading, setLoading] = useState(false);
   const [selectedEventType, setSelectedEventType] = useState<string>('ALL');
   const [selectedSeverity, setSelectedSeverity] = useState<string>('ALL');
@@ -141,35 +188,35 @@ const Security: React.FC = () => {
       const selectedService = services[Math.floor(Math.random() * services.length)];
       
       // 根據事件類型生成對應的詳細信息
-      let details;
+      let details: EventDetails;
       switch (selectedEventType) {
         case 'NETWORK_CONNECTION':
           details = {
             destination: `${Math.random() > 0.5 ? 'suspicious-site.com' : 'api.example.com'}`,
             port: Math.floor(Math.random() * 65535),
             protocol: Math.random() > 0.5 ? 'TCP' : 'UDP',
-          };
+          } as NetworkConnectionDetails;
           break;
         case 'FILE_ACCESS':
           details = {
             filename: Math.random() > 0.5 ? '/etc/passwd' : '/tmp/data.txt',
             mode: Math.random() > 0.5 ? 'READ' : 'WRITE',
             userId: Math.floor(Math.random() * 1000),
-          };
+          } as FileAccessDetails;
           break;
         case 'COMMAND_EXECUTION':
           details = {
             command: `${selectedProcess} script.sh`,
             parentProcess: selectedService,
             args: ['-c', 'some command'],
-          };
+          } as CommandExecutionDetails;
           break;
         default:
           details = {};
       }
 
       // 模擬新的安全事件
-      const newEvent = {
+      const newEvent: SecurityEvent = {
         key: `${Date.now()}`,
         timestamp: new Date().toLocaleString('zh-TW', {
           year: 'numeric',
@@ -202,7 +249,7 @@ const Security: React.FC = () => {
     return () => {
       clearInterval(interval);
     };
-  }, [realTimeMode]); // setEvents 是穩定的，不需要加入依賴數組
+  }, [realTimeMode]);
 
   // 過濾事件
   useEffect(() => {
@@ -314,7 +361,7 @@ const Security: React.FC = () => {
       title: '進程',
       key: 'process',
       width: 120,
-      render: (record: any) => (
+      render: (record: SecurityEvent) => (
         <Space direction="vertical" size={0}>
           <Text strong>{record.processName}</Text>
           <Text type="secondary" style={{ fontSize: '12px' }}>
@@ -402,6 +449,19 @@ const Security: React.FC = () => {
             >
               {/* 安全測試內容 */}
               <SecurityTesting />
+            </TabPane>
+
+            <TabPane 
+              tab={
+                <span>
+                  <SafetyCertificateOutlined />
+                  Tetragon事件流
+                </span>
+              } 
+              key="tetragon"
+            >
+              {/* Tetragon事件流內容 */}
+              <TetragonEventStream />
             </TabPane>
           </Tabs>
         </Col>
@@ -635,7 +695,7 @@ const Security: React.FC = () => {
                 size="small"
                 scroll={{ x: 1200 }}
                 expandable={{
-                  expandedRowRender: (record) => (
+                  expandedRowRender: (record: SecurityEvent) => (
                     <div style={{ padding: '16px', background: '#fafafa' }}>
                       <Row gutter={[16, 16]}>
                         <Col span={12}>
