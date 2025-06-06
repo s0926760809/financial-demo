@@ -96,12 +96,6 @@ const Layout: React.FC = () => {
       badge: 'eBPF',
     },
     {
-      key: '/security-testing',
-      icon: <ExperimentOutlined />,
-      label: '安全測試',
-      badge: '🚨',
-    },
-    {
       key: '/monitoring',
       icon: <MonitorOutlined />,
       label: '系統監控',

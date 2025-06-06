@@ -3,17 +3,12 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './App.css'
 
-// 故意添加一些全局調試信息
+// 添加開發時的調試信息
 if (import.meta.env.DEV) {
-  console.log('🚀 金融微服務 eBPF 演示系統啟動');
-  console.log('📊 版本:', '3.0.0');
+  console.log('🚀 FinTech eBPF Demo 前端應用啟動');
+  console.log('📦 版本:', '3.0.0');
   console.log('🔧 環境:', import.meta.env.MODE);
-  console.log('🌐 API端點:', {
-    trading: 'http://localhost:30080',
-    risk: 'http://localhost:30081',
-    payment: 'http://localhost:30082',
-    audit: 'http://localhost:30083'
-  });
+  console.log('🌐 API Base URL:', import.meta.env.VITE_API_BASE_URL || 'http://localhost:30080');
 }
 
 // 故意暴露一些全局方法用於演示

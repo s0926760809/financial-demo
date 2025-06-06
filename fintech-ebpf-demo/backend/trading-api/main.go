@@ -147,6 +147,15 @@ func main() {
 		v1.GET("/monitoring/service", getServiceMetrics)
 		v1.GET("/monitoring/overview", getSystemOverview)
 		v1.GET("/monitoring/instances", getInstancesInfo)
+
+		// 🔍 Tetragon eBPF 事件監控端點
+		tetragon := v1.Group("/tetragon")
+		{
+			tetragon.GET("/events", handlers.GetTetragonEvents)           // 獲取事件列表
+			tetragon.GET("/alerts", handlers.GetSecurityAlerts)          // 獲取安全告警
+			tetragon.GET("/statistics", handlers.GetEventStatistics)     // 獲取事件統計
+			tetragon.GET("/ws", handlers.TetragonWebSocketHandler)        // WebSocket實時事件流
+		}
 	}
 
 	// Prometheus指標端點
@@ -162,6 +171,8 @@ func main() {
 	log.Printf("📊 健康檢查: http://localhost:%s/health", port)
 	log.Printf("📈 API文檔: http://localhost:%s/api/v1/", port)
 	log.Printf("🚨 安全測試: http://localhost:%s/api/v1/security/tests", port)
+	log.Printf("🔍 Tetragon事件: http://localhost:%s/api/v1/tetragon/events", port)
+	log.Printf("📡 WebSocket事件流: ws://localhost:%s/api/v1/tetragon/ws", port)
 	log.Printf("📊 Prometheus指標: http://localhost:%s/metrics", port)
 	
 	if err := http.ListenAndServe(fmt.Sprintf(":%s", port), r); err != nil {
