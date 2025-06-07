@@ -8,6 +8,8 @@ import 'dayjs/locale/zh-cn';
 
 // 導入主題Provider
 import { ThemeProvider, useTheme } from './contexts/ThemeContext';
+import { UserProvider } from './contexts/UserContext';
+import { NotificationProvider } from './contexts/NotificationContext';
 
 // 導入頁面組件
 import Layout from './components/Layout';
@@ -94,7 +96,11 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        <AppContent />
+        <UserProvider>
+          <NotificationProvider>
+            <AppContent />
+          </NotificationProvider>
+        </UserProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );

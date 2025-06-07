@@ -95,6 +95,7 @@ func main() {
 
 		// 投資組合端點
 		v1.GET("/portfolio", handlers.GetPortfolio)       // 獲取投資組合
+		v1.GET("/portfolio/history", handlers.GetPortfolioHistory)
 
 		// 交易歷史端點
 		v1.GET("/trades", handlers.GetTradingHistory)     // 獲取交易歷史

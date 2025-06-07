@@ -924,15 +924,73 @@ func GetUserOrders(c *gin.Context) {
 // 輔助函數：從Redis獲取訂單
 func getOrderFromRedis(orderID string) (*models.Order, error) {
 	orderKey := fmt.Sprintf("order:%s", orderID)
-	orderJSON, err := rdb.Get(context.Background(), orderKey).Result()
+	val, err := rdb.Get(context.Background(), orderKey).Result()
 	if err != nil {
 		return nil, err
 	}
 
 	var order models.Order
-	if err := json.Unmarshal([]byte(orderJSON), &order); err != nil {
+	if err := json.Unmarshal([]byte(val), &order); err != nil {
 		return nil, err
 	}
-
 	return &order, nil
+}
+
+// GetPortfolioHistory 獲取投資組合歷史價值
+func GetPortfolioHistory(c *gin.Context) {
+	userID := c.GetHeader("X-User-ID")
+	if userID == "" {
+		userID = "demo-user-123" // Fallback for demo
+	}
+
+	period := c.DefaultQuery("period", "1M") // 默認獲取一個月數據
+	days := 30
+	switch period {
+	case "7D":
+		days = 7
+	case "1M":
+		days = 30
+	case "3M":
+		days = 90
+	case "1Y":
+		days = 365
+	}
+	
+	// 獲取當前投資組合價值作為基準
+	currentPortfolio, err := tradingHistoryService.GetPortfolio(userID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
+			Error:   "PORTFOLIO_NOT_FOUND",
+			Message: "無法獲取當前投資組合",
+		})
+		return
+	}
+	
+	baseValue := currentPortfolio.TotalValue
+	
+	// 模擬生成歷史數據
+	history := make([]models.PortfolioHistoryPoint, days)
+	now := time.Now()
+
+	for i := 0; i < days; i++ {
+		// 模擬一個小的每日隨機波動 (-1.5% to +1.5%)
+		fluctuation := (services.Rand.Float64() * 0.03) - 0.015
+		// 越久遠的數據，波動基數越大
+		simulatedValue := baseValue * (1 - float64(days-i-1)*0.001) * (1 + fluctuation)
+
+		history[i] = models.PortfolioHistoryPoint{
+			Date:  now.AddDate(0, 0, -i).Format("2006-01-02"),
+			Value: simulatedValue,
+		}
+	}
+	
+	// 反轉陣列，讓日期從遠到近
+	for i, j := 0, len(history)-1; i < j; i, j = i+1, j-1 {
+        history[i], history[j] = history[j], history[i]
+    }
+
+	c.JSON(http.StatusOK, gin.H{
+		"history": history,
+		"period":  period,
+	})
 } 

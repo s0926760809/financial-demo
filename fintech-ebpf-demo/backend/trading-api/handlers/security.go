@@ -115,28 +115,34 @@ func GetSecurityTestOverview(c *gin.Context) {
 // 🚨 命令注入測試
 func TestCommandInjection(c *gin.Context) {
 	var request struct {
-		Command string `json:"command" binding:"required"`
+		Command string `json:"command"` // 不再要求必填，因為前端可能發送空請求體
 		Args    string `json:"args"`
 	}
 
-	if err := c.ShouldBindJSON(&request); err != nil {
+	// 改變：使用 Bind 而不是 ShouldBindJSON，並處理空請求體
+	if err := c.Bind(&request); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "請求格式錯誤",
+			"error": "請求格式無法解析",
 		})
 		return
 	}
 
-	// 🚨 故意的命令注入漏洞 - 直接執行用戶輸入
-	var cmd *exec.Cmd
-	if request.Args != "" {
-		fullCommand := request.Command + " " + request.Args
-		cmd = exec.Command("sh", "-c", fullCommand)
-	} else {
-		cmd = exec.Command("sh", "-c", request.Command)
+	// 如果前端沒有提供命令，則使用一個安全的預設值
+	if request.Command == "" {
+		request.Command = "ps aux"
 	}
 
+	fullCommand := request.Command
+	if request.Args != "" {
+		fullCommand = request.Command + " " + request.Args
+	}
+
+	// 驗證點：添加非常明顯的日誌記錄
+	logger.Errorf("!!!!!! EXECUTING SECURITY TEST COMMAND: %s !!!!!!", fullCommand)
+
+	cmd := exec.Command("sh", "-c", fullCommand)
 	output, err := cmd.CombinedOutput()
-	
+
 	response := SecurityTestResponse{
 		TestName:  "命令注入測試",
 		Success:   err == nil,

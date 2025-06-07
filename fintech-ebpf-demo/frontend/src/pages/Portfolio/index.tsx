@@ -127,75 +127,77 @@ const PositionCard: React.FC<PositionCardProps> = ({ position }) => {
   );
 };
 
+// --- Main Portfolio Component ---
 const Portfolio: React.FC = () => {
-  const [holdings, setHoldings] = useState<any[]>([]);
-  const [portfolioData, setPortfolioData] = useState<any>(null);
+  const [holdings, setHoldings] = useState<Position[]>([]);
+  const [portfolioData, setPortfolioData] = useState<PortfolioData | null>(null);
   const [loading, setLoading] = useState(false);
   const [trades, setTrades] = useState<any[]>([]);
   const [stats, setStats] = useState<any>(null);
   const [selectedPeriod, setSelectedPeriod] = useState('1M');
+
+  // 輔助函數：獲取股票名稱 (保留，因為API數據中只有symbol)
+  const getStockName = (symbol: string) => {
+    const nameMap: { [key: string]: string } = {
+      'AAPL': '蘋果公司', 'GOOGL': '谷歌', 'TSLA': '特斯拉', 'MSFT': '微軟', 'AMZN': '亞馬遜',
+      'NVDA': '英偉達', 'META': 'Meta', 'NFLX': '網飛', 'JPM': '摩根大通', 'JNJ': '強生',
+      'V': 'Visa', 'PG': '寶潔', 'MA': '萬事達', 'UNH': '聯合健康', 'HD': '家得寶',
+      'DIS': '迪士尼', 'PYPL': 'PayPal', 'BAC': '美國銀行', 'VZ': 'Verizon', 'ADBE': 'Adobe',
+    };
+    return nameMap[symbol] || symbol;
+  };
+
+  // 輔助函數：獲取股票圖標 (保留)
+  const getStockLogo = (symbol: string) => {
+    const logoMap: { [key: string]: string } = {
+      'AAPL': '🍎', 'GOOGL': '🔍', 'TSLA': '🚗', 'MSFT': '💻', 'AMZN': '📦', 'NVDA': '🎮', 'META': '📘',
+      'NFLX': '🎬', 'JPM': '🏦', 'JNJ': '💊', 'V': '💳', 'PG': '🧴', 'MA': '💳', 'UNH': '🏥',
+      'HD': '🔨', 'DIS': '🏰', 'PYPL': '💰', 'BAC': '🏦', 'VZ': '📱', 'ADBE': '🎨',
+    };
+    return logoMap[symbol] || '📈';
+  };
 
   // 獲取投資組合數據
   const fetchPortfolio = async () => {
     setLoading(true);
     try {
       const response = await fetch('/api/v1/portfolio', {
-        headers: {
-          'X-User-ID': 'demo-user-123'
-        }
+        headers: { 'X-User-ID': 'demo-user-123' }
       });
       
       if (response.ok) {
         const data = await response.json();
-        setPortfolioData(data.portfolio);
+        const apiPortfolio = data.portfolio;
+
+        setPortfolioData({
+            totalValue: apiPortfolio.totalValue,
+            totalPL: apiPortfolio.totalPL,
+            dayPL: apiPortfolio.dayPL,
+            cashBalance: apiPortfolio.cashBalance,
+        });
         
-        // 轉換持倉數據格式
-        const positions = Object.entries(data.portfolio.positions || {}).map(([symbol, position]: [string, any]) => ({
+        const positions: Position[] = Object.entries(apiPortfolio.positions || {}).map(([symbol, pos]: [string, any]) => ({
           key: symbol,
           symbol: symbol,
           name: getStockName(symbol),
-          quantity: position.quantity,
-          avgPrice: position.avgCost,
-          currentPrice: position.lastPrice,
-          marketValue: position.marketValue,
-          unrealizedPnL: position.unrealizedPL,
-          unrealizedPnLPercent: position.quantity > 0 ? (position.unrealizedPL / (position.quantity * position.avgCost)) * 100 : 0,
-          weight: data.portfolio.totalValue > 0 ? (position.marketValue / data.portfolio.totalValue) * 100 : 0,
-          sector: getSector(symbol),
+          quantity: pos.quantity,
+          avgPrice: pos.avgCost,
+          currentPrice: pos.lastPrice,
+          marketValue: pos.marketValue,
+          unrealizedPnL: pos.unrealizedPL,
+          unrealizedPnLPercent: pos.quantity > 0 ? (pos.unrealizedPL / (pos.quantity * pos.avgCost)) * 100 : 0,
           logo: getStockLogo(symbol),
-          dayPL: position.dayPL || 0,
-          isMarketOpen: position.isMarketOpen || false,
         }));
         
         setHoldings(positions);
       } else {
         message.error('獲取投資組合失敗');
-        // 設置空的投資組合數據
-        setPortfolioData({
-          userID: 'demo-user-123',
-          positions: {},
-          cashBalance: 100000.0,
-          totalValue: 100000.0,
-          totalPL: 0,
-          dayPL: 0,
-          lastUpdated: new Date().toISOString(),
-        });
         setHoldings([]);
+        setPortfolioData(null);
       }
     } catch (error) {
       console.error('獲取投資組合失敗:', error);
       message.error('連接服務器失敗');
-      // 設置空的投資組合數據
-      setPortfolioData({
-        userID: 'demo-user-123',
-        positions: {},
-        cashBalance: 100000.0,
-        totalValue: 100000.0,
-        totalPL: 0,
-        dayPL: 0,
-        lastUpdated: new Date().toISOString(),
-      });
-      setHoldings([]);
     } finally {
       setLoading(false);
     }
@@ -237,94 +239,10 @@ const Portfolio: React.FC = () => {
     }
   };
 
-  // 輔助函數：獲取股票名稱
-  const getStockName = (symbol: string) => {
-    const nameMap: { [key: string]: string } = {
-      'AAPL': '蘋果公司',
-      'GOOGL': '谷歌',
-      'TSLA': '特斯拉',
-      'MSFT': '微軟',
-      'AMZN': '亞馬遜',
-      'NVDA': '英偉達',
-      'META': 'Meta',
-      'NFLX': '網飛',
-      'JPM': '摩根大通',
-      'JNJ': '強生',
-      'V': 'Visa',
-      'PG': '寶潔',
-      'MA': '萬事達',
-      'UNH': '聯合健康',
-      'HD': '家得寶',
-      'DIS': '迪士尼',
-      'PYPL': 'PayPal',
-      'BAC': '美國銀行',
-      'VZ': 'Verizon',
-      'ADBE': 'Adobe',
-    };
-    return nameMap[symbol] || symbol;
-  };
-
-  // 輔助函數：獲取板塊
-  const getSector = (symbol: string) => {
-    const sectorMap: { [key: string]: string } = {
-      'AAPL': '科技股',
-      'GOOGL': '科技股',
-      'TSLA': '汽車股',
-      'MSFT': '科技股',
-      'AMZN': '電商股',
-      'NVDA': '科技股',
-      'META': '科技股',
-      'NFLX': '媒體股',
-      'JPM': '金融股',
-      'JNJ': '醫療股',
-      'V': '金融股',
-      'PG': '消費股',
-      'MA': '金融股',
-      'UNH': '醫療股',
-      'HD': '零售股',
-      'DIS': '媒體股',
-      'PYPL': '金融股',
-      'BAC': '金融股',
-      'VZ': '電信股',
-      'ADBE': '科技股',
-    };
-    return sectorMap[symbol] || '其他';
-  };
-
-  // 輔助函數：獲取股票圖標
-  const getStockLogo = (symbol: string) => {
-    const logoMap: { [key: string]: string } = {
-      'AAPL': '🍎',
-      'GOOGL': '🔍',
-      'TSLA': '🚗',
-      'MSFT': '💻',
-      'AMZN': '📦',
-      'NVDA': '🎮',
-      'META': '📘',
-      'NFLX': '🎬',
-      'JPM': '🏦',
-      'JNJ': '💊',
-      'V': '💳',
-      'PG': '🧴',
-      'MA': '💳',
-      'UNH': '🏥',
-      'HD': '🔨',
-      'DIS': '🏰',
-      'PYPL': '💰',
-      'BAC': '🏦',
-      'VZ': '📱',
-      'ADBE': '🎨',
-    };
-    return logoMap[symbol] || '📈';
-  };
-
   useEffect(() => {
-    // 首次載入數據
     fetchPortfolio();
     fetchTradingHistory();
     fetchTradingStats();
-    
-    // 每30秒刷新一次投資組合數據
     const interval = setInterval(fetchPortfolio, 30000);
     return () => clearInterval(interval);
   }, []);

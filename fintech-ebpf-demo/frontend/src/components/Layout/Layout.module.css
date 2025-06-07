@@ -130,4 +130,37 @@
 }
 :global(body.dark-mode) .trigger:hover {
   color: #fff;
+}
+
+/* Notification Popover Styles */
+.notificationPopover {
+  width: 350px;
+}
+
+.notificationHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.notificationOverlay .ant-popover-inner-content {
+  padding: 0 !important;
+}
+
+.unreadItem {
+  background-color: #e6f7ff;
+}
+
+:global(body.dark-mode) .notificationHeader {
+  border-bottom-color: #303030;
+}
+
+:global(body.dark-mode) .unreadItem {
+  background-color: #1d3a4f;
+}
+
+:global(body.dark-mode) .ant-popover-inner {
+  background-color: #1f1f1f;
 } 
