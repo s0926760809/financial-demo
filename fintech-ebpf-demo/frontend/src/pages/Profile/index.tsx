@@ -96,7 +96,7 @@ const Profile: React.FC = () => {
           'X-User-ID': 'demo-user-123'
         },
         body: JSON.stringify({
-          display_name: values.display_name,
+          name: values.display_name,
           email: values.email,
         })
       });
@@ -104,7 +104,11 @@ const Profile: React.FC = () => {
       if (response.ok) {
         message.success('個人資料更新成功！');
         setEditing(false);
-        fetchUserProfile(); // 重新獲取資料
+        await fetchUserProfile(); // 重新獲取本頁資料
+        
+        // 觸發一個全局事件，通知其他組件（如Layout）更新用戶信息
+        window.dispatchEvent(new CustomEvent('profileUpdated'));
+
       } else {
         const error = await response.json();
         message.error(`更新失敗: ${error.message || '未知錯誤'}`);

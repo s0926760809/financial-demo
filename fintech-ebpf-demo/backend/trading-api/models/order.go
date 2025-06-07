@@ -140,4 +140,10 @@ func (j *JSONField) Scan(value interface{}) error {
 	default:
 		return fmt.Errorf("cannot scan %T into JSONField", value)
 	}
+}
+
+// PortfolioHistoryPoint 代表單一時間點的投資組合價值
+type PortfolioHistoryPoint struct {
+	Date  string  `json:"date"`
+	Value float64 `json:"value"`
 } 

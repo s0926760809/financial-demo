@@ -14,6 +14,11 @@ import (
 	"github.com/go-redis/redis/v8"
 )
 
+var (
+	// Rand 是一個導出的隨機數生成器，以便在其他包中獲得可重現的隨機性
+	Rand = rand.New(rand.NewSource(time.Now().UnixNano()))
+)
+
 type MarketDataService struct {
 	logger *logrus.Logger
 	redis  *redis.Client
