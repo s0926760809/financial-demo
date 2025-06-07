@@ -1,0 +1,64 @@
+{{- if .Values.frontend.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "fintech-chart.fullname" . }}-frontend
+  labels:
+    {{- include "fintech-chart.labels" . | nindent 4 }}
+    app.kubernetes.io/component: frontend
+spec:
+  type: {{ .Values.frontend.service.type }}
+  ports:
+    - port: {{ .Values.frontend.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "fintech-chart.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: frontend
+---
+{{- end }}
+
+{{- if .Values.tradingApi.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "fintech-chart.fullname" . }}-trading-api
+  labels:
+    {{- include "fintech-chart.labels" . | nindent 4 }}
+    app.kubernetes.io/component: trading-api
+spec:
+  type: {{ .Values.tradingApi.service.type }}
+  ports:
+    - port: {{ .Values.tradingApi.service.port }}
+      targetPort: {{ .Values.tradingApi.service.port }}
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "fintech-chart.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: trading-api # 這需要對應到 trading-api 的 deployment label
+---
+{{- end }}
+
+{{- if .Values.riskEngine.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "fintech-chart.fullname" . }}-risk-engine
+  labels:
+    {{- include "fintech-chart.labels" . | nindent 4 }}
+    app.kubernetes.io/component: risk-engine
+spec:
+  type: {{ .Values.riskEngine.service.type }}
+  ports:
+    - port: {{ .Values.riskEngine.service.port }}
+      targetPort: {{ .Values.riskEngine.service.port }}
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "fintech-chart.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: risk-engine # 這需要對應到 risk-engine 的 deployment label
+---
+{{- end }}
+
+# ... 其他後端服務的 Service 可以依此類推 ... 

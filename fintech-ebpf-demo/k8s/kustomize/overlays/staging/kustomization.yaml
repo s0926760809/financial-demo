@@ -1,0 +1,23 @@
+# Staging 環境的 Kustomize 覆蓋配置
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# 指向基礎配置
+bases:
+  - ../../base
+
+# 為所有資源添加通用標籤
+commonLabels:
+  environment: staging
+  owner: fintech-dev-team
+
+# 對映像檔進行修改
+images:
+  - name: your-original-frontend-image-name # 需要替換為 base yaml 中的 image name
+    newName: yourregistry.azurecr.io/fintech-demo/frontend
+    newTag: staging-latest
+
+# 使用 strategic merge patch 來修改特定欄位
+patchesStrategicMerge:
+  - frontend-replicas.patch.yaml 
