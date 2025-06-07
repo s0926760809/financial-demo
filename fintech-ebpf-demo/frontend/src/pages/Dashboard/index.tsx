@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   Row,
   Col,
@@ -14,6 +14,7 @@ import {
   Space,
   Divider,
   message,
+  Tooltip,
 } from 'antd';
 import {
   ArrowUpOutlined,
@@ -24,9 +25,16 @@ import {
   WarningOutlined,
   SecurityScanOutlined,
   MonitorOutlined,
+  DollarCircleOutlined,
+  PieChartOutlined,
+  RiseOutlined,
+  InfoCircleOutlined,
+  FireOutlined,
 } from '@ant-design/icons';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
+import styles from './Dashboard.module.css';
 
-const { Title, Text } = Typography;
+const { Title, Text, Paragraph } = Typography;
 
 // 數據介面定義
 interface Portfolio {
@@ -76,6 +84,80 @@ interface SecurityEvent {
   time: string;
   service: string;
 }
+
+const mockPortfolioData = {
+  totalValue: 185430.50,
+  dayPL: 1280.75,
+  dayPLPercent: 0.70,
+  totalPL: 25430.50,
+  totalPLPercent: 15.89,
+  cashBalance: 43810.20,
+  stockValue: 141620.30,
+};
+
+const mockPositions = [
+  { symbol: 'AAPL', name: '蘋果', value: 35000, allocation: 24.7 },
+  { symbol: 'GOOGL', name: '谷歌', value: 30000, allocation: 21.2 },
+  { symbol: 'TSLA', name: '特斯拉', value: 25000, allocation: 17.6 },
+  { symbol: 'MSFT', name: '微軟', value: 28000, allocation: 19.8 },
+  { symbol: 'AMZN', name: '亞馬遜', value: 23620.3, allocation: 16.7 },
+];
+
+const mockValueHistory = [
+  { name: '9:30', value: 184150 },
+  { name: '10:00', value: 184500 },
+  { name: '11:00', value: 185100 },
+  { name: '13:00', value: 184800 },
+  { name: '14:00', value: 185250 },
+  { name: '15:00', value: 185430.50 },
+];
+
+const mockRecentActivities = [
+    { id: '1', type: '買入', symbol: 'AAPL', quantity: 10, price: 175.50, time: '14:35:12' },
+    { id: '2', type: '賣出', symbol: 'NVDA', quantity: 5, price: 450.20, time: '11:02:45' },
+    { id: '3', type: '系統', message: '登入成功', status: '正常', time: '09:25:01' },
+    { id: '4', type: '安全', message: '偵測到可疑的API呼叫', status: '高風險', time: '14:38:00' },
+];
+
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#AF19FF'];
+
+interface StatisticCardProps {
+  icon: React.ReactNode;
+  title: string;
+  value: number;
+  prefix?: string;
+  suffix?: string;
+  trend: number;
+  trendDesc: string;
+  loading: boolean;
+  valueStyle?: React.CSSProperties;
+}
+
+const StatisticCard: React.FC<StatisticCardProps> = ({ icon, title, value, prefix, suffix, trend, trendDesc, loading, valueStyle }) => (
+  <Card loading={loading} className={styles.statisticCard}>
+    <Space direction="vertical" size="middle" style={{ width: '100%' }}>
+      <Space align="center" size="middle">
+        <div className={styles.iconWrapper}>{icon}</div>
+        <Text type="secondary">{title}</Text>
+      </Space>
+      <Statistic
+        value={value}
+        precision={2}
+        prefix={prefix}
+        valueStyle={valueStyle}
+      />
+      <div className={styles.trend}>
+        <Text type="secondary">
+          {trend > 0 ? <ArrowUpOutlined /> : <ArrowDownOutlined />}
+          <span style={{ color: trend > 0 ? '#52c41a' : '#ff4d4f', margin: '0 4px' }}>
+            {trend.toFixed(2)}{suffix}
+          </span>
+          {trendDesc}
+        </Text>
+      </div>
+    </Space>
+  </Card>
+);
 
 const Dashboard: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -456,161 +538,123 @@ const Dashboard: React.FC = () => {
 
   const riskScore = calculateRiskScore();
 
+  const recentActivityColumns = [
+    { title: '時間', dataIndex: 'time', key: 'time' },
+    { title: '類型', dataIndex: 'type', key: 'type', render: (type: string) => <Tag color={type === '買入' ? 'blue' : 'red'}>{type}</Tag> },
+    { title: '詳情', key: 'details', render: (_: any, record: any) => record.symbol ? `${record.symbol} ${record.quantity}股 @ ${record.price}` : record.message },
+    { title: '狀態', dataIndex: 'status', key: 'status', render: (status: string) => status ? <Tag color={status === '高風險' ? 'volcano' : 'green'}>{status}</Tag> : null }
+  ];
+
   return (
-    <div>
-      <Title level={2}>金融交易儀表板</Title>
-      <Text type="secondary">
-        實時監控交易活動、風險指標和安全事件 | 最後更新: {new Date().toLocaleTimeString()}
-      </Text>
+    <div className={styles.dashboard}>
+      <Title level={2} style={{ marginBottom: '24px' }}>儀表板總覽</Title>
+      
+      {/* 數據摘要區 */}
+      <Row gutter={[24, 24]}>
+        <Col xs={24} sm={12} md={12} lg={6}>
+          <StatisticCard
+            icon={<DollarCircleOutlined />}
+            title="總資產 (USD)"
+            value={mockPortfolioData.totalValue}
+            prefix="$"
+            trend={mockPortfolioData.dayPL}
+            trendDesc="較昨日"
+            loading={loading}
+            valueStyle={{ color: '#cf1322' }}
+          />
+        </Col>
+        <Col xs={24} sm={12} md={12} lg={6}>
+            <StatisticCard
+                icon={<RiseOutlined />}
+                title="今日損益 (USD)"
+                value={mockPortfolioData.dayPL}
+                prefix={mockPortfolioData.dayPL > 0 ? '+$' : '-$'}
+                trend={mockPortfolioData.dayPLPercent}
+                suffix="%"
+                trendDesc="今日回報率"
+                loading={loading}
+                valueStyle={{ color: mockPortfolioData.dayPL > 0 ? '#52c41a' : '#ff4d4f' }}
+            />
+        </Col>
+        <Col xs={24} sm={12} md={12} lg={6}>
+             <StatisticCard
+                icon={<StockOutlined />}
+                title="持股總值 (USD)"
+                value={mockPortfolioData.stockValue}
+                prefix="$"
+                trend={mockPortfolioData.totalPLPercent}
+                suffix="%"
+                trendDesc="總回報率"
+                loading={loading}
+                valueStyle={{ color: '#1890ff' }}
+            />
+        </Col>
+        <Col xs={24} sm={12} md={12} lg={6}>
+            <Card loading={loading} className={styles.statisticCard}>
+                <Statistic title="風險評級" value="中等" valueStyle={{ color: '#faad14' }} prefix={<FireOutlined />} />
+                <Paragraph type="secondary" style={{ marginTop: '16px' }}>根據您的持倉集中度和近期交易活躍度評估。</Paragraph>
+            </Card>
+        </Col>
+      </Row>
 
-      <Divider />
-
-      {/* 關鍵指標卡片 */}
-      <Row gutter={[16, 16]} style={{ marginBottom: '24px' }}>
-        <Col xs={24} sm={12} lg={6}>
-          <Card>
-            <Statistic
-              title="投資組合總值"
-              value={portfolioData?.totalValue || 0}
-              precision={2}
-              prefix={<DollarOutlined />}
-              suffix="USD"
-              valueStyle={{ color: '#3f8600' }}
-            />
+      {/* 圖表區 */}
+      <Row gutter={[24, 24]} style={{ marginTop: '24px' }}>
+        <Col xs={24} lg={16}>
+          <Card title="資產趨勢" className={styles.chartCard}>
+            <ResponsiveContainer width="100%" height={300}>
+              <AreaChart data={mockValueHistory}>
+                <defs>
+                  <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="#8884d8" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <XAxis dataKey="name" />
+                <YAxis domain={['dataMin - 1000', 'dataMax + 1000']} />
+                <CartesianGrid strokeDasharray="3 3" />
+                <RechartsTooltip />
+                <Area type="monotone" dataKey="value" stroke="#8884d8" fillOpacity={1} fill="url(#colorValue)" />
+              </AreaChart>
+            </ResponsiveContainer>
           </Card>
         </Col>
-        <Col xs={24} sm={12} lg={6}>
-          <Card>
-            <Statistic
-              title="今日損益"
-              value={portfolioData?.dayPL || 0}
-              precision={2}
-              prefix={(portfolioData?.dayPL || 0) >= 0 ? <ArrowUpOutlined /> : <ArrowDownOutlined />}
-              suffix="USD"
-              valueStyle={{ color: (portfolioData?.dayPL || 0) >= 0 ? '#3f8600' : '#cf1322' }}
-            />
-          </Card>
-        </Col>
-        <Col xs={24} sm={12} lg={6}>
-          <Card>
-            <Statistic
-              title="風險評分"
-              value={riskScore}
-              precision={1}
-              suffix="/ 10"
-              prefix={<SafetyOutlined />}
-              valueStyle={{ 
-                color: riskScore > 7 ? '#cf1322' : 
-                       riskScore > 5 ? '#fa8c16' : '#3f8600' 
-              }}
-            />
-            <Progress
-              percent={riskScore * 10}
-              size="small"
-              status={riskScore > 7 ? 'exception' : 'active'}
-              style={{ marginTop: '8px' }}
-            />
-          </Card>
-        </Col>
-        <Col xs={24} sm={12} lg={6}>
-          <Card>
-            <Statistic
-              title="eBPF 監控事件"
-              value={securityEvents.length}
-              prefix={<SecurityScanOutlined />}
-              suffix="個"
-              valueStyle={{ color: '#1890ff' }}
-            />
-            <Space style={{ marginTop: '8px' }}>
-              <Badge status="processing" text="實時監控" />
-            </Space>
+        <Col xs={24} lg={8}>
+          <Card title="持倉分佈" className={styles.chartCard}>
+             <ResponsiveContainer width="100%" height={300}>
+                <PieChart>
+                  <Pie
+                    data={mockPositions}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={false}
+                    outerRadius={80}
+                    fill="#8884d8"
+                    dataKey="value"
+                  >
+                    {mockPositions.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)}
+                  </Pie>
+                  <RechartsTooltip formatter={(value, name, props) => [`$${value}`, props.payload.name]}/>
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
           </Card>
         </Col>
       </Row>
 
-      {/* 安全警告 */}
-      {securityEvents.some(event => event.severity === 'CRITICAL') && (
-        <Alert
-          message="🚨 檢測到嚴重安全事件"
-          description="eBPF監控系統檢測到高風險活動，請立即查看安全監控頁面。"
-          type="error"
-          showIcon
-          action={
-            <Button size="small" danger onClick={() => window.location.href = '/security'}>
-              查看詳情
-            </Button>
-          }
-          style={{ marginBottom: '16px' }}
-        />
-      )}
+       {/* 最近活動 */}
+       <Row style={{ marginTop: '24px' }}>
+         <Col span={24}>
+            <Card title="最近活動與安全事件">
+                <Table 
+                    dataSource={mockRecentActivities} 
+                    columns={recentActivityColumns} 
+                    pagination={false}
+                    size="small"
+                />
+            </Card>
+         </Col>
+       </Row>
 
-      <Row gutter={[16, 16]}>
-        {/* 持倉概覽 */}
-        <Col xs={24} lg={14}>
-          <Card
-            title="持倉概覽"
-            extra={
-              <Space>
-                <Badge status="success" text="實時更新" />
-                <Button size="small" type="primary">
-                  <StockOutlined /> 新建訂單
-                </Button>
-              </Space>
-            }
-          >
-            <Table
-              columns={positionColumns}
-              dataSource={getPositionsData()}
-              pagination={false}
-              size="small"
-              loading={loading}
-            />
-          </Card>
-        </Col>
-
-        {/* 最近訂單 */}
-        <Col xs={24} lg={10}>
-          <Card
-            title="最近訂單"
-            extra={<a href="/trading">查看全部</a>}
-          >
-            <Table
-              columns={orderColumns}
-              dataSource={recentOrders}
-              pagination={false}
-              size="small"
-              loading={loading}
-            />
-          </Card>
-        </Col>
-      </Row>
-
-      {/* eBPF 安全事件監控 */}
-      <Card
-        title="eBPF 安全事件監控"
-        extra={
-          <Space>
-            <Button 
-              size="small" 
-              loading={loading}
-              onClick={triggerSecurityTest}
-              danger
-            >
-              🧪 觸發測試事件
-            </Button>
-            <a href="/security">查看詳細監控</a>
-          </Space>
-        }
-        style={{ marginTop: '16px' }}
-      >
-        <Table
-          columns={securityColumns}
-          dataSource={securityEvents}
-          pagination={false}
-          size="small"
-          loading={loading}
-        />
-      </Card>
     </div>
   );
 };

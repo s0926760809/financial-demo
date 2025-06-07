@@ -1,0 +1,61 @@
+/* Dashboard.module.css */
+
+.dashboard {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.statisticCard {
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s;
+  height: 100%;
+}
+
+.statisticCard:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+}
+
+.iconWrapper {
+  font-size: 24px;
+  background-color: #e6f7ff;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1890ff;
+}
+
+.trend {
+  font-size: 12px;
+}
+
+.chartCard {
+  border-radius: 8px;
+  height: 100%;
+}
+
+/* Dark Mode Overrides */
+:global(body.dark-mode) .statisticCard,
+:global(body.dark-mode) .chartCard,
+:global(body.dark-mode) .ant-table-wrapper {
+  border-color: #303030 !important;
+  background-color: #1f1f1f !important;
+}
+
+:global(body.dark-mode) .iconWrapper {
+  background-color: rgba(24, 144, 255, 0.1);
+} 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   Row,
   Col,
@@ -19,6 +19,8 @@ import {
   Tooltip,
   Spin,
   message,
+  Empty,
+  Modal
 } from 'antd';
 import {
   PieChartOutlined,
@@ -30,12 +32,100 @@ import {
   ReloadOutlined,
   DownloadOutlined,
   EyeOutlined,
+  ArrowUpOutlined,
+  ArrowDownOutlined,
+  PlusOutlined,
+  MinusOutlined,
+  WalletOutlined,
+  BankOutlined,
+  StockOutlined,
 } from '@ant-design/icons';
+import styles from './Portfolio.module.css';
 
-const { Title, Text } = Typography;
+const { Title, Text, Paragraph } = Typography;
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 const { TabPane } = Tabs;
+
+// --- Interfaces and Mock Data ---
+interface Position {
+  key: string;
+  symbol: string;
+  name: string;
+  quantity: number;
+  avgPrice: number;
+  currentPrice: number;
+  marketValue: number;
+  unrealizedPnL: number;
+  unrealizedPnLPercent: number;
+  logo: string;
+}
+
+interface PortfolioData {
+  totalValue: number;
+  totalPL: number;
+  dayPL: number;
+  cashBalance: number;
+}
+
+const mockHoldings = [
+    { key: 'AAPL', symbol: 'AAPL', name: '蘋果公司', quantity: 50, avgPrice: 150.25, currentPrice: 175.80, marketValue: 8790, unrealizedPnL: 1277.5, unrealizedPnLPercent: 17.0, logo: '🍎' },
+    { key: 'GOOGL', symbol: 'GOOGL', name: '谷歌', quantity: 20, avgPrice: 130.50, currentPrice: 135.20, marketValue: 2704, unrealizedPnL: 94, unrealizedPnLPercent: 3.6, logo: '🔍' },
+    { key: 'TSLA', symbol: 'TSLA', name: '特斯拉', quantity: 30, avgPrice: 250.00, currentPrice: 220.50, marketValue: 6615, unrealizedPnL: -885, unrealizedPnLPercent: -11.8, logo: '🚗' },
+];
+const mockPortfolioData = { totalValue: 18109, totalPL: 486.5, dayPL: -150.3, cashBalance: 10000 };
+
+// --- Sub Components ---
+
+interface PortfolioSummaryProps {
+  data: PortfolioData | null;
+  loading: boolean;
+}
+
+const PortfolioSummary: React.FC<PortfolioSummaryProps> = ({ data, loading }) => (
+  <Card className={styles.summaryCard}>
+    <Spin spinning={loading}>
+      <Row gutter={16}>
+        <Col span={6}><Statistic title={<Space><WalletOutlined /><span>總市值</span></Space>} prefix="$" value={data?.totalValue} precision={2} valueStyle={{color: '#1890ff'}} /></Col>
+        <Col span={6}><Statistic title={<Space><RiseOutlined /><span>今日盈虧</span></Space>} prefix={data?.dayPL && data.dayPL >= 0 ? '+$' : '-$'} value={data?.dayPL ? Math.abs(data.dayPL) : 0} precision={2} valueStyle={{color: data?.dayPL && data.dayPL >= 0 ? '#52c41a' : '#ff4d4f'}} /></Col>
+        <Col span={6}><Statistic title={<Space><StockOutlined /><span>總盈虧</span></Space>} prefix={data?.totalPL && data.totalPL >= 0 ? '+$' : '-$'} value={data?.totalPL ? Math.abs(data.totalPL) : 0} precision={2} valueStyle={{color: data?.totalPL && data.totalPL >= 0 ? '#52c41a' : '#ff4d4f'}} /></Col>
+        <Col span={6}><Statistic title={<Space><BankOutlined /><span>現金餘額</span></Space>} prefix="$" value={data?.cashBalance} precision={2} /></Col>
+      </Row>
+    </Spin>
+  </Card>
+);
+
+interface PositionCardProps {
+  position: Position;
+}
+
+const PositionCard: React.FC<PositionCardProps> = ({ position }) => {
+  const isProfit = position.unrealizedPnL >= 0;
+  return (
+    <Card className={styles.positionCard} actions={[
+      <Button type="primary" icon={<PlusOutlined />}>買入</Button>,
+      <Button icon={<MinusOutlined />}>賣出</Button>,
+    ]}>
+      <Space direction="vertical" style={{ width: '100%' }}>
+        <div className={styles.cardHeader}>
+          <Space align="center">
+            <span className={styles.logo}>{position.logo}</span>
+            <div>
+              <Title level={5} style={{ marginBottom: 0 }}>{position.name}</Title>
+              <Text type="secondary">{position.symbol}</Text>
+            </div>
+          </Space>
+          <Tag color={isProfit ? 'green' : 'red'}>{isProfit ? '盈利中' : '虧損中'}</Tag>
+        </div>
+        <Row gutter={16} className={styles.cardStats}>
+          <Col span={8}><Statistic title="持倉" value={position.quantity} suffix="股" /></Col>
+          <Col span={8}><Statistic title="市值" prefix="$" value={position.marketValue} precision={2} /></Col>
+          <Col span={8}><Statistic title="盈虧" prefix={isProfit ? '+$' : '-$'} value={Math.abs(position.unrealizedPnL)} precision={2} valueStyle={{ color: isProfit ? '#52c41a' : '#ff4d4f' }} /></Col>
+        </Row>
+      </Space>
+    </Card>
+  );
+};
 
 const Portfolio: React.FC = () => {
   const [holdings, setHoldings] = useState<any[]>([]);
@@ -410,172 +500,28 @@ const Portfolio: React.FC = () => {
   ];
 
   return (
-    <Spin spinning={loading}>
-      <div>
-        <Row justify="space-between" align="middle" style={{ marginBottom: '16px' }}>
-          <Col>
-            <Title level={2}>
-              <PieChartOutlined /> 投資組合
-            </Title>
-            <Text type="secondary">
-              實時投資組合分析和績效追蹤 | 最後更新: {portfolioData?.lastUpdated ? new Date(portfolioData.lastUpdated).toLocaleString() : '未更新'}
-            </Text>
-          </Col>
-          <Col>
-            <Space>
-              <Button icon={<ReloadOutlined />} loading={loading} onClick={fetchPortfolio}>
-                重新整理
-              </Button>
-              <Button icon={<DownloadOutlined />}>
-                導出報告
-              </Button>
-            </Space>
-          </Col>
-        </Row>
+    <div className={styles.portfolioPage}>
+      <Title level={2}>我的投資組合</Title>
+      <Paragraph type="secondary">查看您的持倉詳情、歷史交易和表現分析。</Paragraph>
+      
+      <PortfolioSummary data={portfolioData} loading={loading} />
 
-        {/* 投資組合總覽 */}
-        <Row gutter={[16, 16]} style={{ marginBottom: '24px' }}>
-          <Col xs={24} sm={6}>
-            <Card>
-              <Statistic
-                title="總資產價值"
-                value={totalMarketValue}
-                precision={2}
-                prefix={<DollarOutlined />}
-                suffix="USD"
-                valueStyle={{ color: '#1890ff' }}
-              />
-            </Card>
-          </Col>
-          <Col xs={24} sm={6}>
-            <Card>
-              <Statistic
-                title="現金餘額"
-                value={totalCashBalance}
-                precision={2}
-                prefix={<DollarOutlined />}
-                suffix="USD"
-                valueStyle={{ color: '#52c41a' }}
-              />
-            </Card>
-          </Col>
-          <Col xs={24} sm={6}>
-            <Card>
-              <Statistic
-                title="未實現盈虧"
-                value={totalUnrealizedPnL}
-                precision={2}
-                prefix={totalUnrealizedPnL >= 0 ? <RiseOutlined /> : <FallOutlined />}
-                suffix={`USD (${totalUnrealizedPnLPercent.toFixed(2)}%)`}
-                valueStyle={{ 
-                  color: totalUnrealizedPnL >= 0 ? '#52c41a' : '#ff4d4f' 
-                }}
-              />
-            </Card>
-          </Col>
-          <Col xs={24} sm={6}>
-            <Card>
-              <Statistic
-                title="今日盈虧"
-                value={dayPL}
-                precision={2}
-                prefix={dayPL >= 0 ? <RiseOutlined /> : <FallOutlined />}
-                suffix="USD"
-                valueStyle={{ 
-                  color: dayPL >= 0 ? '#52c41a' : '#ff4d4f' 
-                }}
-              />
-            </Card>
-          </Col>
-        </Row>
-
-        <Tabs defaultActiveKey="1">
-          <TabPane tab="持倉詳情" key="1">
-            <Card title="當前持倉" extra={holdings.length > 0 && `共 ${holdings.length} 支股票`}>
-              {holdings.length > 0 ? (
-                <Table
-                  columns={holdingColumns}
-                  dataSource={holdings}
-                  pagination={false}
-                  size="middle"
-                />
-              ) : (
-                <div style={{ textAlign: 'center', padding: '40px' }}>
-                  <Text type="secondary">暫無持倉數據</Text>
-                  <br />
-                  <Text type="secondary">您可以到交易中心進行買入操作</Text>
-                </div>
-              )}
-            </Card>
-          </TabPane>
-
-          <TabPane tab="交易歷史" key="2">
-            <Card title="交易記錄" extra={trades.length > 0 && `共 ${trades.length} 筆交易`}>
-              {trades.length > 0 ? (
-                <Table
-                  columns={tradeColumns}
-                  dataSource={trades}
-                  pagination={{
-                    pageSize: 10,
-                    showSizeChanger: true,
-                    showQuickJumper: true,
-                    showTotal: (total) => `共 ${total} 筆交易`,
-                  }}
-                  size="middle"
-                />
-              ) : (
-                <div style={{ textAlign: 'center', padding: '40px' }}>
-                  <Text type="secondary">暫無交易記錄</Text>
-                  <br />
-                  <Text type="secondary">您可以到交易中心進行交易</Text>
-                </div>
-              )}
-            </Card>
-          </TabPane>
-
-          <TabPane tab="績效分析" key="3">
-            <Card title="投資績效">
-              <Row gutter={[16, 16]}>
-                <Col xs={24} sm={8}>
-                  <Statistic
-                    title="總收益率"
-                    value={totalUnrealizedPnLPercent}
-                    precision={2}
-                    suffix="%"
-                    prefix={totalUnrealizedPnL >= 0 ? <RiseOutlined /> : <FallOutlined />}
-                    valueStyle={{ 
-                      color: totalUnrealizedPnL >= 0 ? '#52c41a' : '#ff4d4f' 
-                    }}
-                  />
-                </Col>
-                <Col xs={24} sm={8}>
-                  <Statistic
-                    title="交易次數"
-                    value={stats?.totalTrades || 0}
-                    prefix={<TrophyOutlined />}
-                  />
-                </Col>
-                <Col xs={24} sm={8}>
-                  <Statistic
-                    title="勝率"
-                    value={stats?.winRate || 0}
-                    precision={1}
-                    suffix="%"
-                    prefix={<PercentageOutlined />}
-                  />
-                </Col>
-              </Row>
-              
-              <Divider />
-              
-              <div style={{ textAlign: 'center', padding: '20px' }}>
-                <Text type="secondary">績效圖表功能開發中...</Text>
-              </div>
-            </Card>
-          </TabPane>
-        </Tabs>
-      </div>
-    </Spin>
+      <Title level={3} style={{ marginTop: '32px' }}>持倉列表</Title>
+      
+      <Spin spinning={loading && holdings.length === 0}>
+        {holdings.length > 0 ? (
+          <Row gutter={[24, 24]}>
+            {holdings.map(pos => (
+              <Col xs={24} sm={24} md={12} lg={8} key={pos.key}>
+                <PositionCard position={pos} />
+              </Col>
+            ))}
+          </Row>
+        ) : (
+          !loading && <Empty description="暫無持倉數據" style={{marginTop: '48px'}} />
+        )}
+      </Spin>
+    </div>
   );
 };
 

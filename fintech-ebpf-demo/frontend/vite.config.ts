@@ -1,21 +1,22 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
+import { visualizer } from 'rollup-plugin-visualizer';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    visualizer({
+      open: true, // 在預設瀏覽器中自動開啟報告
+      gzipSize: true, // 顯示 gzip 後的大小
+      brotliSize: true, // 顯示 brotli 後的大小
+      filename: 'dist/stats.html', // 產出報告的位置
+    }),
+  ],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@components': path.resolve(__dirname, './src/components'),
-      '@pages': path.resolve(__dirname, './src/pages'),
-      '@hooks': path.resolve(__dirname, './src/hooks'),
-      '@services': path.resolve(__dirname, './src/services'),
-      '@stores': path.resolve(__dirname, './src/stores'),
-      '@types': path.resolve(__dirname, './src/types'),
-      '@utils': path.resolve(__dirname, './src/utils'),
-      '@assets': path.resolve(__dirname, './src/assets'),
     },
   },
   server: {
@@ -74,12 +75,25 @@ export default defineConfig({
     // 優化打包
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
-          antd: ['antd', '@ant-design/icons'],
-          charts: ['recharts', 'chart.js', 'react-chartjs-2'],
-          utils: ['lodash', 'dayjs', 'axios'],
-        },
+        manualChunks(id: string) {
+          // 使用更精確的路徑匹配來分割大型依賴
+          if (id.includes('/node_modules/monaco-editor/')) {
+            return 'monaco-editor';
+          }
+          if (id.includes('/node_modules/recharts/') || id.includes('/node_modules/chart.js/')) {
+            return 'charts';
+          }
+          if (id.includes('/node_modules/antd/')) {
+            return 'antd';
+          }
+          if (id.includes('/node_modules/react') || id.includes('/node_modules/react-dom/') || id.includes('/node_modules/react-router-dom/')) {
+            return 'react-vendor';
+          }
+          // 將其他的 node_modules 單獨打包
+          if (id.includes('node_modules')) {
+            return 'vendor';
+          }
+        }
       },
     },
     // 故意保留一些調試信息用於演示
@@ -112,5 +126,12 @@ export default defineConfig({
       'lodash',
       'dayjs',
     ],
+  },
+  css: {
+    preprocessorOptions: {
+      less: {
+        javascriptEnabled: true,
+      },
+    },
   },
 }) 
