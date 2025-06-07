@@ -1,0 +1,133 @@
+/* Layout.module.css */
+
+.appLayout {
+  height: 100vh;
+  background-color: var(--color-bg-container);
+  transition: background-color 0.3s;
+}
+
+/* Sider 側邊欄 */
+.sider {
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+  position: relative;
+  z-index: 10;
+  background-color: #fff !important; /* 強制淺色主題 */
+}
+
+.sider :global(.ant-menu) {
+  border-inline-end: none !important;
+}
+
+.logo {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  cursor: pointer;
+  transition: padding 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.logoIcon {
+  font-size: 28px;
+  color: #1890ff;
+  transition: font-size 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.logoText {
+  margin-left: 12px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #1890ff;
+  font-family: 'Arial', sans-serif;
+  white-space: nowrap;
+  opacity: 1;
+  transition: opacity 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.menuItemBadge {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.badge :global(.ant-badge-count) {
+  background-color: #e6f7ff;
+  color: #1890ff;
+  border: 1px solid #91d5ff;
+  box-shadow: none;
+  font-size: 10px;
+  padding: 0 4px;
+  height: 18px;
+  line-height: 16px;
+}
+
+
+/* Header 頂部 */
+.header {
+  padding: 0 24px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.trigger {
+  font-size: 18px;
+  padding: 0 24px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.trigger:hover {
+  color: #1890ff;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+}
+
+/* Content 內容區域 */
+.content {
+  margin: 24px;
+  overflow: initial;
+  display: flex;
+  flex-direction: column;
+}
+
+.contentAlert {
+  margin-bottom: 24px;
+}
+
+.pageContainer {
+  padding: 24px;
+  background: #fff;
+  border-radius: 8px;
+  flex-grow: 1;
+}
+
+/* 暗色模式覆蓋 */
+:global(body.dark-mode) .sider {
+  background-color: #001529 !important;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.5);
+}
+
+:global(body.dark-mode) .header,
+:global(body.dark-mode) .pageContainer {
+  background-color: #141414;
+  border-color: #303030;
+}
+
+:global(body.dark-mode) .logoText {
+  color: #fff;
+}
+
+:global(body.dark-mode) .trigger,
+:global(body.dark-mode) :global(.ant-dropdown-trigger .ant-typography) {
+  color: rgba(255, 255, 255, 0.65);
+}
+:global(body.dark-mode) .trigger:hover {
+  color: #fff;
+} 

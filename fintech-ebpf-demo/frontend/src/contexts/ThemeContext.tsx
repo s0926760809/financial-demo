@@ -28,9 +28,16 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     return saved ? JSON.parse(saved) : false;
   });
 
-  // 保存主題偏好到localStorage
+  // 保存主題偏好到localStorage，並更新body的class
   useEffect(() => {
     localStorage.setItem('darkMode', JSON.stringify(isDarkMode));
+    if (isDarkMode) {
+      document.body.classList.add('dark-mode');
+      document.body.style.backgroundColor = '#141414';
+    } else {
+      document.body.classList.remove('dark-mode');
+      document.body.style.backgroundColor = '#f0f2f5';
+    }
   }, [isDarkMode]);
 
   const toggleDarkMode = () => {
