@@ -1,0 +1,101 @@
+# fintech-chart 的預設值
+# 這是一個 YAML 格式的檔案。
+# 在這裡聲明可以在模板中使用的變數。
+
+# 全域設定
+replicaCount: 1
+
+image:
+  pullPolicy: IfNotPresent
+  # 全域映像檔標籤，可被各個服務獨立覆寫
+  tag: "latest"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+podSecurityContext: {}
+securityContext: {}
+
+# -- 前端服務設定 --
+frontend:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: yourregistry.azurecr.io/fintech-demo/frontend
+    # tag: "specific-frontend-tag" # 可獨立覆寫
+  service:
+    type: ClusterIP
+    port: 80
+
+# --- 後端微服務設定 ---
+
+tradingApi:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: yourregistry.azurecr.io/fintech-demo/trading-api
+  service:
+    type: ClusterIP
+    port: 8080
+
+riskEngine:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: yourregistry.azurecr.io/fintech-demo/risk-engine
+  service:
+    type: ClusterIP
+    port: 8081
+
+paymentGateway:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: yourregistry.azurecr.io/fintech-demo/payment-gateway
+  service:
+    type: ClusterIP
+    port: 8082
+
+auditService:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: yourregistry.azurecr.io/fintech-demo/audit-service
+  service:
+    type: ClusterIP
+    port: 8083
+
+# --- 資料庫與其他依賴設定 ---
+# 在生產環境中，建議使用外部管理的資料庫。
+# 這裡預設為不透過此 Chart 部署，但保留了選項。
+
+postgresql:
+  enabled: false
+  # ... postgresql sub-chart values
+
+redis:
+  enabled: false
+  # ... redis sub-chart values
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local 
