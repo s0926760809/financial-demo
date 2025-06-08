@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
 import { Card, Table, Tag, Typography, Modal, Input } from 'antd';
-import { UnControlled as CodeMirror } from 'react-codemirror2';
-import 'codemirror/lib/codemirror.css';
-import 'codemirror/theme/material-darker.css';
-import 'codemirror/mode/javascript/javascript';
 import { Event } from '../../types';
 
 const { Title } = Typography;
@@ -86,15 +82,21 @@ const AllEventsLog: React.FC<AllEventsLogProps> = ({ events, title }) => {
                 width={800}
             >
                 {selectedEvent && (
-                    <CodeMirror
-                        value={JSON.stringify(selectedEvent, null, 2)}
-                        options={{
-                            mode: 'javascript',
-                            theme: 'material-darker',
-                            lineNumbers: true,
-                            readOnly: true,
+                    <pre 
+                        style={{
+                            backgroundColor: '#1e1e1e',
+                            color: '#d4d4d4',
+                            padding: '16px',
+                            borderRadius: '6px',
+                            fontSize: '13px',
+                            lineHeight: '1.5',
+                            maxHeight: '400px',
+                            overflow: 'auto',
+                            fontFamily: 'Monaco, Menlo, "Ubuntu Mono", monospace'
                         }}
-                    />
+                    >
+                        {JSON.stringify(selectedEvent, null, 2)}
+                    </pre>
                 )}
             </Modal>
         </>
