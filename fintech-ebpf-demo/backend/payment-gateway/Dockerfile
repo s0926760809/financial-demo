@@ -1,5 +1,5 @@
 # 多階段構建
-FROM golang:1.21-alpine AS builder
+FROM golang:1.23-alpine AS builder
 
 RUN apk add --no-cache git ca-certificates
 
@@ -15,7 +15,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
 # 最終鏡像
 FROM alpine:latest
 
-RUN apk --no-cache add ca-certificates curl dig
+RUN apk --no-cache add ca-certificates curl bind-tools
 
 WORKDIR /root/
 
