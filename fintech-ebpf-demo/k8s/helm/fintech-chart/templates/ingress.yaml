@@ -1,0 +1,75 @@
+{{- if .Values.ingress.enabled -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "fintech-chart.fullname" . }}-ingress
+  labels:
+    {{- include "fintech-chart.labels" . | nindent 4 }}
+  {{- with .Values.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if .Values.ingress.className }}
+  ingressClassName: {{ .Values.ingress.className }}
+  {{- end }}
+  {{- if .Values.ingress.tls }}
+  tls:
+    {{- range .Values.ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .Values.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          {{- if eq .service "frontend" }}
+          - path: {{ .path }}
+            pathType: {{ .pathType }}
+            backend:
+              service:
+                name: {{ include "fintech-chart.fullname" $ }}-frontend
+                port:
+                  number: {{ $.Values.frontend.service.port }}
+          {{- else if eq .service "tradingApi" }}
+          - path: {{ .path }}
+            pathType: {{ .pathType }}
+            backend:
+              service:
+                name: {{ include "fintech-chart.fullname" $ }}-trading-api
+                port:
+                  number: {{ $.Values.tradingApi.service.port }}
+          {{- else if eq .service "riskEngine" }}
+          - path: {{ .path }}
+            pathType: {{ .pathType }}
+            backend:
+              service:
+                name: {{ include "fintech-chart.fullname" $ }}-risk-engine
+                port:
+                  number: {{ $.Values.riskEngine.service.port }}
+          {{- else if eq .service "paymentGateway" }}
+          - path: {{ .path }}
+            pathType: {{ .pathType }}
+            backend:
+              service:
+                name: {{ include "fintech-chart.fullname" $ }}-payment-gateway
+                port:
+                  number: {{ $.Values.paymentGateway.service.port }}
+          {{- else if eq .service "auditService" }}
+          - path: {{ .path }}
+            pathType: {{ .pathType }}
+            backend:
+              service:
+                name: {{ include "fintech-chart.fullname" $ }}-audit-service
+                port:
+                  number: {{ $.Values.auditService.service.port }}
+          {{- end }}
+          {{- end }}
+    {{- end }}
+{{- end }} 
