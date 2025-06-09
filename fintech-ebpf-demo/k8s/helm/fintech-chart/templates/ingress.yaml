@@ -17,35 +17,42 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: frontend
+                name: {{ include "fintech-chart.frontend.name" . }}
                 port:
                   number: {{ .Values.frontend.service.port }}
+          - path: /api/v1
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "fintech-chart.trading-api.name" . }}
+                port:
+                  number: {{ .Values.tradingApi.service.port }}
           - path: /api/trading
             pathType: Prefix
             backend:
               service:
-                name: trading-api-service
+                name: {{ include "fintech-chart.trading-api.name" . }}
                 port:
                   number: {{ .Values.tradingApi.service.port }}
           - path: /api/risk
             pathType: Prefix
             backend:
               service:
-                name: risk-engine-service
+                name: {{ include "fintech-chart.risk-engine.name" . }}
                 port:
                   number: {{ .Values.riskEngine.service.port }}
           - path: /api/payment
             pathType: Prefix
             backend:
               service:
-                name: payment-gateway-service
+                name: {{ include "fintech-chart.payment-gateway.name" . }}
                 port:
                   number: {{ .Values.paymentGateway.service.port }}
           - path: /api/audit
             pathType: Prefix
             backend:
               service:
-                name: audit-service-service
+                name: {{ include "fintech-chart.audit-service.name" . }}
                 port:
                   number: {{ .Values.auditService.service.port }}
   {{- with .Values.ingress.tls }}

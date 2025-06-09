@@ -36,6 +36,10 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # 複製構建產物
 COPY --from=builder /app/dist /usr/share/nginx/html
 
+# 複製entrypoint腳本
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 # 創建非root用戶
 RUN addgroup -g 1001 -S frontend && \
     adduser -S frontend -u 1001
@@ -62,4 +66,5 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
     CMD curl -f http://localhost/health || exit 1
 
 # 啟動 nginx
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"] 
