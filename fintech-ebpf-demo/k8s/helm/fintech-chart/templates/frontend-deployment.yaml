@@ -36,7 +36,7 @@ spec:
             - name: NODE_ENV
               value: "production"
             - name: API_BASE_URL
-              value: "http://{{ include "fintech-chart.fullname" . }}-trading-api:{{ .Values.tradingApi.service.port }}"
+              value: "http://{{ include "fintech-chart.trading-api.name" . }}:{{ .Values.tradingApi.service.port }}"
           resources:
             {{- toYaml .Values.frontend.resources | nindent 12 }}
           readinessProbe:
