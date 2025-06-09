@@ -3,7 +3,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "fintech-chart.fullname" . }}-frontend
+  name: {{ include "fintech-chart.frontend.name" . }}
   labels:
     {{- include "fintech-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: frontend
@@ -25,7 +25,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "fintech-chart.fullname" . }}-trading-api
+  name: {{ include "fintech-chart.trading-api.name" . }}
   labels:
     {{- include "fintech-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: trading-api
@@ -47,7 +47,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "fintech-chart.fullname" . }}-risk-engine
+  name: {{ include "fintech-chart.risk-engine.name" . }}
   labels:
     {{- include "fintech-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: risk-engine
@@ -69,7 +69,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "fintech-chart.fullname" . }}-payment-gateway
+  name: {{ include "fintech-chart.payment-gateway.name" . }}
   labels:
     {{- include "fintech-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: payment-gateway
@@ -91,7 +91,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "fintech-chart.fullname" . }}-audit-service
+  name: {{ include "fintech-chart.audit-service.name" . }}
   labels:
     {{- include "fintech-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: audit-service

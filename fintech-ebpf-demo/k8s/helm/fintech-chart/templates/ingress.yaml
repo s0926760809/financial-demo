@@ -34,7 +34,7 @@ spec:
             pathType: {{ .pathType }}
             backend:
               service:
-                name: {{ include "fintech-chart.fullname" $ }}-frontend
+                name: {{ include "fintech-chart.frontend.name" $ }}
                 port:
                   number: {{ $.Values.frontend.service.port }}
           {{- else if eq .service "tradingApi" }}
@@ -42,7 +42,7 @@ spec:
             pathType: {{ .pathType }}
             backend:
               service:
-                name: {{ include "fintech-chart.fullname" $ }}-trading-api
+                name: {{ include "fintech-chart.trading-api.name" $ }}
                 port:
                   number: {{ $.Values.tradingApi.service.port }}
           {{- else if eq .service "riskEngine" }}
@@ -50,7 +50,7 @@ spec:
             pathType: {{ .pathType }}
             backend:
               service:
-                name: {{ include "fintech-chart.fullname" $ }}-risk-engine
+                name: {{ include "fintech-chart.risk-engine.name" $ }}
                 port:
                   number: {{ $.Values.riskEngine.service.port }}
           {{- else if eq .service "paymentGateway" }}
@@ -58,7 +58,7 @@ spec:
             pathType: {{ .pathType }}
             backend:
               service:
-                name: {{ include "fintech-chart.fullname" $ }}-payment-gateway
+                name: {{ include "fintech-chart.payment-gateway.name" $ }}
                 port:
                   number: {{ $.Values.paymentGateway.service.port }}
           {{- else if eq .service "auditService" }}
@@ -66,7 +66,7 @@ spec:
             pathType: {{ .pathType }}
             backend:
               service:
-                name: {{ include "fintech-chart.fullname" $ }}-audit-service
+                name: {{ include "fintech-chart.audit-service.name" $ }}
                 port:
                   number: {{ $.Values.auditService.service.port }}
           {{- end }}

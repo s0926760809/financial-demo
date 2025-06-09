@@ -204,16 +204,22 @@ tetra getevents
 
 ## 🚀 部署状态 (最新更新)
 
-### ✅ 已成功部署的微服务
+### ✅ 已成功部署的微服务 (5/5 全部运行!)
 
-1. **Trading API** - `quay.io/s0926760809/fintech-demo/trading-api:v1.0` ✅ Running
-2. **Risk Engine** - `quay.io/s0926760809/fintech-demo/risk-engine:v1.0` ✅ Running  
-3. **Payment Gateway** - `quay.io/s0926760809/fintech-demo/payment-gateway:v1.0` ✅ Running
-4. **Audit Service** - `quay.io/s0926760809/fintech-demo/audit-service:v1.0` ✅ Running
+1. **Frontend** - `quay.io/s0926760809/fintech-demo/frontend:v1.0` ✅ Running
+2. **Trading API** - `quay.io/s0926760809/fintech-demo/trading-api:v1.0` ✅ Running
+3. **Risk Engine** - `quay.io/s0926760809/fintech-demo/risk-engine:v1.0` ✅ Running  
+4. **Payment Gateway** - `quay.io/s0926760809/fintech-demo/payment-gateway:v1.0` ✅ Running
+5. **Audit Service** - `quay.io/s0926760809/fintech-demo/audit-service:v1.0` ✅ Running
 
-### ⚠️ 前端服务状态
+### 🎯 服务名称优化
 
-前端服务当前有配置问题，镜像内部的nginx配置引用了错误的服务名。建议修复前端镜像的配置后重新部署。
+解决了前端nginx配置问题，通过简化服务名称：
+- `frontend` (端口 80)
+- `trading-api-service` (端口 8080)  
+- `risk-engine-service` (端口 8081)
+- `payment-gateway-service` (端口 8082)
+- `audit-service-service` (端口 8083)
 
 ### 🔑 已配置的认证
 
@@ -240,20 +246,23 @@ kubectl get services -n nginx-gateway | grep fintech-demo
 kubectl get ingress -n nginx-gateway
 ```
 
-### 🔗 服务访问
+### 🔗 服务访问 (使用简化的服务名称)
 
 ```bash
+# Frontend (Web UI)
+kubectl port-forward -n nginx-gateway svc/frontend 8080:80
+
 # Trading API
-kubectl port-forward -n nginx-gateway svc/fintech-demo-fintech-chart-trading-api 8081:8080
+kubectl port-forward -n nginx-gateway svc/trading-api-service 8081:8080
 
 # Risk Engine  
-kubectl port-forward -n nginx-gateway svc/fintech-demo-fintech-chart-risk-engine 8082:8081
+kubectl port-forward -n nginx-gateway svc/risk-engine-service 8082:8081
 
 # Payment Gateway
-kubectl port-forward -n nginx-gateway svc/fintech-demo-fintech-chart-payment-gateway 8083:8082
+kubectl port-forward -n nginx-gateway svc/payment-gateway-service 8083:8082
 
 # Audit Service
-kubectl port-forward -n nginx-gateway svc/fintech-demo-fintech-chart-audit-service 8084:8083
+kubectl port-forward -n nginx-gateway svc/audit-service-service 8084:8083
 ```
 
 ### 🎯 集群环境
@@ -266,8 +275,9 @@ kubectl port-forward -n nginx-gateway svc/fintech-demo-fintech-chart-audit-servi
 
 ## 下一步
 
-1. ✅ **微服务部署** - 4/5 服务运行正常
-2. 🔧 **修复前端配置** - 需要修复镜像内nginx配置
+1. ✅ **微服务部署** - 5/5 服务全部运行正常 🎉
+2. ✅ **服务名称优化** - 解决了前端nginx配置问题
 3. 📊 **配置监控** - 集成Tetragon和Prometheus
-4. 🗄️ **数据库配置** - 部署PostgreSQL
-5. 🚀 **CI/CD集成** - 配置自动化部署流水线 
+4. 🗄️ **数据库配置** - 部署PostgreSQL和Redis
+5. 🚀 **CI/CD集成** - 配置自动化部署流水线
+6. 🔒 **安全加固** - 配置RBAC和网络策略 
