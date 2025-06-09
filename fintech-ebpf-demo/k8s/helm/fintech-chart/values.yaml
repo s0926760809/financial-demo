@@ -32,9 +32,10 @@ frontend:
     repository: quay.io/s0926760809/fintech-demo/frontend
     tag: "v1.0"
   service:
-    type: ClusterIP
+    type: NodePort
     port: 80
     targetPort: 80
+    nodePort: 30080
   resources:
     limits:
       cpu: 500m

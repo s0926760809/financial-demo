@@ -11,7 +11,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # 安裝所有依賴（包括 devDependencies 用於建置）
-RUN npm ci && npm cache clean --force
+RUN npm install && npm cache clean --force
 
 # 複製源代碼
 COPY . .

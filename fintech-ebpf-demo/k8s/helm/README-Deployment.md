@@ -106,19 +106,46 @@ kubectl logs -n nginx-gateway -l app.kubernetes.io/component=trading-api
 kubectl logs -n nginx-gateway -l app.kubernetes.io/instance=fintech-demo
 ```
 
-## 访问服务
+## 访问应用
 
-### 本地访问 (Port Forward)
+### 1. 通过NodePort访问前端
+前端服务已配置为NodePort类型，可以通过任意节点IP访问：
+
 ```bash
-# 前端服务
-kubectl port-forward -n nginx-gateway svc/fintech-demo-fintech-chart-frontend 8080:80
+# 获取节点IP
+kubectl get nodes -o wide
 
-# Trading API
-kubectl port-forward -n nginx-gateway svc/fintech-demo-fintech-chart-trading-api 8081:8080
+# 访问前端应用（端口30080）
+curl http://<NODE_IP>:30080/health
+
+# 示例
+curl http://192.168.1.141:30080/health
 ```
 
-### 通过 Ingress 访问
-编辑 \`values-production.yaml\` 中的 ingress 配置，然后访问 \`http://fintech-demo.local\`
+### 2. 通过端口转发访问
+```bash
+# 前端服务端口转发
+kubectl port-forward svc/frontend -n nginx-gateway 8080:80
+
+# 访问前端
+curl http://localhost:8080/health
+```
+
+### 3. 通过LoadBalancer访问（如果配置了Ingress）
+```bash
+# 获取LoadBalancer IP
+kubectl get svc ngf-nginx-gateway-fabric -n nginx-gateway
+
+# 访问应用
+curl http://192.168.1.215/
+```
+
+### 4. 服务端点
+- **前端**: http://NODE_IP:30080 或 http://localhost:8080 (端口转发)
+- **Trading API**: http://trading-api-service:8080 (集群内部)
+- **Risk Engine**: http://risk-engine-service:8081 (集群内部)
+- **Payment Gateway**: http://payment-gateway-service:8082 (集群内部)
+- **Audit Service**: http://audit-service-service:8083 (集群内部)
 
 ## 故障排除
 
