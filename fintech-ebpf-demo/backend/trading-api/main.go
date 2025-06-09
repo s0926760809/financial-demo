@@ -342,6 +342,15 @@ func getMemoryUsageMB() float64 {
 	return float64(memStats.Alloc) / 1024 / 1024
 }
 
+func getAverageLatency() float64 {
+	latencyMutex.Lock()
+	defer latencyMutex.Unlock()
+	if latencyCount == 0 {
+		return 0
+	}
+	return latencySum / float64(latencyCount)
+}
+
 // 修改中間件以記錄請求指標
 func metricsMiddleware() gin.HandlerFunc {
 	return gin.HandlerFunc(func(c *gin.Context) {
