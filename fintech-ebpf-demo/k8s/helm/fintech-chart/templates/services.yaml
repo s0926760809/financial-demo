@@ -11,9 +11,12 @@ spec:
   type: {{ .Values.frontend.service.type }}
   ports:
     - port: {{ .Values.frontend.service.port }}
-      targetPort: http
+      targetPort: {{ .Values.frontend.service.targetPort }}
       protocol: TCP
       name: http
+      {{- if and (eq .Values.frontend.service.type "NodePort") .Values.frontend.service.nodePort }}
+      nodePort: {{ .Values.frontend.service.nodePort }}
+      {{- end }}
   selector:
     {{- include "fintech-chart.selectorLabels" . | nindent 4 }}
     app.kubernetes.io/component: frontend
@@ -33,7 +36,7 @@ spec:
   type: {{ .Values.tradingApi.service.type }}
   ports:
     - port: {{ .Values.tradingApi.service.port }}
-      targetPort: http
+      targetPort: {{ .Values.tradingApi.service.targetPort }}
       protocol: TCP
       name: http
   selector:
@@ -55,7 +58,7 @@ spec:
   type: {{ .Values.riskEngine.service.type }}
   ports:
     - port: {{ .Values.riskEngine.service.port }}
-      targetPort: http
+      targetPort: {{ .Values.riskEngine.service.targetPort }}
       protocol: TCP
       name: http
   selector:
@@ -77,7 +80,7 @@ spec:
   type: {{ .Values.paymentGateway.service.type }}
   ports:
     - port: {{ .Values.paymentGateway.service.port }}
-      targetPort: http
+      targetPort: {{ .Values.paymentGateway.service.targetPort }}
       protocol: TCP
       name: http
   selector:
@@ -99,7 +102,7 @@ spec:
   type: {{ .Values.auditService.service.type }}
   ports:
     - port: {{ .Values.auditService.service.port }}
-      targetPort: http
+      targetPort: {{ .Values.auditService.service.targetPort }}
       protocol: TCP
       name: http
   selector:

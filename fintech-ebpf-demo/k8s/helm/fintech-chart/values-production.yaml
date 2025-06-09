@@ -10,7 +10,8 @@ image:
 
 # 镜像拉取密钥（如果需要）
 # 请根据您的 Quay.io 认证信息配置
-imagePullSecrets: []
+imagePullSecrets:
+  - name: quay-pull-secret
 # 示例配置（请替换为您的实际认证信息）:
 # imagePullSecrets:
 #   - name: quay-pull-secret
@@ -45,9 +46,10 @@ frontend:
     repository: quay.io/s0926760809/fintech-demo/frontend
     tag: "v1.0"
   service:
-    type: ClusterIP
+    type: NodePort
     port: 80
-    targetPort: 3000
+    targetPort: 80
+    nodePort: 30080
   resources:
     limits:
       cpu: 500m
@@ -140,27 +142,10 @@ redis:
 # Ingress 配置
 ingress:
   enabled: true
-  className: ""
+  className: "nginx"
+  host: "fintech-demo.local"
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
-  hosts:
-    - host: fintech-demo.local
-      paths:
-        - path: /
-          pathType: Prefix
-          service: frontend
-        - path: /api/trading
-          pathType: Prefix
-          service: tradingApi
-        - path: /api/risk
-          pathType: Prefix
-          service: riskEngine
-        - path: /api/payment
-          pathType: Prefix
-          service: paymentGateway
-        - path: /api/audit
-          pathType: Prefix
-          service: auditService
   tls: []
 
 # 环境变量配置
