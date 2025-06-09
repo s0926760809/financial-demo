@@ -36,7 +36,7 @@ spec:
             - name: VITE_API_BASE_URL
               value: "/api/v1"
             - name: VITE_BACKEND_URLS
-              value: {{ .Values.frontend.env.VITE_BACKEND_URLS | quote }}
+              value: {{ tpl .Values.frontend.env.VITE_BACKEND_URLS . | quote }}
           resources:
             {{- toYaml .Values.frontend.resources | nindent 12 }}
           readinessProbe:
