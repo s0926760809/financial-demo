@@ -48,9 +48,31 @@ build_and_push "risk-engine"     "${BASE_DIR}/fintech-ebpf-demo/backend/risk-eng
 build_and_push "payment-gateway" "${BASE_DIR}/fintech-ebpf-demo/backend/payment-gateway"
 build_and_push "audit-service"   "${BASE_DIR}/fintech-ebpf-demo/backend/audit-service"
 
-# --- 前端應用 ---
-build_and_push "frontend"        "${BASE_DIR}/fintech-ebpf-demo/frontend"
+# --- 前端應用 (帶有構建參數) ---
+build_and_push_frontend() {
+    local service_name="frontend"
+    local context_path="${BASE_DIR}/fintech-ebpf-demo/frontend"
+    local image_full_name="${DOCKER_REGISTRY}/${service_name}:${IMAGE_TAG}"
+    local api_base_url="/api" # Kubernetes 環境使用的 API 路徑
 
+    echo ""
+    echo "--- 正在處理服務: ${service_name} (帶有構建參數) ---"
+    echo "映像檔全名: ${image_full_name}"
+    echo "API 基礎 URL: ${api_base_url}"
+
+    echo "步驟 1/2: 建置映像檔..."
+    docker build \
+        --build-arg VITE_API_BASE_URL=${api_base_url} \
+        -t "${image_full_name}" \
+        "${context_path}"
+
+    echo "步驟 2/2: 推送映像檔..."
+    docker push "${image_full_name}"
+
+    echo "✅ 服務 ${service_name} 處理完成。"
+}
+
+build_and_push_frontend
 
 echo ""
 echo "############################################################"

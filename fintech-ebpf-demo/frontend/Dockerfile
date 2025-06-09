@@ -16,10 +16,13 @@ RUN npm install && npm cache clean --force
 # 複製源代碼
 COPY . .
 
+# 聲明一個構建參數
+ARG VITE_API_BASE_URL=/api
+
 # 修復 Rollup 可選依賴問題並構建應用
 RUN rm -rf node_modules/.vite && \
     npm install && \
-    npm run build
+    VITE_API_BASE_URL=${VITE_API_BASE_URL} npm run build
 
 # 生產階段
 FROM nginx:alpine AS production
