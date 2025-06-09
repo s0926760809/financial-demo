@@ -364,4 +364,3 @@ func metricsMiddleware() gin.HandlerFunc {
 		}
 	})
 } 
-} 
