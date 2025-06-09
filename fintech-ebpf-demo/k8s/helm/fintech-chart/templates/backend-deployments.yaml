@@ -39,6 +39,14 @@ spec:
               value: "{{ .Values.env.REDIS_URL }}"
             - name: LOG_LEVEL
               value: "{{ .Values.env.LOG_LEVEL }}"
+            - name: TRADING_API_HEALTH_URL
+              value: "http://{{ include \"fintech-chart.trading-api.name\" . }}:{{ .Values.tradingApi.service.port }}/health"
+            - name: RISK_ENGINE_HEALTH_URL
+              value: "http://{{ include \"fintech-chart.risk-engine.name\" . }}:{{ .Values.riskEngine.service.port }}/health"
+            - name: PAYMENT_GATEWAY_HEALTH_URL
+              value: "http://{{ include \"fintech-chart.payment-gateway.name\" . }}:{{ .Values.paymentGateway.service.port }}/health"
+            - name: AUDIT_SERVICE_HEALTH_URL
+              value: "http://{{ include \"fintech-chart.audit-service.name\" . }}:{{ .Values.auditService.service.port }}/health"
           resources:
             {{- toYaml .Values.tradingApi.resources | nindent 12 }}
 ---

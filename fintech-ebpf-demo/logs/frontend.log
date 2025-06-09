@@ -3,13 +3,11 @@
 > vite
 
 
-  VITE v5.4.19  ready in 331 ms
+  VITE v5.4.19  ready in 328 ms
 
   ➜  Local:   http://localhost:3000/
-  ➜  Network: http://192.168.1.217:3000/
+  ➜  Network: http://192.168.0.100:3000/
   ➜  Network: http://192.168.192.245:3000/
-  ➜  Network: http://10.211.55.2:3000/
-  ➜  Network: http://10.37.129.2:3000/
 Sending Request to the Target: GET /api/v1/user/profile
 Received Response from the Target: 200 /api/v1/user/profile
 Sending Request to the Target: GET /api/v1/user/profile
@@ -18,79 +16,632 @@ Sending Request to the Target: GET /api/v1/user/profile
 Received Response from the Target: 200 /api/v1/user/profile
 Sending Request to the Target: GET /api/v1/user/profile
 Received Response from the Target: 200 /api/v1/user/profile
+Sending Request to the Target: GET /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/trading-stats
+Sending Request to the Target: GET /api/v1/portfolio/history?period=1M
+Received Response from the Target: 200 /api/v1/trading-stats
+Received Response from the Target: 200 /api/v1/portfolio/history?period=1M
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/trading-stats
+Sending Request to the Target: GET /api/v1/portfolio/history?period=1M
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/trading-stats
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio/history?period=1M
+Sending Request to the Target: GET /api/v1/portfolio/history?period=1M
+Received Response from the Target: 200 /api/v1/portfolio/history?period=1M
+Sending Request to the Target: GET /api/v1/portfolio/history?period=1M
+Received Response from the Target: 200 /api/v1/portfolio/history?period=1M
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/user/profile
+Received Response from the Target: 200 /api/v1/user/profile
+Sending Request to the Target: GET /api/v1/user/profile
+Received Response from the Target: 200 /api/v1/user/profile
+Sending Request to the Target: GET /api/v1/user/profile
+Received Response from the Target: 200 /api/v1/user/profile
+Sending Request to the Target: GET /api/v1/user/profile
+Received Response from the Target: 200 /api/v1/user/profile
+Sending Request to the Target: GET /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/trading-stats
+Sending Request to the Target: GET /api/v1/portfolio/history?period=1M
+Received Response from the Target: 200 /api/v1/portfolio/history?period=1M
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/trading-stats
+Sending Request to the Target: GET /api/v1/portfolio/history?period=1M
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/trading-stats
+Received Response from the Target: 200 /api/v1/portfolio/history?period=1M
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/trading-stats
+Sending Request to the Target: GET /api/v1/portfolio/history?period=1M
+Received Response from the Target: 200 /api/v1/portfolio/history?period=1M
+Sending Request to the Target: GET /api/v1/portfolio/history?period=1M
+Received Response from the Target: 200 /api/v1/portfolio/history?period=1M
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/stats
+Sending Request to the Target: GET /api/v1/trades?limit=50
+Received Response from the Target: 404 /api/v1/stats
+Sending Request to the Target: GET /api/v1/stats
+Received Response from the Target: 404 /api/v1/stats
+Received Response from the Target: 200 /api/v1/trades?limit=50
+Sending Request to the Target: GET /api/v1/trades?limit=50
+Received Response from the Target: 200 /api/v1/trades?limit=50
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/portfolio
 Sending Request to the Target: POST /api/v1/security/test/command
 Received Response from the Target: 200 /api/v1/security/test/command
 Sending Request to the Target: POST /api/v1/security/test/file
 Received Response from the Target: 200 /api/v1/security/test/file
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
 Sending Request to the Target: POST /api/v1/security/test/command
 Received Response from the Target: 200 /api/v1/security/test/command
-Sending Request to the Target: POST /api/v1/security/test/network
-Received Response from the Target: 400 /api/v1/security/test/network
-Sending Request to the Target: POST /api/v1/security/test/sensitive
-Received Response from the Target: 400 /api/v1/security/test/sensitive
-Sending Request to the Target: POST /api/v1/security/test/privilege
-Received Response from the Target: 400 /api/v1/security/test/privilege
-Sending Request to the Target: POST /api/v1/security/test/privilege
-Received Response from the Target: 400 /api/v1/security/test/privilege
-Sending Request to the Target: POST /api/v1/security/test/crypto
-Received Response from the Target: 400 /api/v1/security/test/crypto
-Sending Request to the Target: POST /api/v1/security/test/crypto
-Received Response from the Target: 400 /api/v1/security/test/crypto
-Sending Request to the Target: POST /api/v1/security/test/memory
-Received Response from the Target: 400 /api/v1/security/test/memory
-Sending Request to the Target: POST /api/v1/security/test/memory
-Received Response from the Target: 400 /api/v1/security/test/memory
-Sending Request to the Target: POST /api/v1/security/test/privilege
-Received Response from the Target: 400 /api/v1/security/test/privilege
-Sending Request to the Target: POST /api/v1/security/test/sensitive
-Received Response from the Target: 400 /api/v1/security/test/sensitive
+Sending Request to the Target: GET /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
 Sending Request to the Target: POST /api/v1/security/test/command
 Received Response from the Target: 200 /api/v1/security/test/command
-Sending Request to the Target: POST /api/v1/security/test/file
-Received Response from the Target: 200 /api/v1/security/test/file
-Sending Request to the Target: POST /api/v1/security/test/network
-Received Response from the Target: 400 /api/v1/security/test/network
-Sending Request to the Target: POST /api/v1/security/test/sensitive
-Received Response from the Target: 400 /api/v1/security/test/sensitive
-Sending Request to the Target: POST /api/v1/security/test/privilege
-Received Response from the Target: 400 /api/v1/security/test/privilege
-Sending Request to the Target: POST /api/v1/security/test/crypto
-Received Response from the Target: 400 /api/v1/security/test/crypto
-Sending Request to the Target: POST /api/v1/security/test/memory
-Received Response from the Target: 400 /api/v1/security/test/memory
-Sending Request to the Target: POST /api/v1/security/test/sql
-Received Response from the Target: 200 /api/v1/security/test/sql
-Sending Request to the Target: POST /api/v1/security/test/file
-Received Response from the Target: 200 /api/v1/security/test/file
-Sending Request to the Target: POST /api/v1/security/test/file
-Received Response from the Target: 200 /api/v1/security/test/file
-Sending Request to the Target: POST /api/v1/security/test/network
-Received Response from the Target: 400 /api/v1/security/test/network
-Sending Request to the Target: POST /api/v1/security/test/network
-Received Response from the Target: 400 /api/v1/security/test/network
-5:47:29 AM [vite] hmr update /src/pages/Security/index.tsx
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
 Sending Request to the Target: POST /api/v1/security/test/command
 Received Response from the Target: 200 /api/v1/security/test/command
-Sending Request to the Target: POST /api/v1/security/test/file
-Received Response from the Target: 200 /api/v1/security/test/file
-Sending Request to the Target: POST /api/v1/security/test/file
-Received Response from the Target: 200 /api/v1/security/test/file
-Sending Request to the Target: POST /api/v1/security/test/network
-Received Response from the Target: 200 /api/v1/security/test/network
-Sending Request to the Target: POST /api/v1/security/test/sensitive
-Received Response from the Target: 200 /api/v1/security/test/sensitive
-Sending Request to the Target: POST /api/v1/security/test/privilege
-Received Response from the Target: 200 /api/v1/security/test/privilege
-Sending Request to the Target: POST /api/v1/security/test/crypto
-Received Response from the Target: 200 /api/v1/security/test/crypto
-Sending Request to the Target: POST /api/v1/security/test/memory
-Received Response from the Target: 200 /api/v1/security/test/memory
-Sending Request to the Target: POST /api/v1/security/test/sql
-Received Response from the Target: 200 /api/v1/security/test/sql
-5:49:02 AM [vite] changed tsconfig file detected: /Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
-5:49:02 AM [vite] hmr update /src/pages/Security/index.tsx
-5:49:02 AM [vite] hmr update /src/pages/Portfolio/index.tsx
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+12:53:59 AM [vite] hmr update /src/App.tsx
+12:53:59 AM [vite] hmr update /src/contexts/NotificationContext.tsx
+12:53:59 AM [vite] hmr update /src/contexts/ThemeContext.tsx
+12:53:59 AM [vite] hmr update /src/contexts/UserContext.tsx
+12:53:59 AM [vite] Internal server error: Failed to resolve import "./config" from "src/App.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/src/App.tsx:24:25
+  34 |  import Profile from "./pages/Profile";
+  35 |  import Settings from "./pages/Settings";
+  36 |  import apiEndpoints from "./config";
+     |                            ^
+  37 |  import "./App.css";
+  38 |  dayjs.locale("zh-cn");
+      at TransformPluginContext._formatError (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:49258:41)
+      at TransformPluginContext.error (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:49253:16)
+      at normalizeUrl (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:64291:23)
+      at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+      at async file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:64423:39
+      at async Promise.all (index 21)
+      at async TransformPluginContext.transform (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:64350:7)
+      at async PluginContainer.transform (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:49099:18)
+      at async loadAndTransform (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:51977:27)
+      at async viteTransformMiddleware (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:62105:24)
+12:53:59 AM [vite] hmr invalidate /src/contexts/NotificationContext.tsx Could not Fast Refresh ("useNotifications" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+12:53:59 AM [vite] page reload src/contexts/NotificationContext.tsx
+12:53:59 AM [vite] hmr invalidate /src/contexts/ThemeContext.tsx Could not Fast Refresh ("useTheme" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+12:53:59 AM [vite] page reload src/contexts/ThemeContext.tsx
+12:54:00 AM [vite] Internal server error: Failed to resolve import "./config" from "src/App.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/src/App.tsx:24:25
+  34 |  import Profile from "./pages/Profile";
+  35 |  import Settings from "./pages/Settings";
+  36 |  import apiEndpoints from "./config";
+     |                            ^
+  37 |  import "./App.css";
+  38 |  dayjs.locale("zh-cn");
+      at TransformPluginContext._formatError (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:49258:41)
+      at TransformPluginContext.error (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:49253:16)
+      at normalizeUrl (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:64291:23)
+      at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+      at async file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:64423:39
+      at async Promise.all (index 21)
+      at async TransformPluginContext.transform (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:64350:7)
+      at async PluginContainer.transform (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:49099:18)
+      at async loadAndTransform (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:51977:27)
+      at async viteTransformMiddleware (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:62105:24)
+12:54:00 AM [vite] hmr invalidate /src/contexts/UserContext.tsx Could not Fast Refresh ("useUser" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+12:54:00 AM [vite] page reload src/contexts/UserContext.tsx
+12:54:00 AM [vite] Internal server error: Failed to resolve import "./config" from "src/App.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/src/App.tsx:24:25
+  34 |  import Profile from "./pages/Profile";
+  35 |  import Settings from "./pages/Settings";
+  36 |  import apiEndpoints from "./config";
+     |                            ^
+  37 |  import "./App.css";
+  38 |  dayjs.locale("zh-cn");
+      at TransformPluginContext._formatError (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:49258:41)
+      at TransformPluginContext.error (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:49253:16)
+      at normalizeUrl (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:64291:23)
+      at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+      at async file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:64423:39
+      at async Promise.all (index 21)
+      at async TransformPluginContext.transform (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:64350:7)
+      at async PluginContainer.transform (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:49099:18)
+      at async loadAndTransform (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:51977:27)
+      at async viteTransformMiddleware (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:62105:24)
+12:54:00 AM [vite] Pre-transform error: Failed to resolve import "./config" from "src/App.tsx". Does the file exist?
+12:54:01 AM [vite] Internal server error: Failed to resolve import "./config" from "src/App.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/src/App.tsx:24:25
+  34 |  import Profile from "./pages/Profile";
+  35 |  import Settings from "./pages/Settings";
+  36 |  import apiEndpoints from "./config";
+     |                            ^
+  37 |  import "./App.css";
+  38 |  dayjs.locale("zh-cn");
+      at TransformPluginContext._formatError (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:49258:41)
+      at TransformPluginContext.error (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:49253:16)
+      at normalizeUrl (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:64291:23)
+      at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+      at async file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:64423:39
+      at async Promise.all (index 21)
+      at async TransformPluginContext.transform (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:64350:7)
+      at async PluginContainer.transform (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:49099:18)
+      at async loadAndTransform (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:51977:27)
+      at async viteTransformMiddleware (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:62105:24)
+12:54:01 AM [vite] Internal server error: Failed to resolve import "./config" from "src/App.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/src/App.tsx:24:25
+  34 |  import Profile from "./pages/Profile";
+  35 |  import Settings from "./pages/Settings";
+  36 |  import apiEndpoints from "./config";
+     |                            ^
+  37 |  import "./App.css";
+  38 |  dayjs.locale("zh-cn");
+      at TransformPluginContext._formatError (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:49258:41)
+      at TransformPluginContext.error (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:49253:16)
+      at normalizeUrl (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:64291:23)
+      at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+      at async file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:64423:39
+      at async Promise.all (index 21)
+      at async TransformPluginContext.transform (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:64350:7)
+      at async PluginContainer.transform (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:49099:18)
+      at async loadAndTransform (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:51977:27)
+      at async viteTransformMiddleware (file:///Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:62105:24)
+1:01:17 AM [vite] page reload src/config.ts
+1:01:18 AM [vite] hmr update /src/App.tsx
+1:01:19 AM [vite] hmr update /src/App.tsx
+1:04:16 AM [vite] page reload index.html
+Sending Request to the Target: GET /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/trading-stats
+Sending Request to the Target: GET /api/v1/portfolio/history?period=1M
 Sending Request to the Target: GET /api/v1/user/profile
+Received Response from the Target: 200 /api/v1/user/profile
+Sending Request to the Target: GET /api/v1/user/profile
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/trading-stats
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/user/profile
+Sending Request to the Target: GET /api/v1/trading-stats
+Received Response from the Target: 200 /api/v1/portfolio/history?period=1M
+Sending Request to the Target: GET /api/v1/user/profile
+Sending Request to the Target: GET /api/v1/portfolio/history?period=1M
+Received Response from the Target: 200 /api/v1/trading-stats
+Received Response from the Target: 200 /api/v1/user/profile
+Received Response from the Target: 200 /api/v1/portfolio/history?period=1M
+Sending Request to the Target: GET /api/v1/user/profile
+Sending Request to the Target: GET /api/v1/portfolio/history?period=1M
+Received Response from the Target: 200 /api/v1/user/profile
+Received Response from the Target: 200 /api/v1/portfolio/history?period=1M
+Sending Request to the Target: GET /api/v1/user/profile
+Sending Request to the Target: GET /api/v1/portfolio/history?period=1M
+Received Response from the Target: 200 /api/v1/user/profile
+Received Response from the Target: 200 /api/v1/portfolio/history?period=1M
+Sending Request to the Target: GET /api/v1/user/profile
+Received Response from the Target: 200 /api/v1/user/profile
+Sending Request to the Target: GET /api/v1/user/profile
+Received Response from the Target: 200 /api/v1/user/profile
+Sending Request to the Target: GET /api/v1/user/profile
+Received Response from the Target: 200 /api/v1/user/profile
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+1:05:08 AM [vite] hmr update /src/App.tsx
+Sending Request to the Target: GET /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+2:22:21 AM [vite] hmr update /src/pages/Monitoring/index.tsx
+2:22:29 AM [vite] hmr update /src/pages/Monitoring/index.tsx
+2:22:39 AM [vite] hmr update /src/pages/Monitoring/index.tsx
+2:22:39 AM [vite] hmr update /src/pages/Monitoring/index.tsx
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+2:23:14 AM [vite] hmr update /src/pages/Dashboard/index.tsx
+2:23:14 AM [vite] hmr update /src/pages/Dashboard/index.tsx
+Sending Request to the Target: GET /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/trading-stats
+Sending Request to the Target: GET /api/v1/portfolio/history?period=1M
+Received Response from the Target: 200 /api/v1/trading-stats
+Received Response from the Target: 200 /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio/history?period=1M
+Sending Request to the Target: GET /api/v1/portfolio/history?period=1M
+Received Response from the Target: 200 /api/v1/portfolio/history?period=1M
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+2:23:42 AM [vite] page reload src/main.tsx
+2:23:42 AM [vite] page reload src/main.tsx
+Sending Request to the Target: GET /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/trading-stats
+Sending Request to the Target: GET /api/v1/portfolio/history?period=1M
+Sending Request to the Target: GET /api/v1/user/profile
+Received Response from the Target: 200 /api/v1/portfolio/history?period=1M
+Received Response from the Target: 200 /api/v1/user/profile
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/trading-stats
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/portfolio/history?period=1M
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/user/profile
+Sending Request to the Target: GET /api/v1/trading-stats
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio/history?period=1M
+Received Response from the Target: 200 /api/v1/trading-stats
+Received Response from the Target: 200 /api/v1/user/profile
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/portfolio/history?period=1M
+Sending Request to the Target: GET /api/v1/user/profile
+Received Response from the Target: 200 /api/v1/portfolio/history?period=1M
+Sending Request to the Target: GET /api/v1/portfolio/history?period=1M
+Received Response from the Target: 200 /api/v1/user/profile
+Sending Request to the Target: GET /api/v1/user/profile
+Received Response from the Target: 200 /api/v1/portfolio/history?period=1M
 Received Response from the Target: 200 /api/v1/user/profile
 Sending Request to the Target: GET /api/v1/user/profile
 Received Response from the Target: 200 /api/v1/user/profile
@@ -98,3 +649,280 @@ Sending Request to the Target: GET /api/v1/user/profile
 Received Response from the Target: 200 /api/v1/user/profile
 Sending Request to the Target: GET /api/v1/user/profile
 Received Response from the Target: 200 /api/v1/user/profile
+Sending Request to the Target: GET /api/v1/user/profile
+Received Response from the Target: 200 /api/v1/user/profile
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+3:13:28 AM [vite] hmr update /src/pages/Dashboard/index.tsx
+Sending Request to the Target: GET /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/trading-stats
+Sending Request to the Target: GET /api/v1/audit/search?limit=10&severity=HIGH,CRITICAL,MEDIUM
+Sending Request to the Target: GET /api/v1/portfolio/history?period=1M
+Received Response from the Target: 404 /api/v1/audit/search?limit=10&severity=HIGH,CRITICAL,MEDIUM
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/trading-stats
+Received Response from the Target: 200 /api/v1/portfolio/history?period=1M
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/portfolio/history?period=1M
+Received Response from the Target: 200 /api/v1/portfolio/history?period=1M
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/audit/search?limit=10&severity=HIGH,CRITICAL,MEDIUM
+Received Response from the Target: 404 /api/v1/audit/search?limit=10&severity=HIGH,CRITICAL,MEDIUM
+Sending Request to the Target: GET /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/audit/search?limit=10&severity=HIGH,CRITICAL,MEDIUM
+Received Response from the Target: 404 /api/v1/audit/search?limit=10&severity=HIGH,CRITICAL,MEDIUM
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/audit/search?limit=10&severity=HIGH,CRITICAL,MEDIUM
+Received Response from the Target: 404 /api/v1/audit/search?limit=10&severity=HIGH,CRITICAL,MEDIUM
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/audit/search?limit=10&severity=HIGH,CRITICAL,MEDIUM
+Received Response from the Target: 404 /api/v1/audit/search?limit=10&severity=HIGH,CRITICAL,MEDIUM
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/audit/search?limit=10&severity=HIGH,CRITICAL,MEDIUM
+Received Response from the Target: 404 /api/v1/audit/search?limit=10&severity=HIGH,CRITICAL,MEDIUM
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/audit/search?limit=10&severity=HIGH,CRITICAL,MEDIUM
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 404 /api/v1/audit/search?limit=10&severity=HIGH,CRITICAL,MEDIUM
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/audit/search?limit=10&severity=HIGH,CRITICAL,MEDIUM
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 404 /api/v1/audit/search?limit=10&severity=HIGH,CRITICAL,MEDIUM
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/audit/search?limit=10&severity=HIGH,CRITICAL,MEDIUM
+Received Response from the Target: 404 /api/v1/audit/search?limit=10&severity=HIGH,CRITICAL,MEDIUM
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio
+3:18:15 AM [vite] hmr update /src/pages/Monitoring/index.tsx
+3:18:43 AM [vite] hmr update /src/pages/Security/index.tsx

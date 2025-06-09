@@ -181,20 +181,35 @@ func main() {
 	router.Use(metricsMiddleware())
 	router.Use(auditMiddleware())
 
-	// 路由
-	router.POST("/audit/log", logAuditEvent)
-	router.GET("/audit/search", searchLogs)
-	router.POST("/audit/export", exportLogs)
+	// API v1 路由組
+	v1 := router.Group("/api/v1")
+	{
+		// 審計相關路由
+		audit := v1.Group("/audit")
+		{
+			audit.POST("/log", logAuditEvent)
+			audit.GET("/search", searchLogs)
+			audit.POST("/export", exportLogs)
+		}
+
+		// WebSocket端點
+		ws := v1.Group("/ws")
+		{
+			ws.GET("/events", handleWebSocket)
+		}
+
+		// Debug端點 - 故意暴露的功能
+		debug := v1.Group("/debug")
+		{
+			debug.GET("/files", listLogFiles)
+			debug.GET("/config", getDebugConfig)
+			debug.POST("/sensitive", readSensitiveFile)
+		}
+	}
+
+	// 健康檢查和指標路由（通常放在最外層，不受API版本影響）
 	router.GET("/health", healthCheck)
 	router.GET("/metrics", gin.WrapH(promhttp.Handler()))
-
-	// WebSocket端點
-	router.GET("/ws/events", handleWebSocket)
-
-	// Debug端點 - 故意暴露的功能
-	router.GET("/debug/files", listLogFiles)
-	router.GET("/debug/config", getDebugConfig)
-	router.POST("/debug/sensitive", readSensitiveFile)
 
 	// 啟動服務器
 	address := fmt.Sprintf("%s:%s", config.Server.Host, config.Server.Port)

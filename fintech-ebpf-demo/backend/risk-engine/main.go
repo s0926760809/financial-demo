@@ -173,17 +173,28 @@ func main() {
 	router.Use(gin.Recovery())
 	router.Use(metricsMiddleware())
 
-	// 路由
-	router.POST("/risk/evaluate", evaluateRisk)
-	router.GET("/risk/limits", getRiskLimits)
-	router.POST("/risk/alert", sendAlert)
+	// API v1 路由組
+	v1 := router.Group("/api/v1")
+	{
+		risk := v1.Group("/risk")
+		{
+			risk.POST("/evaluate", evaluateRisk)
+			risk.GET("/limits", getRiskLimits)
+			risk.POST("/alert", sendAlert)
+		}
+
+		// 故意暴露的內部端點
+		debug := v1.Group("/debug")
+		{
+			debug.GET("/config", getDebugConfig)
+			debug.GET("/files", listSensitiveFiles)
+			debug.POST("/compute", intensiveCompute)
+		}
+	}
+
+	// 健康檢查和指標路由
 	router.GET("/health", healthCheck)
 	router.GET("/metrics", gin.WrapH(promhttp.Handler()))
-
-	// 故意暴露的內部端點
-	router.GET("/debug/config", getDebugConfig)
-	router.GET("/debug/files", listSensitiveFiles)
-	router.POST("/debug/compute", intensiveCompute)
 
 	// 定期更新CPU使用率
 	go updateCPUUsage()

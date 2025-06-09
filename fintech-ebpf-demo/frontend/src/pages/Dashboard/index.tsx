@@ -235,7 +235,7 @@ const Dashboard: React.FC = () => {
   // 獲取安全事件
   const fetchSecurityEvents = async () => {
     try {
-      const response = await fetch('/api/audit/search?limit=10&severity=HIGH,CRITICAL,MEDIUM', {
+      const response = await fetch('/api/v1/audit/search?limit=10&severity=HIGH,CRITICAL,MEDIUM', {
         headers: {
           'X-User-ID': 'demo-user-123'
         }

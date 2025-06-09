@@ -113,9 +113,9 @@ const Monitoring: React.FC = () => {
   // 服務配置 - 在K8s環境中使用相對路徑，由Ingress路由
   const serviceConfigs = [
     { name: 'Trading API', url: '/api/v1/health', port: 8080 },
-    { name: 'Risk Engine', url: '/api/risk/health', port: 8081 },
-    { name: 'Payment Gateway', url: '/api/payment/health', port: 8082 },
-    { name: 'Audit Service', url: '/api/audit/health', port: 8083 },
+    { name: 'Risk Engine', url: '/api/v1/health', port: 8081 },
+    { name: 'Payment Gateway', url: '/api/v1/health', port: 8082 },
+    { name: 'Audit Service', url: '/api/v1/health', port: 8083 },
   ];
 
   // 獲取服務健康狀態和詳細指標

@@ -246,35 +246,54 @@ func getServiceMetrics(c *gin.Context) {
 func getSystemOverview(c *gin.Context) {
 	// 檢查所有服務的健康狀態
 	services := []string{
-		"http://localhost:30080/health", // trading-api
-		"http://localhost:30081/health", // risk-engine
-		"http://localhost:30082/health", // payment-gateway
-		"http://localhost:30083/health", // audit-service
+		os.Getenv("TRADING_API_HEALTH_URL"),
+		os.Getenv("RISK_ENGINE_HEALTH_URL"),
+		os.Getenv("PAYMENT_GATEWAY_HEALTH_URL"),
+		os.Getenv("AUDIT_SERVICE_HEALTH_URL"),
 	}
-	
-	healthyCount := 0
-	totalInstances := 0
-	
-	for _, serviceURL := range services {
-		if isServiceHealthy(serviceURL) {
-			healthyCount++
-			totalInstances++ // 每個健康服務假設1個實例
+
+	var validServices []string
+	for _, s := range services {
+		if s != "" {
+			validServices = append(validServices, s)
 		}
 	}
-	
-	overallHealth := float64(healthyCount) / float64(len(services)) * 100
-	
-	overview := SystemOverview{
-		TotalServices:   len(services),
-		HealthyServices: healthyCount,
-		OverallHealth:   overallHealth,
-		TotalInstances:  totalInstances,
-		TotalRequests:   requestsCounter * 4, // 估算所有服務的總請求數
-		TotalErrors:     errorsCounter * 4,   // 估算所有服務的總錯誤數
-		AvgResponseTime: latencySum / math.Max(float64(latencyCount), 1),
-		LastUpdated:     time.Now().Format(time.RFC3339),
+
+	healthyCount := 0
+	var wg sync.WaitGroup
+	var results = make(chan bool, len(validServices))
+
+	for _, serviceURL := range validServices {
+		wg.Add(1)
+		go func(url string) {
+			defer wg.Done()
+			if isServiceHealthy(url) {
+				results <- true
+			} else {
+				results <- false
+			}
+		}(serviceURL)
 	}
-	
+
+	wg.Wait()
+	close(results)
+
+	for res := range results {
+		if res {
+			healthyCount++
+		}
+	}
+
+	overview := SystemOverview{
+		TotalServices:    len(validServices),
+		HealthyServices:  healthyCount,
+		OverallHealth:    (float64(healthyCount) / float64(len(validServices))) * 100,
+		TotalInstances:   len(validServices), // 簡化為服務數量
+		TotalRequests:    atomic.LoadInt64(&requestsCounter),
+		TotalErrors:      atomic.LoadInt64(&errorsCounter),
+		AvgResponseTime:  getAverageLatency(),
+		LastUpdated:      time.Now().Format(time.RFC3339),
+	}
 	c.JSON(http.StatusOK, overview)
 }
 
@@ -344,4 +363,5 @@ func metricsMiddleware() gin.HandlerFunc {
 			atomic.AddInt64(&errorsCounter, 1)
 		}
 	})
+} 
 } 

@@ -36,9 +36,8 @@ export const triggerSecurityTest = async (endpoint: string, payload: any) => {
 export const connectWebSocket = (onMessage: (event: Event) => void): WebSocket => {
   const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
   const wsHost = window.location.host;
-  // In development, the Vite server proxies WebSocket requests.
-  // In production, the WebSocket server should be available at the same host.
-  const wsUrl = `${wsProtocol}//${wsHost}/ws/events`;
+  // The backend WebSocket is exposed at /api/v1/tetragon/ws via Ingress
+  const wsUrl = `${wsProtocol}//${wsHost}/api/v1/tetragon/ws`;
   
   console.log(`Connecting to WebSocket: ${wsUrl}`);
 

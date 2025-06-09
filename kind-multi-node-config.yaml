@@ -1,0 +1,37 @@
+# kind-multi-node-config.yaml
+# 為 Cilium 和 Tetragon 優化的 1 Master + 3 Worker Kind 叢集設定
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+# 解決 Kind 節點無法訪問 API Server 的問題
+networking:
+  apiServerAddress: "127.0.0.1"
+  disableDefaultCNI: true # 禁用預設的 kindnet CNI
+  kubeProxyMode: "none"   # Cilium 將完全取代 kube-proxy
+
+nodes:
+# 1. 控制平面 / Master 節點
+- role: control-plane
+  # 使用已知包含 BTF (BPF Type Format) 資訊的節點映像，從根本上解決 Tetragon 的啟動問題
+  image: kindest/node:v1.27.3
+  kubeadmConfigPatches:
+  - |
+    kind: InitConfiguration
+    nodeRegistration:
+      kubeletExtraArgs:
+        node-labels: "ingress-ready=true"
+  # 映射主機端口到 Master 節點，以便將來可以設定 Ingress
+  extraPortMappings:
+  - containerPort: 80
+    hostPort: 80
+    protocol: TCP
+  - containerPort: 443
+    hostPort: 443
+    protocol: TCP
+
+# 2. 三個 Worker 節點
+- role: worker
+  image: kindest/node:v1.27.3
+- role: worker
+  image: kindest/node:v1.27.3
+- role: worker
+  image: kindest/node:v1.27.3 

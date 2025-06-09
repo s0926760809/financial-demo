@@ -172,17 +172,28 @@ func main() {
 	router.Use(metricsMiddleware())
 	router.Use(securityMiddleware())
 
-	// 路由
-	router.POST("/payment/process", processPayment)
-	router.GET("/payment/status/:id", getPaymentStatus)
-	router.POST("/payment/refund", processRefund)
+	// API v1 路由組
+	v1 := router.Group("/api/v1")
+	{
+		payment := v1.Group("/payment")
+		{
+			payment.POST("/process", processPayment)
+			payment.GET("/status/:id", getPaymentStatus)
+			payment.POST("/refund", processRefund)
+		}
+
+		// 測試端點 - 故意暴露的功能
+		debug := v1.Group("/debug")
+		{
+			debug.GET("/config", getDebugConfig)
+			debug.POST("/dns", testDNSLookup)
+			debug.POST("/external", testExternalAPI)
+		}
+	}
+
+	// 健康檢查和指標路由
 	router.GET("/health", healthCheck)
 	router.GET("/metrics", gin.WrapH(promhttp.Handler()))
-
-	// 測試端點 - 故意暴露的功能
-	router.GET("/debug/config", getDebugConfig)
-	router.POST("/debug/dns", testDNSLookup)
-	router.POST("/debug/external", testExternalAPI)
 
 	// 啟動服務器
 	address := fmt.Sprintf("%s:%s", config.Server.Host, config.Server.Port)
