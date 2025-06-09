@@ -61,20 +61,13 @@ build_and_push_frontend() {
     echo "映像檔全名: ${image_full_name}"
     echo "API 基礎 URL: ${api_base_url}"
 
-    # 確保前端代碼是最新的構建版本
-    echo "步驟 0/3: 構建前端代碼..."
-    cd "${context_path}"
-    npm ci
-    npm run build
-    cd "${BASE_DIR}"
-
-    echo "步驟 1/3: 建置映像檔..."
+    echo "步驟 1/2: 建置映像檔..."
     docker build \
         --build-arg VITE_API_BASE_URL=${api_base_url} \
         -t "${image_full_name}" \
         "${context_path}"
 
-    echo "步驟 2/3: 推送映像檔..."
+    echo "步驟 2/2: 推送映像檔..."
     docker push "${image_full_name}"
 
     echo "✅ 服務 ${service_name} 處理完成。"
