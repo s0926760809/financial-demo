@@ -10,7 +10,7 @@ metadata:
 spec:
   ingressClassName: {{ .Values.ingress.className }}
   rules:
-    - host: {{ .Values.ingress.host | quote }}
+    - host: fintech-demo.local
       http:
         paths:
           - path: /
@@ -20,4 +20,36 @@ spec:
                 name: frontend
                 port:
                   number: {{ .Values.frontend.service.port }}
+          - path: /api/trading
+            pathType: Prefix
+            backend:
+              service:
+                name: trading-api-service
+                port:
+                  number: {{ .Values.tradingApi.service.port }}
+          - path: /api/risk
+            pathType: Prefix
+            backend:
+              service:
+                name: risk-engine-service
+                port:
+                  number: {{ .Values.riskEngine.service.port }}
+          - path: /api/payment
+            pathType: Prefix
+            backend:
+              service:
+                name: payment-gateway-service
+                port:
+                  number: {{ .Values.paymentGateway.service.port }}
+          - path: /api/audit
+            pathType: Prefix
+            backend:
+              service:
+                name: audit-service-service
+                port:
+                  number: {{ .Values.auditService.service.port }}
+  {{- with .Values.ingress.tls }}
+  tls:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 {{- end }} 
