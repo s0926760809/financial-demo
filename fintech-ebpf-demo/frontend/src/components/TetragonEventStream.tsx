@@ -115,11 +115,10 @@ const TetragonEventStream: React.FC = () => {
 
     setConnectionStatus('connecting');
     
-    // 構建WebSocket URL
+    // 構建WebSocket URL - 在K8s環境中通過Ingress路由
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const host = window.location.hostname;
-    const port = '30080'; // Trading API 端口
-    const wsUrl = `${protocol}//${host}:${port}/api/v1/tetragon/ws`;
+    const host = window.location.host; // 包含端口
+    const wsUrl = `${protocol}//${host}/api/v1/tetragon/ws`;
 
     wsRef.current = new WebSocket(wsUrl);
 
@@ -225,7 +224,7 @@ const TetragonEventStream: React.FC = () => {
       if (selectedEventType) eventsParams.append('event_type', selectedEventType);
       eventsParams.append('limit', maxEvents.toString());
 
-      const eventsResponse = await fetch(`/api/trading/api/v1/tetragon/events?${eventsParams.toString()}`);
+      const eventsResponse = await fetch(`/api/v1/tetragon/events?${eventsParams.toString()}`);
       if (eventsResponse.ok) {
         const eventsData = await eventsResponse.json();
         if (!connected) { // 只有在WebSocket未連接時才更新
@@ -234,14 +233,14 @@ const TetragonEventStream: React.FC = () => {
       }
 
       // 獲取告警列表
-      const alertsResponse = await fetch('/api/trading/api/v1/tetragon/alerts');
+      const alertsResponse = await fetch('/api/v1/tetragon/alerts');
       if (alertsResponse.ok) {
         const alertsData = await alertsResponse.json();
         setAlerts(alertsData.alerts || []);
       }
 
       // 獲取統計數據
-      const statsResponse = await fetch('/api/trading/api/v1/tetragon/statistics');
+      const statsResponse = await fetch('/api/v1/tetragon/statistics');
       if (statsResponse.ok) {
         const statsData = await statsResponse.json();
         setStatistics(statsData.statistics);

@@ -8,7 +8,7 @@ if (import.meta.env.DEV) {
   console.log('🚀 FinTech eBPF Demo 前端應用啟動');
   console.log('📦 版本:', '3.0.0');
   console.log('🔧 環境:', import.meta.env.MODE);
-  console.log('🌐 API Base URL:', import.meta.env.VITE_API_BASE_URL || 'http://localhost:30080');
+  console.log('🌐 API Base URL:', import.meta.env.VITE_API_BASE_URL || '/api/v1');
 }
 
 // 故意暴露一些全局方法用於演示

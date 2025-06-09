@@ -110,12 +110,12 @@ const Monitoring: React.FC = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(new Date());
 
-  // 服務配置
+  // 服務配置 - 在K8s環境中使用相對路徑，由Ingress路由
   const serviceConfigs = [
-    { name: 'Trading API', url: 'http://localhost:30080/health', port: 30080 },
-    { name: 'Risk Engine', url: 'http://localhost:30081/health', port: 30081 },
-    { name: 'Payment Gateway', url: 'http://localhost:30082/health', port: 30082 },
-    { name: 'Audit Service', url: 'http://localhost:30083/health', port: 30083 },
+    { name: 'Trading API', url: '/api/v1/health', port: 8080 },
+    { name: 'Risk Engine', url: '/api/risk/health', port: 8081 },
+    { name: 'Payment Gateway', url: '/api/payment/health', port: 8082 },
+    { name: 'Audit Service', url: '/api/audit/health', port: 8083 },
   ];
 
   // 獲取服務健康狀態和詳細指標
@@ -139,7 +139,7 @@ const Monitoring: React.FC = () => {
         let metrics: ServiceMetrics | undefined;
         if (config.name === 'Trading API') {
           try {
-            const metricsResponse = await fetch(`http://localhost:${config.port}/api/v1/monitoring/service`);
+            const metricsResponse = await fetch('/api/v1/monitoring/service');
             if (metricsResponse.ok) {
               metrics = await metricsResponse.json();
             }
@@ -203,7 +203,7 @@ const Monitoring: React.FC = () => {
   // 獲取系統概覽數據
   const fetchSystemOverview = async () => {
     try {
-      const response = await fetch('http://localhost:30080/api/v1/monitoring/overview');
+      const response = await fetch('/api/v1/monitoring/overview');
       if (response.ok) {
         const data = await response.json();
         setSystemOverview(data);
@@ -216,7 +216,7 @@ const Monitoring: React.FC = () => {
   // 獲取服務實例信息
   const fetchServiceInstances = async () => {
     try {
-      const response = await fetch('http://localhost:30080/api/v1/monitoring/instances');
+      const response = await fetch('/api/v1/monitoring/instances');
       if (response.ok) {
         const data = await response.json();
         setServiceInstances(data.instances || []);
