@@ -1,17 +1,30 @@
-# fintech-chart 的預設值
-# 這是一個 YAML 格式的檔案。
-# 在這裡聲明可以在模板中使用的變數。
+# fintech-chart 生产环境配置
+# 这个文件包含您实际的 Quay.io 镜像配置
 
 # 全域設定
 replicaCount: 1
 
 image:
   pullPolicy: IfNotPresent
-  # 全域映像檔標籤，可被各個服務獨立覆寫
   tag: "v1.0"
 
-imagePullSecrets:
-  - name: quay-pull-secret
+# 镜像拉取密钥（如果需要）
+# 请根据您的 Quay.io 认证信息配置
+imagePullSecrets: []
+# 示例配置（请替换为您的实际认证信息）:
+# imagePullSecrets:
+#   - name: quay-pull-secret
+#     dockerconfigjson: |
+#       {
+#         "auths": {
+#           "quay.io": {
+#             "username": "your-username",
+#             "password": "your-password",
+#             "auth": "base64-encoded-username:password"
+#           }
+#         }
+#       }
+
 nameOverride: ""
 fullnameOverride: ""
 
@@ -118,18 +131,13 @@ auditService:
       memory: 256Mi
 
 # --- 資料庫與其他依賴設定 ---
-# 在生產環境中，建議使用外部管理的資料庫。
-# 這裡預設為不透過此 Chart 部署，但保留了選項。
-
 postgresql:
   enabled: false
-  # ... postgresql sub-chart values
 
 redis:
   enabled: false
-  # ... redis sub-chart values
 
-# Ingress 配置 - 可选择启用以暴露服务
+# Ingress 配置
 ingress:
   enabled: true
   className: ""
