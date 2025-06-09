@@ -143,9 +143,26 @@ redis:
 ingress:
   enabled: true
   className: "nginx"
-  host: "fintech-demo.local"
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
+  hosts:
+    - host: fintech-demo.local
+      paths:
+        - path: /
+          pathType: Prefix
+          service: frontend
+        - path: /api/trading
+          pathType: Prefix
+          service: tradingApi
+        - path: /api/risk
+          pathType: Prefix
+          service: riskEngine
+        - path: /api/payment
+          pathType: Prefix
+          service: paymentGateway
+        - path: /api/audit
+          pathType: Prefix
+          service: auditService
   tls: []
 
 # 环境变量配置
