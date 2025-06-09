@@ -40,13 +40,13 @@ spec:
             - name: LOG_LEVEL
               value: "{{ .Values.env.LOG_LEVEL }}"
             - name: TRADING_API_HEALTH_URL
-              value: "http://{{ include \"fintech-chart.trading-api.name\" . }}:{{ .Values.tradingApi.service.port }}/health"
+              value: {{ printf "http://%s:%d/health" (include "fintech-chart.trading-api.name" .) .Values.tradingApi.service.port | quote }}
             - name: RISK_ENGINE_HEALTH_URL
-              value: "http://{{ include \"fintech-chart.risk-engine.name\" . }}:{{ .Values.riskEngine.service.port }}/health"
+              value: {{ printf "http://%s:%d/health" (include "fintech-chart.risk-engine.name" .) .Values.riskEngine.service.port | quote }}
             - name: PAYMENT_GATEWAY_HEALTH_URL
-              value: "http://{{ include \"fintech-chart.payment-gateway.name\" . }}:{{ .Values.paymentGateway.service.port }}/health"
+              value: {{ printf "http://%s:%d/health" (include "fintech-chart.payment-gateway.name" .) .Values.paymentGateway.service.port | quote }}
             - name: AUDIT_SERVICE_HEALTH_URL
-              value: "http://{{ include \"fintech-chart.audit-service.name\" . }}:{{ .Values.auditService.service.port }}/health"
+              value: {{ printf "http://%s:%d/health" (include "fintech-chart.audit-service.name" .) .Values.auditService.service.port | quote }}
           resources:
             {{- toYaml .Values.tradingApi.resources | nindent 12 }}
 ---
