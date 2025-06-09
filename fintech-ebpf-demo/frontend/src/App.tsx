@@ -21,6 +21,7 @@ import Security from './pages/Security';
 import Monitoring from './pages/Monitoring';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
+import apiEndpoints from './config';
 
 // 導入樣式
 import './App.css';
@@ -41,10 +42,18 @@ const queryClient = new QueryClient({
 
 // 應用主體組件
 const AppContent: React.FC = () => {
-  const { getThemeConfig, isDarkMode } = useTheme();
+  const themeContext = useTheme();
+  
+  // 安全地解构，确保有默认值
+  const getThemeConfig = themeContext?.getThemeConfig || (() => ({ 
+    token: { colorPrimary: '#1890ff' } 
+  }));
+  const isDarkMode = themeContext?.isDarkMode || false;
+  
+  const themeConfig = getThemeConfig();
   
   return (
-    <ConfigProvider locale={zhCN} theme={getThemeConfig()}>
+    <ConfigProvider locale={zhCN} theme={themeConfig}>
       <AntApp>
         <Router>
           <div className={`App ${isDarkMode ? 'dark-theme' : ''}`}>
@@ -69,12 +78,7 @@ const AppContent: React.FC = () => {
                     <pre>{JSON.stringify({
                       version: '3.0.0',
                       buildTime: new Date().toISOString(),
-                      apiEndpoints: {
-                        trading: 'http://localhost:30080',
-                        risk: 'http://localhost:30081',
-                        payment: 'http://localhost:30082',
-                        audit: 'http://localhost:30083'
-                      },
+                      apiEndpoints: apiEndpoints,
                       // 故意暴露一些敏感信息用於安全演示
                       secrets: {
                         apiKey: 'demo_api_key_12345',

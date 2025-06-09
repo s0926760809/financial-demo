@@ -30,12 +30,15 @@ frontend:
   replicaCount: 1
   image:
     repository: quay.io/s0926760809/fintech-demo/frontend
-    tag: "v1.0"
+    tag: "v1.2"
+    pullPolicy: Always
   service:
     type: NodePort
     port: 80
     targetPort: 80
-    nodePort: 30080
+    nodePort: 30088
+  env:
+    VITE_BACKEND_URLS: "trading:http://{{ include \"fintech-chart.fullname\" . }}-trading-api:{{ .Values.tradingApi.service.port }},risk:http://{{ include \"fintech-chart.fullname\" . }}-risk-engine:{{ .Values.riskEngine.service.port }},payment:http://{{ include \"fintech-chart.fullname\" . }}-payment-gateway:{{ .Values.paymentGateway.service.port }},audit:http://{{ include \"fintech-chart.fullname\" . }}-audit-service:{{ .Values.auditService.service.port }}"
   resources:
     limits:
       cpu: 500m
@@ -123,37 +126,33 @@ auditService:
 # 這裡預設為不透過此 Chart 部署，但保留了選項。
 
 postgresql:
-  enabled: false
-  # ... postgresql sub-chart values
+  enabled: true
+  auth:
+    enablePostgresUser: true
+    postgresPassword: "fintech123"
+    username: "fintech"
+    password: "password"
+    database: "fintech_db"
+  primary:
+    persistence:
+      enabled: true
+      size: 8Gi
 
 redis:
-  enabled: false
-  # ... redis sub-chart values
+  enabled: true
+  auth:
+    enabled: false
+  master:
+    persistence:
+      enabled: true
+      size: 8Gi
 
 # Ingress 配置 - 可选择启用以暴露服务
 ingress:
   enabled: true
-  className: ""
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-  hosts:
-    - host: fintech-demo.local
-      paths:
-        - path: /
-          pathType: Prefix
-          service: frontend
-        - path: /api/trading
-          pathType: Prefix
-          service: tradingApi
-        - path: /api/risk
-          pathType: Prefix
-          service: riskEngine
-        - path: /api/payment
-          pathType: Prefix
-          service: paymentGateway
-        - path: /api/audit
-          pathType: Prefix
-          service: auditService
+  host: "fintech-demo.local"
+  className: "nginx"
+  annotations: {}
   tls: []
 
 # 环境变量配置

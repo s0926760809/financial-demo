@@ -65,7 +65,16 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
 export const useNotifications = (): NotificationContextType => {
   const context = useContext(NotificationContext);
   if (context === undefined) {
-    throw new Error('useNotifications must be used within a NotificationProvider');
+    console.warn('useNotifications must be used within a NotificationProvider, returning default values');
+    // 返回默认值而不是抛出错误
+    return {
+      notifications: [],
+      unreadCount: 0,
+      addNotification: () => {},
+      markAsRead: () => {},
+      markAllAsRead: () => {},
+      clearAll: () => {}
+    };
   }
   return context;
 }; 

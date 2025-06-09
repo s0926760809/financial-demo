@@ -8,17 +8,24 @@ set -e # 任何指令失敗則立即退出
 
 # --- 組態變數 ---
 # 從環境變數讀取倉庫位置與映像檔標籤
-# 範例: DOCKER_REGISTRY="youracr.azurecr.io/fintech"
-#       IMAGE_TAG="1.0.0"
-DOCKER_REGISTRY=${DOCKER_REGISTRY:?"錯誤: 請設定 DOCKER_REGISTRY 環境變數。"}
-IMAGE_TAG=${IMAGE_TAG:?"錯誤: 請設定 IMAGE_TAG 環境變數。"}
+# 範例: DOCKER_REGISTRY="quay.io/s0926760809/fintech-demo"
+#       IMAGE_TAG="v1.1" (如果未設定，將自動生成)
+DOCKER_REGISTRY=${DOCKER_REGISTRY:-"quay.io/s0926760809/fintech-demo"}
 
-BASE_DIR=$(git rev-parse --show-toplevel)
+# 如果沒有設定 IMAGE_TAG，自動生成版本號
+if [ -z "$IMAGE_TAG" ]; then
+    # 使用當前時間戳作為版本標籤
+    IMAGE_TAG="v$(date +%Y%m%d-%H%M%S)"
+    echo "自動生成版本標籤: ${IMAGE_TAG}"
+fi
+
+BASE_DIR=$(pwd)
 
 echo "############################################################"
 echo "# 開始建置金融演示系統映像檔"
 echo "# 倉庫: ${DOCKER_REGISTRY}"
 echo "# 標籤: ${IMAGE_TAG}"
+echo "# 工作目錄: ${BASE_DIR}"
 echo "############################################################"
 
 # 函數：建置並推送映像檔
@@ -42,16 +49,10 @@ build_and_push() {
     echo "✅ 服務 ${service_name} 處理完成。"
 }
 
-# --- 後端微服務 ---
-build_and_push "trading-api"     "${BASE_DIR}/fintech-ebpf-demo/backend/trading-api"
-build_and_push "risk-engine"     "${BASE_DIR}/fintech-ebpf-demo/backend/risk-engine"
-build_and_push "payment-gateway" "${BASE_DIR}/fintech-ebpf-demo/backend/payment-gateway"
-build_and_push "audit-service"   "${BASE_DIR}/fintech-ebpf-demo/backend/audit-service"
-
-# --- 前端應用 (帶有構建參數) ---
+# --- 前端應用 (先構建前端代碼) ---
 build_and_push_frontend() {
     local service_name="frontend"
-    local context_path="${BASE_DIR}/fintech-ebpf-demo/frontend"
+    local context_path="${BASE_DIR}/frontend"
     local image_full_name="${DOCKER_REGISTRY}/${service_name}:${IMAGE_TAG}"
     local api_base_url="/api" # Kubernetes 環境使用的 API 路徑
 
@@ -60,21 +61,41 @@ build_and_push_frontend() {
     echo "映像檔全名: ${image_full_name}"
     echo "API 基礎 URL: ${api_base_url}"
 
-    echo "步驟 1/2: 建置映像檔..."
+    # 確保前端代碼是最新的構建版本
+    echo "步驟 0/3: 構建前端代碼..."
+    cd "${context_path}"
+    npm ci
+    npm run build
+    cd "${BASE_DIR}"
+
+    echo "步驟 1/3: 建置映像檔..."
     docker build \
         --build-arg VITE_API_BASE_URL=${api_base_url} \
         -t "${image_full_name}" \
         "${context_path}"
 
-    echo "步驟 2/2: 推送映像檔..."
+    echo "步驟 2/3: 推送映像檔..."
     docker push "${image_full_name}"
 
     echo "✅ 服務 ${service_name} 處理完成。"
 }
 
+# --- 後端微服務 ---
+build_and_push "trading-api"     "${BASE_DIR}/backend/trading-api"
+build_and_push "risk-engine"     "${BASE_DIR}/backend/risk-engine"
+build_and_push "payment-gateway" "${BASE_DIR}/backend/payment-gateway"
+build_and_push "audit-service"   "${BASE_DIR}/backend/audit-service"
+
+# --- 前端應用 ---
 build_and_push_frontend
 
 echo ""
 echo "############################################################"
 echo "# 🎉 所有映像檔已成功建置並推送到 ${DOCKER_REGISTRY}"
-echo "############################################################" 
+echo "# 使用的標籤: ${IMAGE_TAG}"
+echo "############################################################"
+
+# 輸出部署命令供參考
+echo ""
+echo "要更新 Helm 部署，請執行以下命令:"
+echo "helm upgrade fintech-demo ./k8s/helm/fintech-chart --set frontend.image.tag=${IMAGE_TAG} --set backend.image.tag=${IMAGE_TAG} -n nginx-gateway" 
