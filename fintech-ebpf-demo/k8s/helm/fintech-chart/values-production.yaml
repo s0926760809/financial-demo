@@ -17,6 +17,14 @@ global:
     seccompProfile:
       type: RuntimeDefault
 
+# ==================== Service Account 設定 ====================
+serviceAccount:
+  create: true
+  name: ""
+  annotations:
+    # 生產環境 Service Account 配置
+    eks.amazonaws.com/role-arn: "arn:aws:iam::ACCOUNT:role/fintech-prod-role"
+
 # ==================== 前端服務 ====================
 frontend:
   replicaCount: 3  # 生產環境增加副本數
