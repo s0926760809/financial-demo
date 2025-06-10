@@ -190,4 +190,27 @@ Audit Service image
 */}}
 {{- define "fintech-chart.audit-service.image" -}}
 {{- printf "%s/audit-service:%s" (include "fintech-chart.imageRegistry" .) (include "fintech-chart.imageTag" .) }}
+{{- end }}
+
+{{/*
+Service names for backend microservices
+*/}}
+{{- define "fintech-chart.trading-api.name" -}}
+{{- printf "%s-trading-api" (include "fintech-chart.fullname" .) }}
+{{- end }}
+
+{{- define "fintech-chart.risk-engine.name" -}}
+{{- printf "%s-risk-engine" (include "fintech-chart.fullname" .) }}
+{{- end }}
+
+{{- define "fintech-chart.payment-gateway.name" -}}
+{{- printf "%s-payment-gateway" (include "fintech-chart.fullname" .) }}
+{{- end }}
+
+{{- define "fintech-chart.audit-service.name" -}}
+{{- printf "%s-audit-service" (include "fintech-chart.fullname" .) }}
+{{- end }}
+
+{{- define "fintech-chart.frontend.name" -}}
+{{- printf "%s-frontend" (include "fintech-chart.fullname" .) }}
 {{- end }} 
