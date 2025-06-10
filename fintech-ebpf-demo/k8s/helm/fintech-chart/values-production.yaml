@@ -130,7 +130,7 @@ ingress:
   className: "nginx"
   
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/cors-allow-origin: "https://fintech-prod.example.com"
     nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, PUT, DELETE, OPTIONS"
     nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization"
@@ -147,25 +147,25 @@ ingress:
             service:
               name: frontend
               port: 80
-        - path: /api/trading/(.*)
+        - path: /api/trading
           pathType: Prefix
           backend:
             service:
               name: trading-api-service
               port: 8080
-        - path: /api/risk/(.*)
+        - path: /api/risk
           pathType: Prefix
           backend:
             service:
               name: risk-engine-service
               port: 8081
-        - path: /api/payment/(.*)
+        - path: /api/payment
           pathType: Prefix
           backend:
             service:
               name: payment-gateway-service
               port: 8082
-        - path: /api/audit/(.*)
+        - path: /api/audit
           pathType: Prefix
           backend:
             service:
@@ -193,10 +193,11 @@ configMaps:
 secrets:
   enabled: true
   data:
-    # 生產環境的 secrets 應該通過外部系統管理，這裡僅作示例
-    database_password: "REPLACE_WITH_BASE64_ENCODED_REAL_PASSWORD"
-    jwt_secret: "REPLACE_WITH_BASE64_ENCODED_REAL_JWT_SECRET"
-    api_key: "REPLACE_WITH_BASE64_ENCODED_REAL_API_KEY"
+    # 生產環境的 secrets 應該通過外部系統管理，這裡使用預設值
+    # 在實際部署時應該替換為真實的 base64 編碼值
+    database_password: "cHJvZF9wYXNzd29yZF8yMDI1"  # prod_password_2025
+    jwt_secret: "c2VjdXJlX2p3dF9rZXlfZm9yX3Byb2R1Y3Rpb24="  # secure_jwt_key_for_production
+    api_key: "YXBpX2tleV9mb3JfcHJvZHVjdGlvbl8yMDI1"  # api_key_for_production_2025
 
 # ==================== 監控設定 ====================
 monitoring:
