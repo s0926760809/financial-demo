@@ -126,12 +126,16 @@ backend:
         memory: 256Mi
 
 # ==================== 數據庫設定 ====================
-# 生產環境建議使用外部管理的數據庫
+# 啟用內建數據庫，用於測試/演示環境
 postgresql:
-  enabled: false  # 使用外部 PostgreSQL
+  enabled: true
+  auth:
+    username: "fintech_user"
+    password: "fintech_password_prod"
+    database: "fintech_prod_db"
 
 redis:
-  enabled: false  # 使用外部 Redis
+  enabled: true
 
 # ==================== Ingress 設定 ====================
 ingress:
@@ -190,13 +194,13 @@ ingress:
 configMaps:
   enabled: true
   data:
-    # 生產環境使用外部數據庫
-    database_url: "postgresql://fintech_user:REPLACE_WITH_REAL_PASSWORD@prod-postgres.example.com:5432/fintech_prod"
-    redis_url: "redis://prod-redis.example.com:6379"
-    log_level: "warn"  # 生產環境降低日誌級別
-    cors_origins: "https://fintech-prod.example.com"
-    api_rate_limit: "1000"  # 生產環境提高限制
-    session_timeout: "1800"  # 30分鐘
+    # 指向內建數據庫 - 使用Helm模板語法
+    database_url: "postgresql://fintech_user:fintech_password_prod@{{ .Release.Name }}-postgresql:5432/fintech_prod_db?sslmode=disable"
+    redis_url: "redis://{{ .Release.Name }}-redis-master:6379"
+    log_level: "info" # 開啟info級別日誌方便調試
+    cors_origins: "*" # 暫時允許所有來源
+    api_rate_limit: "1000"
+    session_timeout: "1800"
 
 # ==================== Secrets 設定 ====================
 secrets:
