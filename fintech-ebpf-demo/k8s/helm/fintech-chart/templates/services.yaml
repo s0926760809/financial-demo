@@ -4,20 +4,17 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "fintech-chart.frontend.name" . }}
-  namespace: {{ .Values.global.namespace | default .Release.Namespace }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "fintech-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: frontend
 spec:
-  type: {{ .Values.frontend.service.type }}
+  type: ClusterIP
   ports:
-    - port: {{ .Values.frontend.service.port }}
-      targetPort: {{ .Values.frontend.service.targetPort }}
+    - port: 80
+      targetPort: 80
       protocol: TCP
       name: http
-      {{- if and (eq .Values.frontend.service.type "NodePort") .Values.frontend.service.nodePort }}
-      nodePort: {{ .Values.frontend.service.nodePort }}
-      {{- end }}
   selector:
     {{- include "fintech-chart.selectorLabels" . | nindent 4 }}
     app.kubernetes.io/component: frontend
@@ -25,24 +22,24 @@ spec:
 {{- end }}
 
 # Trading API Service
-{{- if .Values.tradingApi.enabled }}
+{{- if .Values.backend.tradingApi.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "fintech-chart.trading-api.name" . }}
-  namespace: {{ .Values.global.namespace | default .Release.Namespace }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "fintech-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: trading-api
   annotations:
     prometheus.io/scrape: "true"
-    prometheus.io/port: "{{ .Values.tradingApi.service.port }}"
+    prometheus.io/port: "{{ .Values.backend.tradingApi.port }}"
     prometheus.io/path: "/metrics"
 spec:
-  type: {{ .Values.tradingApi.service.type }}
+  type: ClusterIP
   ports:
-    - port: {{ .Values.tradingApi.service.port }}
-      targetPort: {{ .Values.tradingApi.service.targetPort }}
+    - port: {{ .Values.backend.tradingApi.port }}
+      targetPort: {{ .Values.backend.tradingApi.port }}
       protocol: TCP
       name: http
   selector:
@@ -52,24 +49,24 @@ spec:
 {{- end }}
 
 # Risk Engine Service
-{{- if .Values.riskEngine.enabled }}
+{{- if .Values.backend.riskEngine.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "fintech-chart.risk-engine.name" . }}
-  namespace: {{ .Values.global.namespace | default .Release.Namespace }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "fintech-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: risk-engine
   annotations:
     prometheus.io/scrape: "true"
-    prometheus.io/port: "{{ .Values.riskEngine.service.port }}"
+    prometheus.io/port: "{{ .Values.backend.riskEngine.port }}"
     prometheus.io/path: "/metrics"
 spec:
-  type: {{ .Values.riskEngine.service.type }}
+  type: ClusterIP
   ports:
-    - port: {{ .Values.riskEngine.service.port }}
-      targetPort: {{ .Values.riskEngine.service.targetPort }}
+    - port: {{ .Values.backend.riskEngine.port }}
+      targetPort: {{ .Values.backend.riskEngine.port }}
       protocol: TCP
       name: http
   selector:
@@ -79,24 +76,24 @@ spec:
 {{- end }}
 
 # Payment Gateway Service
-{{- if .Values.paymentGateway.enabled }}
+{{- if .Values.backend.paymentGateway.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "fintech-chart.payment-gateway.name" . }}
-  namespace: {{ .Values.global.namespace | default .Release.Namespace }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "fintech-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: payment-gateway
   annotations:
     prometheus.io/scrape: "true"
-    prometheus.io/port: "{{ .Values.paymentGateway.service.port }}"
+    prometheus.io/port: "{{ .Values.backend.paymentGateway.port }}"
     prometheus.io/path: "/metrics"
 spec:
-  type: {{ .Values.paymentGateway.service.type }}
+  type: ClusterIP
   ports:
-    - port: {{ .Values.paymentGateway.service.port }}
-      targetPort: {{ .Values.paymentGateway.service.targetPort }}
+    - port: {{ .Values.backend.paymentGateway.port }}
+      targetPort: {{ .Values.backend.paymentGateway.port }}
       protocol: TCP
       name: http
   selector:
@@ -106,24 +103,24 @@ spec:
 {{- end }}
 
 # Audit Service
-{{- if .Values.auditService.enabled }}
+{{- if .Values.backend.auditService.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "fintech-chart.audit-service.name" . }}
-  namespace: {{ .Values.global.namespace | default .Release.Namespace }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "fintech-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: audit-service
   annotations:
     prometheus.io/scrape: "true"
-    prometheus.io/port: "{{ .Values.auditService.service.port }}"
+    prometheus.io/port: "{{ .Values.backend.auditService.port }}"
     prometheus.io/path: "/metrics"
 spec:
-  type: {{ .Values.auditService.service.type }}
+  type: ClusterIP
   ports:
-    - port: {{ .Values.auditService.service.port }}
-      targetPort: {{ .Values.auditService.service.targetPort }}
+    - port: {{ .Values.backend.auditService.port }}
+      targetPort: {{ .Values.backend.auditService.port }}
       protocol: TCP
       name: http
   selector:

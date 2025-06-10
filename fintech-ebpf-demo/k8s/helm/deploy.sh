@@ -39,17 +39,26 @@ check_prerequisites() {
     echo "🔍 檢查前置需求..."
     
     # 檢查必要的命令
-    for cmd in docker kubectl helm; do
+    for cmd in kubectl helm; do
         if ! command -v $cmd &> /dev/null; then
             echo "❌ 錯誤: $cmd 未安裝或不在 PATH 中"
             exit 1
         fi
     done
     
-    # 檢查 Docker 是否運行
-    if ! docker info &> /dev/null; then
-        echo "❌ 錯誤: Docker 未運行"
-        exit 1
+    # 檢查 Docker（僅在需要構建映像時）
+    if [ "$SKIP_BUILD" = false ]; then
+        if ! command -v docker &> /dev/null; then
+            echo "⚠️  警告: Docker 命令未找到，但需要構建映像"
+            echo "💡 提示: 使用 --skip-build 跳過映像構建"
+            exit 1
+        elif ! docker info &> /dev/null; then
+            echo "⚠️  警告: Docker 未運行，但需要構建映像"
+            echo "💡 提示: 啟動 Docker 或使用 --skip-build 跳過映像構建"
+            exit 1
+        fi
+    else
+        echo "⏭️  跳過 Docker 檢查（--skip-build 已啟用）"
     fi
     
     # 檢查 Kubernetes 連接
