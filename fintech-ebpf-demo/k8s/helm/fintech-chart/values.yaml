@@ -28,6 +28,7 @@ image:
 
 # 前端配置
 frontend:
+  enabled: true
   replicaCount: 1
   
   config:
@@ -76,6 +77,7 @@ frontend:
 # 後端服務配置
 backend:
   tradingApi:
+    enabled: true
     replicaCount: 1
     port: 8080
     resources:
@@ -87,6 +89,7 @@ backend:
         memory: 256Mi
   
   riskEngine:
+    enabled: true
     replicaCount: 1
     port: 8081
     resources:
@@ -98,6 +101,7 @@ backend:
         memory: 256Mi
   
   paymentGateway:
+    enabled: true
     replicaCount: 1
     port: 8082
     resources:
@@ -109,6 +113,7 @@ backend:
         memory: 128Mi
   
   auditService:
+    enabled: true
     replicaCount: 1
     port: 8083
     resources:

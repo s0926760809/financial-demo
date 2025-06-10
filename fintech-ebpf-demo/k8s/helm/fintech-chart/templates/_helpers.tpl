@@ -80,7 +80,21 @@ Pod Security Context
 {{- end }}
 
 {{/*
-Container Security Context
+Container Security Context (simplified)
+*/}}
+{{- define "fintech-chart.securityContext" -}}
+allowPrivilegeEscalation: false
+capabilities:
+  drop:
+  - ALL
+readOnlyRootFilesystem: false
+runAsNonRoot: true
+runAsUser: 1001
+runAsGroup: 1001
+{{- end }}
+
+{{/*
+Container Security Context (full)
 */}}
 {{- define "fintech-chart.containerSecurityContext" -}}
 {{- with .Values.global.securityContext }}
