@@ -4,7 +4,7 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: {{ include "fintech-chart.fullname" . }}-frontend-netpol
-  namespace: {{ .Values.global.namespace | default .Release.Namespace }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "fintech-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: frontend
@@ -17,45 +17,24 @@ spec:
   - Ingress
   - Egress
   ingress:
-  {{- range .Values.networkPolicy.ingress }}
   - from:
-    {{- range .from }}
-    {{- if .namespaceSelector }}
-    - namespaceSelector:
-        {{- toYaml .namespaceSelector | nindent 8 }}
-    {{- end }}
-    {{- if .podSelector }}
     - podSelector:
-        {{- toYaml .podSelector | nindent 8 }}
-    {{- end }}
-    {{- end }}
+        matchLabels:
+          {{- include "fintech-chart.selectorLabels" . | nindent 10 }}
+          app.kubernetes.io/component: backend
+    - podSelector: {}  # Allow from any pod in the same namespace
     ports:
-    {{- range .ports }}
-    - protocol: {{ .protocol }}
-      port: {{ .port }}
-    {{- end }}
-  {{- end }}
+    - protocol: TCP
+      port: 80
   egress:
-  {{- range .Values.networkPolicy.egress }}
-  - to:
-    {{- range .to }}
-    {{- if . }}
-    - {}
-    {{- end }}
-    {{- end }}
-    ports:
-    {{- range .ports }}
-    - protocol: {{ .protocol }}
-      port: {{ .port }}
-    {{- end }}
-  {{- end }}
+  - to: []  # Allow all egress
 ---
 # Network Policy for Backend Services
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: {{ include "fintech-chart.fullname" . }}-backend-netpol
-  namespace: {{ .Values.global.namespace | default .Release.Namespace }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "fintech-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: backend
@@ -73,26 +52,62 @@ spec:
           {{- include "fintech-chart.selectorLabels" . | nindent 10 }}
     ports:
     - protocol: TCP
-      port: 8080
+      port: 8080  # Trading API
     - protocol: TCP
-      port: 8081
+      port: 8081  # Risk Engine
     - protocol: TCP
-      port: 8082
+      port: 8082  # Payment Gateway
     - protocol: TCP
-      port: 8083
+      port: 8083  # Audit Service
   egress:
-  - to: []
+  - to: []  # Allow all egress for database and external API connections
+---
+# Network Policy for Database Access
+{{- if or .Values.postgresql.enabled .Values.redis.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "fintech-chart.fullname" . }}-database-netpol
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "fintech-chart.labels" . | nindent 4 }}
+    app.kubernetes.io/component: database
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: postgresql
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          {{- include "fintech-chart.selectorLabels" . | nindent 10 }}
     ports:
     - protocol: TCP
       port: 5432  # PostgreSQL
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "fintech-chart.fullname" . }}-redis-netpol
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "fintech-chart.labels" . | nindent 4 }}
+    app.kubernetes.io/component: redis
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: redis
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          {{- include "fintech-chart.selectorLabels" . | nindent 10 }}
+    ports:
     - protocol: TCP
       port: 6379  # Redis
-    - protocol: TCP
-      port: 53    # DNS
-    - protocol: UDP
-      port: 53    # DNS
-    - protocol: TCP
-      port: 443   # HTTPS
-    - protocol: TCP
-      port: 80    # HTTP
+{{- end }}
 {{- end }} 
