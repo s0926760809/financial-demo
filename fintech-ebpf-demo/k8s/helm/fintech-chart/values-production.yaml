@@ -5,7 +5,7 @@
 global:
   imageRegistry: "quay.io/s0926760809/fintech-demo"
   imageTag: "v1.0.0"  # 生產環境使用固定版本標籤
-  imagePullPolicy: IfNotPresent  # 生產環境使用緩存映像
+  imagePullPolicy: Always  # 總是拉取最新鏡像
   namespace: fintech-prod
   
   # 生產環境安全設定

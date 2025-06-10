@@ -4,7 +4,7 @@
 global:
   imageRegistry: "quay.io/s0926760809/fintech-demo"
   imageTag: "latest"
-  imagePullPolicy: "IfNotPresent"
+  imagePullPolicy: "Always"
   storageClass: "standard"
 
 # 通用配置
@@ -24,7 +24,7 @@ serviceAccount:
 image:
   registry: "quay.io/s0926760809/fintech-demo"
   tag: "latest"
-  pullPolicy: "IfNotPresent"
+  pullPolicy: "Always"
 
 # 前端配置
 frontend:
