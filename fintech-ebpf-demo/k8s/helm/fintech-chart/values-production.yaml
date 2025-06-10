@@ -7,10 +7,6 @@ global:
   imageTag: "v1.0.0"  # 生產環境使用固定版本標籤
   imagePullPolicy: Always  # 總是拉取最新鏡像
   namespace: fintech-prod
-
-# ==================== 鏡像拉取祕密 ====================
-imagePullSecrets:
-  - name: quay-secret
   
   # 生產環境安全設定
   securityContext:
@@ -20,6 +16,10 @@ imagePullSecrets:
     fsGroup: 1001
     seccompProfile:
       type: RuntimeDefault
+
+# ==================== 鏡像拉取祕密 ====================
+imagePullSecrets:
+  - name: quay-secret
 
 # ==================== Service Account 設定 ====================
 serviceAccount:
