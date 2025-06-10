@@ -24,7 +24,7 @@ metadata:
     {{- include "fintech-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: frontend
 data:
-  nginx.conf: |
+  default.conf: |
     user nginx;
     worker_processes auto;
     error_log /var/log/nginx/error.log;

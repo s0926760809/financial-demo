@@ -48,8 +48,10 @@ frontend:
     targetCPUUtilizationPercentage: 70
 
 # ==================== 後端微服務 ====================
-tradingApi:
-  replicaCount: 3
+backend:
+  tradingApi:
+    enabled: true
+    replicaCount: 3
   
   resources:
     limits:
@@ -65,8 +67,9 @@ tradingApi:
     maxReplicas: 10
     targetCPUUtilizationPercentage: 70
 
-riskEngine:
-  replicaCount: 3
+  riskEngine:
+    enabled: true
+    replicaCount: 3
   
   resources:
     limits:
@@ -82,8 +85,9 @@ riskEngine:
     maxReplicas: 10
     targetCPUUtilizationPercentage: 70
 
-paymentGateway:
-  replicaCount: 3
+  paymentGateway:
+    enabled: true
+    replicaCount: 3
   
   resources:
     limits:
@@ -99,8 +103,9 @@ paymentGateway:
     maxReplicas: 10
     targetCPUUtilizationPercentage: 70
 
-auditService:
-  replicaCount: 2
+  auditService:
+    enabled: true
+    replicaCount: 2
   
   resources:
     limits:

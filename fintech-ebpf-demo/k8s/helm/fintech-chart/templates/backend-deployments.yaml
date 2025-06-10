@@ -1,15 +1,15 @@
 # Trading API Deployment
-{{- if .Values.tradingApi.enabled }}
+{{- if .Values.backend.tradingApi.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "fintech-chart.fullname" . }}-trading-api
-  namespace: {{ .Values.global.namespace | default .Release.Namespace }}
+  name: {{ include "fintech-chart.trading-api.name" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "fintech-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: trading-api
 spec:
-  replicas: {{ .Values.tradingApi.replicaCount }}
+  replicas: {{ .Values.backend.tradingApi.replicaCount }}
   selector:
     matchLabels:
       {{- include "fintech-chart.selectorLabels" . | nindent 6 }}
@@ -32,34 +32,33 @@ spec:
       {{- end }}
       containers:
         - name: trading-api
-          image: "{{ .Values.tradingApi.image.repository }}:{{ include "fintech-chart.imageTag" .Values.tradingApi.image.tag }}"
-          imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+          image: {{ include "fintech-chart.trading-api.image" . }}
+          imagePullPolicy: {{ include "fintech-chart.imagePullPolicy" . }}
           securityContext:
             {{- include "fintech-chart.securityContext" . | nindent 12 }}
           ports:
             - name: http
-              containerPort: {{ .Values.tradingApi.service.targetPort }}
+              containerPort: {{ .Values.backend.tradingApi.port }}
               protocol: TCP
-          env:
-            - name: DATABASE_URL
-              value: {{ include "fintech-chart.databaseUrl" . | quote }}
-            - name: REDIS_URL
-              value: {{ include "fintech-chart.redisUrl" . | quote }}
-            - name: GIN_MODE
-              value: {{ .Values.tradingApi.env.GIN_MODE | quote }}
-            - name: LOG_LEVEL
-              value: {{ .Values.tradingApi.env.LOG_LEVEL | quote }}
-            - name: PORT
-              value: {{ .Values.tradingApi.env.PORT | quote }}
-            - name: JWT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "fintech-chart.fullname" . }}-secrets
-                  key: jwt_secret
-          {{- include "fintech-chart.healthcheck.readiness" .Values.tradingApi | nindent 10 }}
-          {{- include "fintech-chart.healthcheck.liveness" .Values.tradingApi | nindent 10 }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "fintech-chart.fullname" . }}-config
+            - secretRef:
+                name: {{ include "fintech-chart.fullname" . }}-secrets
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
           resources:
-            {{- include "fintech-chart.resources" .Values.tradingApi.resources | nindent 12 }}
+            {{- toYaml .Values.backend.tradingApi.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -72,17 +71,17 @@ spec:
 {{- end }}
 
 # Risk Engine Deployment
-{{- if .Values.riskEngine.enabled }}
+{{- if .Values.backend.riskEngine.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "fintech-chart.fullname" . }}-risk-engine
-  namespace: {{ .Values.global.namespace | default .Release.Namespace }}
+  name: {{ include "fintech-chart.risk-engine.name" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "fintech-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: risk-engine
 spec:
-  replicas: {{ .Values.riskEngine.replicaCount }}
+  replicas: {{ .Values.backend.riskEngine.replicaCount }}
   selector:
     matchLabels:
       {{- include "fintech-chart.selectorLabels" . | nindent 6 }}
@@ -105,29 +104,33 @@ spec:
       {{- end }}
       containers:
         - name: risk-engine
-          image: "{{ .Values.riskEngine.image.repository }}:{{ include "fintech-chart.imageTag" .Values.riskEngine.image.tag }}"
-          imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+          image: {{ include "fintech-chart.risk-engine.image" . }}
+          imagePullPolicy: {{ include "fintech-chart.imagePullPolicy" . }}
           securityContext:
             {{- include "fintech-chart.securityContext" . | nindent 12 }}
           ports:
             - name: http
-              containerPort: {{ .Values.riskEngine.service.targetPort }}
+              containerPort: {{ .Values.backend.riskEngine.port }}
               protocol: TCP
-          env:
-            - name: DATABASE_URL
-              value: {{ include "fintech-chart.databaseUrl" . | quote }}
-            - name: REDIS_URL
-              value: {{ include "fintech-chart.redisUrl" . | quote }}
-            - name: GIN_MODE
-              value: {{ .Values.riskEngine.env.GIN_MODE | quote }}
-            - name: LOG_LEVEL
-              value: {{ .Values.riskEngine.env.LOG_LEVEL | quote }}
-            - name: PORT
-              value: {{ .Values.riskEngine.env.PORT | quote }}
-          {{- include "fintech-chart.healthcheck.readiness" .Values.riskEngine | nindent 10 }}
-          {{- include "fintech-chart.healthcheck.liveness" .Values.riskEngine | nindent 10 }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "fintech-chart.fullname" . }}-config
+            - secretRef:
+                name: {{ include "fintech-chart.fullname" . }}-secrets
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
           resources:
-            {{- include "fintech-chart.resources" .Values.riskEngine.resources | nindent 12 }}
+            {{- toYaml .Values.backend.riskEngine.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -140,17 +143,17 @@ spec:
 {{- end }}
 
 # Payment Gateway Deployment
-{{- if .Values.paymentGateway.enabled }}
+{{- if .Values.backend.paymentGateway.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "fintech-chart.fullname" . }}-payment-gateway
-  namespace: {{ .Values.global.namespace | default .Release.Namespace }}
+  name: {{ include "fintech-chart.payment-gateway.name" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "fintech-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: payment-gateway
 spec:
-  replicas: {{ .Values.paymentGateway.replicaCount }}
+  replicas: {{ .Values.backend.paymentGateway.replicaCount }}
   selector:
     matchLabels:
       {{- include "fintech-chart.selectorLabels" . | nindent 6 }}
@@ -173,29 +176,33 @@ spec:
       {{- end }}
       containers:
         - name: payment-gateway
-          image: "{{ .Values.paymentGateway.image.repository }}:{{ include "fintech-chart.imageTag" .Values.paymentGateway.image.tag }}"
-          imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+          image: {{ include "fintech-chart.payment-gateway.image" . }}
+          imagePullPolicy: {{ include "fintech-chart.imagePullPolicy" . }}
           securityContext:
             {{- include "fintech-chart.securityContext" . | nindent 12 }}
           ports:
             - name: http
-              containerPort: {{ .Values.paymentGateway.service.targetPort }}
+              containerPort: {{ .Values.backend.paymentGateway.port }}
               protocol: TCP
-          env:
-            - name: DATABASE_URL
-              value: {{ include "fintech-chart.databaseUrl" . | quote }}
-            - name: REDIS_URL
-              value: {{ include "fintech-chart.redisUrl" . | quote }}
-            - name: GIN_MODE
-              value: {{ .Values.paymentGateway.env.GIN_MODE | quote }}
-            - name: LOG_LEVEL
-              value: {{ .Values.paymentGateway.env.LOG_LEVEL | quote }}
-            - name: PORT
-              value: {{ .Values.paymentGateway.env.PORT | quote }}
-          {{- include "fintech-chart.healthcheck.readiness" .Values.paymentGateway | nindent 10 }}
-          {{- include "fintech-chart.healthcheck.liveness" .Values.paymentGateway | nindent 10 }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "fintech-chart.fullname" . }}-config
+            - secretRef:
+                name: {{ include "fintech-chart.fullname" . }}-secrets
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
           resources:
-            {{- include "fintech-chart.resources" .Values.paymentGateway.resources | nindent 12 }}
+            {{- toYaml .Values.backend.paymentGateway.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -208,17 +215,17 @@ spec:
 {{- end }}
 
 # Audit Service Deployment
-{{- if .Values.auditService.enabled }}
+{{- if .Values.backend.auditService.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "fintech-chart.fullname" . }}-audit-service
-  namespace: {{ .Values.global.namespace | default .Release.Namespace }}
+  name: {{ include "fintech-chart.audit-service.name" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "fintech-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: audit-service
 spec:
-  replicas: {{ .Values.auditService.replicaCount }}
+  replicas: {{ .Values.backend.auditService.replicaCount }}
   selector:
     matchLabels:
       {{- include "fintech-chart.selectorLabels" . | nindent 6 }}
@@ -241,29 +248,33 @@ spec:
       {{- end }}
       containers:
         - name: audit-service
-          image: "{{ .Values.auditService.image.repository }}:{{ include "fintech-chart.imageTag" .Values.auditService.image.tag }}"
-          imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+          image: {{ include "fintech-chart.audit-service.image" . }}
+          imagePullPolicy: {{ include "fintech-chart.imagePullPolicy" . }}
           securityContext:
             {{- include "fintech-chart.securityContext" . | nindent 12 }}
           ports:
             - name: http
-              containerPort: {{ .Values.auditService.service.targetPort }}
+              containerPort: {{ .Values.backend.auditService.port }}
               protocol: TCP
-          env:
-            - name: DATABASE_URL
-              value: {{ include "fintech-chart.databaseUrl" . | quote }}
-            - name: REDIS_URL
-              value: {{ include "fintech-chart.redisUrl" . | quote }}
-            - name: GIN_MODE
-              value: {{ .Values.auditService.env.GIN_MODE | quote }}
-            - name: LOG_LEVEL
-              value: {{ .Values.auditService.env.LOG_LEVEL | quote }}
-            - name: PORT
-              value: {{ .Values.auditService.env.PORT | quote }}
-          {{- include "fintech-chart.healthcheck.readiness" .Values.auditService | nindent 10 }}
-          {{- include "fintech-chart.healthcheck.liveness" .Values.auditService | nindent 10 }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "fintech-chart.fullname" . }}-config
+            - secretRef:
+                name: {{ include "fintech-chart.fullname" . }}-secrets
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
           resources:
-            {{- include "fintech-chart.resources" .Values.auditService.resources | nindent 12 }}
+            {{- toYaml .Values.backend.auditService.resources | nindent 12 }}
           volumeMounts:
             - name: audit-logs
               mountPath: /var/log/audit
