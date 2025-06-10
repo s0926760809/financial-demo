@@ -1,75 +1,29 @@
-# fintech-chart 生产环境配置
-# 这个文件包含您实际的 Quay.io 镜像配置
+# 金融微服務 eBPF 演示系統 - 生產環境配置
+# 此文件覆寫預設的 values.yaml 中的設定，用於生產環境部署
 
-# 全域設定
-replicaCount: 1
+# ==================== 全域設定 ====================
+global:
+  imageRegistry: "quay.io/s0926760809/fintech-demo"
+  imageTag: "v1.0.0"  # 生產環境使用固定版本標籤
+  imagePullPolicy: IfNotPresent  # 生產環境使用緩存映像
+  namespace: fintech-prod
+  
+  # 生產環境安全設定
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 1001
+    runAsGroup: 1001
+    fsGroup: 1001
+    seccompProfile:
+      type: RuntimeDefault
 
-image:
-  pullPolicy: IfNotPresent
-  tag: "v1.0"
-
-# 镜像拉取密钥（如果需要）
-# 请根据您的 Quay.io 认证信息配置
-imagePullSecrets:
-  - name: quay-pull-secret
-# 示例配置（请替换为您的实际认证信息）:
-# imagePullSecrets:
-#   - name: quay-pull-secret
-#     dockerconfigjson: |
-#       {
-#         "auths": {
-#           "quay.io": {
-#             "username": "your-username",
-#             "password": "your-password",
-#             "auth": "base64-encoded-username:password"
-#           }
-#         }
-#       }
-
-nameOverride: ""
-fullnameOverride: ""
-
-serviceAccount:
-  create: true
-  annotations: {}
-  name: ""
-
-podAnnotations: {}
-podSecurityContext: {}
-securityContext: {}
-
-# -- 前端服務設定 --
+# ==================== 前端服務 ====================
 frontend:
-  enabled: true
-  replicaCount: 1
-  image:
-    repository: quay.io/s0926760809/fintech-demo/frontend
-    tag: "v1.0"
+  replicaCount: 3  # 生產環境增加副本數
+  
   service:
-    type: NodePort
-    port: 80
-    targetPort: 80
-    nodePort: 30080
-  resources:
-    limits:
-      cpu: 500m
-      memory: 512Mi
-    requests:
-      cpu: 250m
-      memory: 256Mi
-
-# --- 後端微服務設定 ---
-
-tradingApi:
-  enabled: true
-  replicaCount: 1
-  image:
-    repository: quay.io/s0926760809/fintech-demo/trading-api
-    tag: "v1.0"
-  service:
-    type: ClusterIP
-    port: 8080
-    targetPort: 8080
+    type: ClusterIP  # 生產環境不使用 NodePort
+  
   resources:
     limits:
       cpu: 1000m
@@ -77,35 +31,69 @@ tradingApi:
     requests:
       cpu: 500m
       memory: 512Mi
+  
+  # 啟用自動擴縮
+  autoscaling:
+    enabled: true
+    minReplicas: 3
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 70
+
+# ==================== 後端微服務 ====================
+tradingApi:
+  replicaCount: 3
+  
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 2Gi
+    requests:
+      cpu: 1000m
+      memory: 1Gi
+  
+  autoscaling:
+    enabled: true
+    minReplicas: 3
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 70
 
 riskEngine:
-  enabled: true
-  replicaCount: 1
-  image:
-    repository: quay.io/s0926760809/fintech-demo/risk-engine
-    tag: "v1.0"
-  service:
-    type: ClusterIP
-    port: 8081
-    targetPort: 8081
+  replicaCount: 3
+  
   resources:
     limits:
+      cpu: 2000m
+      memory: 2Gi
+    requests:
       cpu: 1000m
       memory: 1Gi
-    requests:
-      cpu: 500m
-      memory: 512Mi
+  
+  autoscaling:
+    enabled: true
+    minReplicas: 3
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 70
 
 paymentGateway:
-  enabled: true
-  replicaCount: 1
-  image:
-    repository: quay.io/s0926760809/fintech-demo/payment-gateway
-    tag: "v1.0"
-  service:
-    type: ClusterIP
-    port: 8082
-    targetPort: 8082
+  replicaCount: 3
+  
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 2Gi
+    requests:
+      cpu: 1000m
+      memory: 1Gi
+  
+  autoscaling:
+    enabled: true
+    minReplicas: 3
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 70
+
+auditService:
+  replicaCount: 2
+  
   resources:
     limits:
       cpu: 1000m
@@ -113,60 +101,131 @@ paymentGateway:
     requests:
       cpu: 500m
       memory: 512Mi
+  
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 8
+    targetCPUUtilizationPercentage: 70
 
-auditService:
-  enabled: true
-  replicaCount: 1
-  image:
-    repository: quay.io/s0926760809/fintech-demo/audit-service
-    tag: "v1.0"
-  service:
-    type: ClusterIP
-    port: 8083
-    targetPort: 8083
-  resources:
-    limits:
-      cpu: 500m
-      memory: 512Mi
-    requests:
-      cpu: 250m
-      memory: 256Mi
-
-# --- 資料庫與其他依賴設定 ---
+# ==================== 數據庫設定 ====================
+# 生產環境建議使用外部管理的數據庫
 postgresql:
-  enabled: false
+  enabled: false  # 使用外部 PostgreSQL
 
 redis:
-  enabled: false
+  enabled: false  # 使用外部 Redis
 
-# Ingress 配置
+# ==================== Ingress 設定 ====================
 ingress:
   enabled: true
   className: "nginx"
+  
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/cors-allow-origin: "https://fintech-prod.example.com"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, PUT, DELETE, OPTIONS"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  
   hosts:
-    - host: fintech-demo.local
+    - host: fintech-prod.example.com
       paths:
         - path: /
           pathType: Prefix
-          service: frontend
-        - path: /api/trading
+          backend:
+            service:
+              name: frontend
+              port: 80
+        - path: /api/trading/(.*)
           pathType: Prefix
-          service: tradingApi
-        - path: /api/risk
+          backend:
+            service:
+              name: trading-api-service
+              port: 8080
+        - path: /api/risk/(.*)
           pathType: Prefix
-          service: riskEngine
-        - path: /api/payment
+          backend:
+            service:
+              name: risk-engine-service
+              port: 8081
+        - path: /api/payment/(.*)
           pathType: Prefix
-          service: paymentGateway
-        - path: /api/audit
+          backend:
+            service:
+              name: payment-gateway-service
+              port: 8082
+        - path: /api/audit/(.*)
           pathType: Prefix
-          service: auditService
-  tls: []
+          backend:
+            service:
+              name: audit-service
+              port: 8083
+  
+  tls:
+    - secretName: fintech-prod-tls
+      hosts:
+        - fintech-prod.example.com
 
-# 环境变量配置
-env:
-  DATABASE_URL: "postgresql://fintech:password@postgresql:5432/fintech_db"
-  REDIS_URL: "redis://redis:6379"
-  LOG_LEVEL: "info" 
+# ==================== 配置映射設定 ====================
+configMaps:
+  enabled: true
+  data:
+    # 生產環境使用外部數據庫
+    database_url: "postgresql://fintech_user:REPLACE_WITH_REAL_PASSWORD@prod-postgres.example.com:5432/fintech_prod"
+    redis_url: "redis://prod-redis.example.com:6379"
+    log_level: "warn"  # 生產環境降低日誌級別
+    cors_origins: "https://fintech-prod.example.com"
+    api_rate_limit: "1000"  # 生產環境提高限制
+    session_timeout: "1800"  # 30分鐘
+
+# ==================== Secrets 設定 ====================
+secrets:
+  enabled: true
+  data:
+    # 生產環境的 secrets 應該通過外部系統管理，這裡僅作示例
+    database_password: "REPLACE_WITH_BASE64_ENCODED_REAL_PASSWORD"
+    jwt_secret: "REPLACE_WITH_BASE64_ENCODED_REAL_JWT_SECRET"
+    api_key: "REPLACE_WITH_BASE64_ENCODED_REAL_API_KEY"
+
+# ==================== 監控設定 ====================
+monitoring:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    interval: 15s  # 生產環境更頻繁的監控
+    scrapeTimeout: 5s
+  
+  prometheusRule:
+    enabled: true
+
+# ==================== Pod 中斷預算 ====================
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 2  # 生產環境確保可用性
+
+# ==================== 親和性設定 ====================
+# 確保 Pod 分散在不同節點上
+podAntiAffinity:
+  preferredDuringSchedulingIgnoredDuringExecution:
+  - weight: 100
+    podAffinityTerm:
+      labelSelector:
+        matchExpressions:
+        - key: app.kubernetes.io/name
+          operator: In
+          values: ["fintech-chart"]
+      topologyKey: kubernetes.io/hostname
+
+# ==================== 節點選擇器 ====================
+nodeSelector:
+  node-type: "production"  # 只部署到生產節點
+
+# ==================== 容忍度 ====================
+tolerations:
+- key: "production-only"
+  operator: "Equal"
+  value: "true"
+  effect: "NoSchedule" 

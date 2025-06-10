@@ -1,0 +1,98 @@
+{{- if .Values.networkPolicy.enabled }}
+# Network Policy for Frontend
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "fintech-chart.fullname" . }}-frontend-netpol
+  namespace: {{ .Values.global.namespace | default .Release.Namespace }}
+  labels:
+    {{- include "fintech-chart.labels" . | nindent 4 }}
+    app.kubernetes.io/component: frontend
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "fintech-chart.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: frontend
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  {{- range .Values.networkPolicy.ingress }}
+  - from:
+    {{- range .from }}
+    {{- if .namespaceSelector }}
+    - namespaceSelector:
+        {{- toYaml .namespaceSelector | nindent 8 }}
+    {{- end }}
+    {{- if .podSelector }}
+    - podSelector:
+        {{- toYaml .podSelector | nindent 8 }}
+    {{- end }}
+    {{- end }}
+    ports:
+    {{- range .ports }}
+    - protocol: {{ .protocol }}
+      port: {{ .port }}
+    {{- end }}
+  {{- end }}
+  egress:
+  {{- range .Values.networkPolicy.egress }}
+  - to:
+    {{- range .to }}
+    {{- if . }}
+    - {}
+    {{- end }}
+    {{- end }}
+    ports:
+    {{- range .ports }}
+    - protocol: {{ .protocol }}
+      port: {{ .port }}
+    {{- end }}
+  {{- end }}
+---
+# Network Policy for Backend Services
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "fintech-chart.fullname" . }}-backend-netpol
+  namespace: {{ .Values.global.namespace | default .Release.Namespace }}
+  labels:
+    {{- include "fintech-chart.labels" . | nindent 4 }}
+    app.kubernetes.io/component: backend
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "fintech-chart.selectorLabels" . | nindent 6 }}
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          {{- include "fintech-chart.selectorLabels" . | nindent 10 }}
+    ports:
+    - protocol: TCP
+      port: 8080
+    - protocol: TCP
+      port: 8081
+    - protocol: TCP
+      port: 8082
+    - protocol: TCP
+      port: 8083
+  egress:
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 5432  # PostgreSQL
+    - protocol: TCP
+      port: 6379  # Redis
+    - protocol: TCP
+      port: 53    # DNS
+    - protocol: UDP
+      port: 53    # DNS
+    - protocol: TCP
+      port: 443   # HTTPS
+    - protocol: TCP
+      port: 80    # HTTP
+{{- end }} 

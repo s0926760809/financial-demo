@@ -4,6 +4,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "fintech-chart.frontend.name" . }}
+  namespace: {{ .Values.global.namespace | default .Release.Namespace }}
   labels:
     {{- include "fintech-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: frontend
@@ -29,9 +30,14 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "fintech-chart.trading-api.name" . }}
+  namespace: {{ .Values.global.namespace | default .Release.Namespace }}
   labels:
     {{- include "fintech-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: trading-api
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "{{ .Values.tradingApi.service.port }}"
+    prometheus.io/path: "/metrics"
 spec:
   type: {{ .Values.tradingApi.service.type }}
   ports:
@@ -51,9 +57,14 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "fintech-chart.risk-engine.name" . }}
+  namespace: {{ .Values.global.namespace | default .Release.Namespace }}
   labels:
     {{- include "fintech-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: risk-engine
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "{{ .Values.riskEngine.service.port }}"
+    prometheus.io/path: "/metrics"
 spec:
   type: {{ .Values.riskEngine.service.type }}
   ports:
@@ -73,9 +84,14 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "fintech-chart.payment-gateway.name" . }}
+  namespace: {{ .Values.global.namespace | default .Release.Namespace }}
   labels:
     {{- include "fintech-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: payment-gateway
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "{{ .Values.paymentGateway.service.port }}"
+    prometheus.io/path: "/metrics"
 spec:
   type: {{ .Values.paymentGateway.service.type }}
   ports:
@@ -95,9 +111,14 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "fintech-chart.audit-service.name" . }}
+  namespace: {{ .Values.global.namespace | default .Release.Namespace }}
   labels:
     {{- include "fintech-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: audit-service
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "{{ .Values.auditService.service.port }}"
+    prometheus.io/path: "/metrics"
 spec:
   type: {{ .Values.auditService.service.type }}
   ports:

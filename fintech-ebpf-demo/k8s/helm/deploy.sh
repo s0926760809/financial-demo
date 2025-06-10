@@ -1,92 +1,299 @@
 #!/bin/bash
-# Fintech Demo 部署脚本
+# 金融微服務 eBPF 演示系統 - 自動化部署腳本
+# 
+# 此腳本提供完整的部署流程，包括映像構建、推送和 Helm 部署
 
-set -e
+set -e  # 遇到錯誤立即退出
 
-NAMESPACE="nginx-gateway"
-RELEASE_NAME="fintech-demo"
-CHART_PATH="fintech-chart"
+# ==================== 配置變數 ====================
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+CHART_PATH="${SCRIPT_DIR}/fintech-chart"
 
-# 检查命令行参数
-if [ "$1" = "--production" ]; then
-    echo "🚀 部署生产环境配置..."
-    VALUES_FILE="fintech-chart/values-production.yaml"
+# 預設值
+DOCKER_REGISTRY=${DOCKER_REGISTRY:-"quay.io/s0926760809/fintech-demo"}
+NAMESPACE=${NAMESPACE:-"fintech-demo"}
+RELEASE_NAME=${RELEASE_NAME:-"fintech-demo"}
+ENVIRONMENT=${ENVIRONMENT:-"development"}
+
+# 自動生成版本標籤
+if [ -z "$IMAGE_TAG" ]; then
+    IMAGE_TAG="v$(date +%Y%m%d-%H%M%S)"
+fi
+
+# ==================== 函數定義 ====================
+
+print_banner() {
+    echo "============================================================"
+    echo "  金融微服務 eBPF 演示系統 - 自動化部署"
+    echo "============================================================"
+    echo "Registry: ${DOCKER_REGISTRY}"
+    echo "Image Tag: ${IMAGE_TAG}"
+    echo "Namespace: ${NAMESPACE}"
+    echo "Release: ${RELEASE_NAME}"
+    echo "Environment: ${ENVIRONMENT}"
+    echo "============================================================"
+}
+
+check_prerequisites() {
+    echo "🔍 檢查前置需求..."
     
-    echo "⚠️  注意: 使用生产配置需要确保："
-    echo "   1. Quay.io 镜像是公开的，或者"
-    echo "   2. 已配置正确的 imagePullSecrets"
-    echo "   3. 镜像确实存在并可访问"
-    echo ""
-    read -p "是否继续? (y/N): " -n 1 -r
-    echo
-    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    # 檢查必要的命令
+    for cmd in docker kubectl helm; do
+        if ! command -v $cmd &> /dev/null; then
+            echo "❌ 錯誤: $cmd 未安裝或不在 PATH 中"
+            exit 1
+        fi
+    done
+    
+    # 檢查 Docker 是否運行
+    if ! docker info &> /dev/null; then
+        echo "❌ 錯誤: Docker 未運行"
         exit 1
     fi
-else
-    echo "🧪 部署测试环境配置..."
-    VALUES_FILE="fintech-chart/values.yaml"
-fi
+    
+    # 檢查 Kubernetes 連接
+    if ! kubectl cluster-info &> /dev/null; then
+        echo "❌ 錯誤: 無法連接到 Kubernetes 集群"
+        exit 1
+    fi
+    
+    echo "✅ 前置需求檢查通過"
+}
 
-# 检查 Helm 是否安装
-if ! command -v helm &> /dev/null; then
-    echo "❌ Helm 未安装，请先安装 Helm"
-    exit 1
-fi
+build_images() {
+    echo "🔨 構建和推送映像..."
+    
+    cd "${PROJECT_ROOT}"
+    export DOCKER_REGISTRY IMAGE_TAG
+    
+    if [ -x "./k8s/ci/build-images.sh" ]; then
+        ./k8s/ci/build-images.sh
+    else
+        echo "❌ 錯誤: 映像構建腳本未找到或無執行權限"
+        exit 1
+    fi
+    
+    echo "✅ 映像構建和推送完成"
+}
 
-# 检查 kubectl 是否可用
-if ! kubectl cluster-info &> /dev/null; then
-    echo "❌ 无法连接到 Kubernetes 集群，请检查 kubectl 配置"
-    exit 1
-fi
+prepare_namespace() {
+    echo "🏗️  準備 Kubernetes Namespace..."
+    
+    if ! kubectl get namespace "${NAMESPACE}" &> /dev/null; then
+        echo "創建 namespace: ${NAMESPACE}"
+        kubectl create namespace "${NAMESPACE}"
+    else
+        echo "Namespace ${NAMESPACE} 已存在"
+    fi
+    
+    echo "✅ Namespace 準備完成"
+}
 
-# 检查 Chart 是否存在
-if [ ! -d "$CHART_PATH" ]; then
-    echo "❌ Helm Chart 目录不存在: $CHART_PATH"
-    exit 1
-fi
+deploy_helm_chart() {
+    echo "🚀 部署 Helm Chart..."
+    
+    cd "${SCRIPT_DIR}"
+    
+    # 選擇配置文件
+    VALUES_FILE=""
+    if [ "${ENVIRONMENT}" = "production" ]; then
+        VALUES_FILE="--values ${CHART_PATH}/values-production.yaml"
+        echo "使用生產環境配置"
+    else
+        echo "使用開發環境配置"
+    fi
+    
+    # 檢查是否已安裝
+    if helm status "${RELEASE_NAME}" -n "${NAMESPACE}" &> /dev/null; then
+        echo "升級現有部署..."
+        helm upgrade "${RELEASE_NAME}" "${CHART_PATH}" \
+            ${VALUES_FILE} \
+            --set global.imageTag="${IMAGE_TAG}" \
+            --namespace "${NAMESPACE}" \
+            --timeout 10m
+    else
+        echo "首次安裝..."
+        helm install "${RELEASE_NAME}" "${CHART_PATH}" \
+            ${VALUES_FILE} \
+            --set global.imageTag="${IMAGE_TAG}" \
+            --create-namespace \
+            --namespace "${NAMESPACE}" \
+            --timeout 10m
+    fi
+    
+    echo "✅ Helm 部署完成"
+}
 
-# 验证 Chart
-echo "🔍 验证 Helm Chart..."
-helm lint "$CHART_PATH"
-
-# 检查是否已有同名 release
-if helm list -n "$NAMESPACE" | grep -q "$RELEASE_NAME"; then
-    echo "📦 发现已存在的部署，将执行升级..."
-    helm upgrade "$RELEASE_NAME" "$CHART_PATH" \
-        --namespace "$NAMESPACE" \
-        --values "$VALUES_FILE" \
-        --wait \
+verify_deployment() {
+    echo "🔍 驗證部署狀態..."
+    
+    # 等待 Pod 準備就緒
+    echo "等待 Pod 啟動..."
+    kubectl wait --for=condition=ready pod \
+        --all \
+        --namespace="${NAMESPACE}" \
         --timeout=300s
-else
-    echo "📦 执行全新部署..."
-    helm install "$RELEASE_NAME" "$CHART_PATH" \
-        --namespace "$NAMESPACE" \
-        --values "$VALUES_FILE" \
-        --wait \
-        --timeout=300s
-fi
-
-echo "✅ 部署完成!"
-
-# 显示部署状态
-echo ""
-echo "📊 部署状态:"
-kubectl get pods -n "$NAMESPACE" | grep "$RELEASE_NAME"
-
-echo ""
-echo "🌐 服务状态:"
-kubectl get services -n "$NAMESPACE" | grep "$RELEASE_NAME"
-
-# 显示访问信息
-echo ""
-echo "🔗 访问信息:"
-echo "   - 前端服务: kubectl port-forward -n $NAMESPACE svc/$RELEASE_NAME-fintech-chart-frontend 8080:80"
-echo "   - Trading API: kubectl port-forward -n $NAMESPACE svc/$RELEASE_NAME-fintech-chart-trading-api 8081:8080"
-
-if [ "$1" = "--production" ]; then
+    
+    # 顯示部署狀態
     echo ""
-    echo "🎯 生产环境配置已部署，请确保:"
-    echo "   1. 检查所有 Pod 状态: kubectl get pods -n $NAMESPACE"
-    echo "   2. 查看日志: kubectl logs -n $NAMESPACE -l app.kubernetes.io/instance=$RELEASE_NAME"
-    echo "   3. 配置 Ingress 或 LoadBalancer 以暴露服务"
-fi 
+    echo "=== Pod 狀態 ==="
+    kubectl get pods -n "${NAMESPACE}" -o wide
+    
+    echo ""
+    echo "=== Service 狀態 ==="
+    kubectl get services -n "${NAMESPACE}"
+    
+    echo ""
+    echo "=== Ingress 狀態 ==="
+    kubectl get ingress -n "${NAMESPACE}" 2>/dev/null || echo "未配置 Ingress"
+    
+    echo ""
+    echo "=== Helm Release 狀態 ==="
+    helm status "${RELEASE_NAME}" -n "${NAMESPACE}"
+    
+    echo "✅ 部署驗證完成"
+}
+
+show_access_info() {
+    echo "📋 訪問信息:"
+    echo ""
+    
+    # 獲取前端服務信息
+    FRONTEND_SERVICE=$(kubectl get service -n "${NAMESPACE}" -l app.kubernetes.io/component=frontend -o name 2>/dev/null | head -1)
+    
+    if [ -n "$FRONTEND_SERVICE" ]; then
+        echo "🌐 前端服務訪問方法:"
+        echo ""
+        echo "1. Port Forward (推薦用於開發):"
+        echo "   kubectl port-forward service/frontend 8080:80 -n ${NAMESPACE}"
+        echo "   然後瀏覽器訪問: http://localhost:8080"
+        echo ""
+        
+        # 檢查 Ingress
+        INGRESS_HOST=$(kubectl get ingress -n "${NAMESPACE}" -o jsonpath='{.items[0].spec.rules[0].host}' 2>/dev/null)
+        if [ -n "$INGRESS_HOST" ]; then
+            echo "2. Ingress 訪問:"
+            echo "   添加到 /etc/hosts: 127.0.0.1 ${INGRESS_HOST}"
+            echo "   瀏覽器訪問: http://${INGRESS_HOST}"
+        fi
+    fi
+    
+    echo ""
+    echo "🔍 監控命令:"
+    echo "   kubectl get pods -n ${NAMESPACE} --watch"
+    echo "   kubectl logs -f deployment/${RELEASE_NAME}-trading-api -n ${NAMESPACE}"
+    echo ""
+    echo "🗂️  管理命令:"
+    echo "   helm status ${RELEASE_NAME} -n ${NAMESPACE}"
+    echo "   helm history ${RELEASE_NAME} -n ${NAMESPACE}"
+    echo "   helm uninstall ${RELEASE_NAME} -n ${NAMESPACE}"
+}
+
+# ==================== 命令行參數處理 ====================
+
+show_help() {
+    echo "用法: $0 [選項]"
+    echo ""
+    echo "選項:"
+    echo "  -h, --help              顯示此幫助信息"
+    echo "  -n, --namespace NAME    指定 Kubernetes namespace (預設: fintech-demo)"
+    echo "  -r, --release NAME      指定 Helm release 名稱 (預設: fintech-demo)"
+    echo "  -t, --tag TAG           指定映像標籤 (預設: 自動生成)"
+    echo "  -e, --env ENV           指定環境 (development|production, 預設: development)"
+    echo "  --registry REGISTRY     指定 Docker registry (預設: quay.io/s0926760809/fintech-demo)"
+    echo "  --skip-build            跳過映像構建步驟"
+    echo "  --build-only            僅構建映像，不部署"
+    echo ""
+    echo "環境變數:"
+    echo "  DOCKER_REGISTRY         Docker registry 地址"
+    echo "  IMAGE_TAG               映像標籤"
+    echo "  NAMESPACE               Kubernetes namespace"
+    echo ""
+    echo "範例:"
+    echo "  $0                                    # 使用預設設定部署"
+    echo "  $0 -n my-namespace -t v1.2.3         # 指定 namespace 和標籤"
+    echo "  $0 -e production                     # 生產環境部署"
+    echo "  $0 --skip-build                      # 跳過映像構建"
+    echo "  $0 --build-only                      # 僅構建映像"
+}
+
+# 解析命令行參數
+SKIP_BUILD=false
+BUILD_ONLY=false
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -h|--help)
+            show_help
+            exit 0
+            ;;
+        -n|--namespace)
+            NAMESPACE="$2"
+            shift 2
+            ;;
+        -r|--release)
+            RELEASE_NAME="$2"
+            shift 2
+            ;;
+        -t|--tag)
+            IMAGE_TAG="$2"
+            shift 2
+            ;;
+        -e|--env)
+            ENVIRONMENT="$2"
+            shift 2
+            ;;
+        --registry)
+            DOCKER_REGISTRY="$2"
+            shift 2
+            ;;
+        --skip-build)
+            SKIP_BUILD=true
+            shift
+            ;;
+        --build-only)
+            BUILD_ONLY=true
+            shift
+            ;;
+        *)
+            echo "未知選項: $1"
+            echo "使用 -h 或 --help 查看幫助"
+            exit 1
+            ;;
+    esac
+done
+
+# ==================== 主要執行流程 ====================
+
+main() {
+    print_banner
+    
+    check_prerequisites
+    
+    if [ "$SKIP_BUILD" = false ]; then
+        build_images
+    else
+        echo "⏭️  跳過映像構建"
+    fi
+    
+    if [ "$BUILD_ONLY" = true ]; then
+        echo "🏁 僅構建映像完成"
+        exit 0
+    fi
+    
+    prepare_namespace
+    
+    deploy_helm_chart
+    
+    verify_deployment
+    
+    show_access_info
+    
+    echo ""
+    echo "🎉 部署完成！"
+    echo ""
+}
+
+# 執行主函數
+main "$@" 

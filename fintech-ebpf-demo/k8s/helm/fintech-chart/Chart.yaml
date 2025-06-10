@@ -1,12 +1,45 @@
 apiVersion: v2
 name: fintech-chart
-description: 一個用於部署金融微服務 eBPF 演示系統的 Helm Chart。
+description: 金融微服務 eBPF 安全演示系統的 Helm Chart - 包含前端、交易API、風險引擎、支付網關和審計服務
 
-# Chart 類型。'application' 代表這是一個獨立的應用。
+# Chart 類型
 type: application
 
-# Chart 版本。當你修改 Chart 時應該增加此版本。
-version: 0.1.0
+# Chart 版本 - 當修改 Chart 時應該增加此版本
+version: 2.0.0
 
-# 應用程式版本。這是你想要部署的應用程式版本。
-appVersion: "1.0.0" 
+# 應用程式版本 - 這是你想要部署的應用程式版本
+appVersion: "2.0.0"
+
+# Chart 維護者
+maintainers:
+  - name: FinTech Security Team
+    email: security@fintech-demo.local
+
+# Chart 關鍵字
+keywords:
+  - fintech
+  - trading
+  - ebpf
+  - security
+  - kubernetes
+  - microservices
+
+# Chart 首頁
+home: https://github.com/fintech-security/ebpf-demo
+
+# 依賴的子chart (可選)
+dependencies:
+  - name: postgresql
+    version: "~12.0.0"
+    repository: "https://charts.bitnami.com/bitnami"
+    condition: postgresql.enabled
+  - name: redis
+    version: "~18.0.0"
+    repository: "https://charts.bitnami.com/bitnami"
+    condition: redis.enabled
+
+# 註解
+annotations:
+  category: FinTech
+  licenses: MIT 
