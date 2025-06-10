@@ -71,6 +71,67 @@ Common annotations
 {{- end }}
 
 {{/*
+Pod Security Context
+*/}}
+{{- define "fintech-chart.podSecurityContext" -}}
+{{- with .Values.global.securityContext }}
+{{- toYaml . }}
+{{- end }}
+{{- end }}
+
+{{/*
+Container Security Context
+*/}}
+{{- define "fintech-chart.containerSecurityContext" -}}
+{{- with .Values.global.securityContext }}
+allowPrivilegeEscalation: false
+capabilities:
+  drop:
+  - ALL
+readOnlyRootFilesystem: true
+runAsNonRoot: true
+runAsUser: {{ .runAsUser | default 1001 }}
+runAsGroup: {{ .runAsGroup | default 1001 }}
+{{- end }}
+{{- end }}
+
+{{/*
+Backend Resources
+*/}}
+{{- define "fintech-chart.backend.resources" -}}
+{{- with .Values.backend.resources }}
+{{- toYaml . }}
+{{- end }}
+{{- end }}
+
+{{/*
+Node Selector
+*/}}
+{{- define "fintech-chart.nodeSelector" -}}
+{{- with .Values.nodeSelector }}
+{{- toYaml . }}
+{{- end }}
+{{- end }}
+
+{{/*
+Tolerations
+*/}}
+{{- define "fintech-chart.tolerations" -}}
+{{- with .Values.tolerations }}
+{{- toYaml . }}
+{{- end }}
+{{- end }}
+
+{{/*
+Pod Anti Affinity
+*/}}
+{{- define "fintech-chart.podAntiAffinity" -}}
+{{- with .Values.podAntiAffinity }}
+{{- toYaml . }}
+{{- end }}
+{{- end }}
+
+{{/*
 PostgreSQL host
 */}}
 {{- define "fintech-chart.postgresql.host" -}}
