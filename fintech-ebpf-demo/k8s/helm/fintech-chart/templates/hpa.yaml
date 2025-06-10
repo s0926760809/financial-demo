@@ -4,7 +4,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "fintech-chart.fullname" . }}-frontend-hpa
-  namespace: {{ .Values.global.namespace | default .Release.Namespace }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "fintech-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: frontend
@@ -26,12 +26,12 @@ spec:
 {{- end }}
 
 # Trading API HPA
-{{- if and .Values.tradingApi.enabled .Values.tradingApi.autoscaling.enabled }}
+{{- if and .Values.backend.tradingApi.enabled .Values.backend.autoscaling.enabled }}
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "fintech-chart.fullname" . }}-trading-api-hpa
-  namespace: {{ .Values.global.namespace | default .Release.Namespace }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "fintech-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: trading-api
@@ -40,25 +40,25 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: {{ include "fintech-chart.fullname" . }}-trading-api
-  minReplicas: {{ .Values.tradingApi.autoscaling.minReplicas }}
-  maxReplicas: {{ .Values.tradingApi.autoscaling.maxReplicas }}
+  minReplicas: {{ .Values.backend.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.backend.autoscaling.maxReplicas }}
   metrics:
   - type: Resource
     resource:
       name: cpu
       target:
         type: Utilization
-        averageUtilization: {{ .Values.tradingApi.autoscaling.targetCPUUtilizationPercentage }}
+        averageUtilization: {{ .Values.backend.autoscaling.targetCPUUtilizationPercentage }}
 ---
 {{- end }}
 
 # Risk Engine HPA
-{{- if and .Values.riskEngine.enabled .Values.riskEngine.autoscaling.enabled }}
+{{- if and .Values.backend.riskEngine.enabled .Values.backend.autoscaling.enabled }}
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "fintech-chart.fullname" . }}-risk-engine-hpa
-  namespace: {{ .Values.global.namespace | default .Release.Namespace }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "fintech-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: risk-engine
@@ -67,25 +67,25 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: {{ include "fintech-chart.fullname" . }}-risk-engine
-  minReplicas: {{ .Values.riskEngine.autoscaling.minReplicas }}
-  maxReplicas: {{ .Values.riskEngine.autoscaling.maxReplicas }}
+  minReplicas: {{ .Values.backend.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.backend.autoscaling.maxReplicas }}
   metrics:
   - type: Resource
     resource:
       name: cpu
       target:
         type: Utilization
-        averageUtilization: {{ .Values.riskEngine.autoscaling.targetCPUUtilizationPercentage }}
+        averageUtilization: {{ .Values.backend.autoscaling.targetCPUUtilizationPercentage }}
 ---
 {{- end }}
 
 # Payment Gateway HPA
-{{- if and .Values.paymentGateway.enabled .Values.paymentGateway.autoscaling.enabled }}
+{{- if and .Values.backend.paymentGateway.enabled .Values.backend.autoscaling.enabled }}
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "fintech-chart.fullname" . }}-payment-gateway-hpa
-  namespace: {{ .Values.global.namespace | default .Release.Namespace }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "fintech-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: payment-gateway
@@ -94,25 +94,25 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: {{ include "fintech-chart.fullname" . }}-payment-gateway
-  minReplicas: {{ .Values.paymentGateway.autoscaling.minReplicas }}
-  maxReplicas: {{ .Values.paymentGateway.autoscaling.maxReplicas }}
+  minReplicas: {{ .Values.backend.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.backend.autoscaling.maxReplicas }}
   metrics:
   - type: Resource
     resource:
       name: cpu
       target:
         type: Utilization
-        averageUtilization: {{ .Values.paymentGateway.autoscaling.targetCPUUtilizationPercentage }}
+        averageUtilization: {{ .Values.backend.autoscaling.targetCPUUtilizationPercentage }}
 ---
 {{- end }}
 
 # Audit Service HPA
-{{- if and .Values.auditService.enabled .Values.auditService.autoscaling.enabled }}
+{{- if and .Values.backend.auditService.enabled .Values.backend.autoscaling.enabled }}
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "fintech-chart.fullname" . }}-audit-service-hpa
-  namespace: {{ .Values.global.namespace | default .Release.Namespace }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "fintech-chart.labels" . | nindent 4 }}
     app.kubernetes.io/component: audit-service
@@ -121,13 +121,13 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: {{ include "fintech-chart.fullname" . }}-audit-service
-  minReplicas: {{ .Values.auditService.autoscaling.minReplicas }}
-  maxReplicas: {{ .Values.auditService.autoscaling.maxReplicas }}
+  minReplicas: {{ .Values.backend.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.backend.autoscaling.maxReplicas }}
   metrics:
   - type: Resource
     resource:
       name: cpu
       target:
         type: Utilization
-        averageUtilization: {{ .Values.auditService.autoscaling.targetCPUUtilizationPercentage }}
+        averageUtilization: {{ .Values.backend.autoscaling.targetCPUUtilizationPercentage }}
 {{- end }} 
