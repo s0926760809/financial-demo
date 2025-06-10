@@ -7,6 +7,10 @@ global:
   imageTag: "v1.0.0"  # 生產環境使用固定版本標籤
   imagePullPolicy: Always  # 總是拉取最新鏡像
   namespace: fintech-prod
+
+# ==================== 鏡像拉取祕密 ====================
+imagePullSecrets:
+  - name: quay-secret
   
   # 生產環境安全設定
   securityContext:
@@ -29,6 +33,10 @@ serviceAccount:
 frontend:
   enabled: true
   replicaCount: 1  # 簡化部署，每個服務只運行一個副本
+  
+  # 前端也需要鏡像拉取祕密
+  imagePullSecrets:
+    - name: quay-secret
   
   service:
     type: ClusterIP  # 生產環境不使用 NodePort
@@ -78,9 +86,9 @@ backend:
         cpu: 500m
         memory: 512Mi
 
-  # Risk Engine 服務 (暫時禁用，鏡像不存在)
+  # Risk Engine 服務
   riskEngine:
-    enabled: false
+    enabled: true
     replicaCount: 1
     port: 8081
     resources:

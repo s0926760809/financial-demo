@@ -47,8 +47,7 @@ data:
             proxy_set_header X-Forwarded-Proto $scheme;
         }
 
-        # API proxy to risk engine (暫時禁用)
-        {{- if .Values.backend.riskEngine.enabled }}
+        # API proxy to risk engine
         location /api/risk/ {
             proxy_pass http://{{ include "fintech-chart.risk-engine.name" . }}:{{ .Values.backend.riskEngine.port }}/;
             proxy_set_header Host $host;
@@ -56,12 +55,6 @@ data:
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header X-Forwarded-Proto $scheme;
         }
-        {{- else }}
-        location /api/risk/ {
-            return 503 "Risk Engine service is temporarily unavailable";
-            add_header Content-Type text/plain;
-        }
-        {{- end }}
 
         # API proxy to payment gateway
         location /api/payment/ {

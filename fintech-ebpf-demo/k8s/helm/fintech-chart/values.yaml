@@ -14,6 +14,9 @@ fullnameOverride: ""
 commonLabels: {}
 commonAnnotations: {}
 
+# 鏡像拉取祕密（開發環境可以設為空）
+imagePullSecrets: []
+
 # Service Account 配置
 serviceAccount:
   create: true
