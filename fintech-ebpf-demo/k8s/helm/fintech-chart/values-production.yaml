@@ -78,9 +78,9 @@ backend:
         cpu: 500m
         memory: 512Mi
 
-  # Risk Engine 服務
+  # Risk Engine 服務 (暫時禁用，鏡像不存在)
   riskEngine:
-    enabled: true
+    enabled: false
     replicaCount: 1
     port: 8081
     resources:
