@@ -19,7 +19,7 @@ global:
 
 # ==================== 鏡像拉取祕密 ====================
 imagePullSecrets:
-  - name: quay-secret
+- name: quay-secret
 
 # ==================== Service Account 設定 ====================
 serviceAccount:
