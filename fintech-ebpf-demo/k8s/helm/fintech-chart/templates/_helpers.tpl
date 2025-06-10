@@ -74,9 +74,9 @@ Common annotations
 Pod Security Context
 */}}
 {{- define "fintech-chart.podSecurityContext" -}}
-{{- with .Values.global.securityContext }}
-{{- toYaml . }}
-{{- end }}
+fsGroup: 2000
+seccompProfile:
+  type: RuntimeDefault
 {{- end }}
 
 {{/*
@@ -88,9 +88,7 @@ capabilities:
   drop:
   - ALL
 readOnlyRootFilesystem: false
-runAsNonRoot: true
-runAsUser: 1001
-runAsGroup: 1001
+runAsNonRoot: false
 {{- end }}
 
 {{/*
