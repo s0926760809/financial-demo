@@ -1,0 +1,91 @@
+audit-service:
+  replicaCount: 1
+  image:
+    repository: quay.io/s0926760809/ebpf-audit-service
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    port: 8083
+    targetPort: 8083
+  env:
+    - name: DATABASE_HOST
+      value: "my-fintech-app-postgresql"
+    - name: DATABASE_USER
+      value: "fintech_user"
+    - name: DATABASE_PASSWORD
+      value: "password123"
+    - name: DATABASE_NAME
+      value: "fintech_demo"
+    - name: REDIS_HOST
+      value: "my-fintech-app-redis-master"
+    - name: REDIS_PASSWORD
+      value: ""
+
+payment-gateway:
+  replicaCount: 1
+  image:
+    repository: quay.io/s0926760809/ebpf-payment-gateway
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    port: 8082
+    targetPort: 8082
+  env:
+    - name: DATABASE_HOST
+      value: "my-fintech-app-postgresql"
+    - name: DATABASE_USER
+      value: "fintech_user"
+    - name: DATABASE_PASSWORD
+      value: "password123"
+    - name: DATABASE_NAME
+      value: "fintech_demo"
+    - name: REDIS_HOST
+      value: "my-fintech-app-redis-master"
+    - name: REDIS_PASSWORD
+      value: ""
+
+risk-engine:
+  replicaCount: 1
+  image:
+    repository: quay.io/s0926760809/ebpf-risk-engine
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    port: 8081
+    targetPort: 8081
+  env:
+    - name: DATABASE_HOST
+      value: "my-fintech-app-postgresql"
+    - name: DATABASE_USER
+      value: "fintech_user"
+    - name: DATABASE_PASSWORD
+      value: "password123"
+    - name: DATABASE_NAME
+      value: "fintech_demo"
+    - name: REDIS_HOST
+      value: "my-fintech-app-redis-master"
+    - name: REDIS_PASSWORD
+      value: ""
+
+trading-api:
+  replicaCount: 1
+  image:
+    repository: quay.io/s0926760809/ebpf-trading-api
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    port: 8080
+    targetPort: 8080
+  env:
+    - name: DATABASE_HOST
+      value: "my-fintech-app-postgresql"
+    - name: DATABASE_USER
+      value: "fintech_user"
+    - name: DATABASE_PASSWORD
+      value: "password123"
+    - name: DATABASE_NAME
+      value: "fintech_demo"
+    - name: REDIS_HOST
+      value: "my-fintech-app-redis-master"
+    - name: REDIS_PASSWORD
+      value: "" 

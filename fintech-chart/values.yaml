@@ -1,0 +1,5 @@
+# Ingress 配置 - 可选择启用以暴露服务
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations: {} 

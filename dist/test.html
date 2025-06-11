@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinTech Demo 测试页面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        h1 { color: #FFD700; }
+        .status { 
+            background: rgba(255, 255, 255, 0.2); 
+            padding: 15px; 
+            border-radius: 5px; 
+            margin: 10px 0; 
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover { background: #45a049; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 FinTech eBPF Demo 测试页面</h1>
+        <p>如果您看到这个页面，说明容器和Web服务器工作正常！</p>
+        
+        <div class="status">
+            <h3>📊 系统信息</h3>
+            <p>⏰ 当前时间: <span id="time"></span></p>
+            <p>🌐 页面URL: <span id="url"></span></p>
+            <p>💻 用户代理: <span id="ua"></span></p>
+        </div>
+
+        <div class="status">
+            <h3>🔗 API 测试</h3>
+            <button onclick="testAPI('/api/trading/health')">测试 Trading API</button>
+            <button onclick="testAPI('/api/risk/health')">测试 Risk API</button>
+            <button onclick="testAPI('/api/payment/health')">测试 Payment API</button>
+            <button onclick="testAPI('/api/audit/health')">测试 Audit API</button>
+            <div id="apiResults"></div>
+        </div>
+
+        <div class="status">
+            <h3>🔧 故障排除信息</h3>
+            <p>这是一个简单的HTML页面，用于测试基础功能。</p>
+            <p>如果React应用无法加载，请检查JavaScript控制台的错误信息。</p>
+        </div>
+    </div>
+
+    <script>
+        // 更新时间
+        function updateTime() {
+            document.getElementById('time').textContent = new Date().toLocaleString();
+            document.getElementById('url').textContent = window.location.href;
+            document.getElementById('ua').textContent = navigator.userAgent;
+        }
+        updateTime();
+        setInterval(updateTime, 1000);
+
+        // API测试函数
+        async function testAPI(endpoint) {
+            const resultsDiv = document.getElementById('apiResults');
+            try {
+                const response = await fetch(endpoint);
+                const status = response.status;
+                const text = await response.text();
+                resultsDiv.innerHTML += `<p>✅ ${endpoint}: ${status} - ${text.substring(0, 100)}</p>`;
+            } catch (error) {
+                resultsDiv.innerHTML += `<p>❌ ${endpoint}: Error - ${error.message}</p>`;
+            }
+        }
+
+        console.log('🚀 FinTech Demo 测试页面加载完成');
+    </script>
+</body>
+</html> 
