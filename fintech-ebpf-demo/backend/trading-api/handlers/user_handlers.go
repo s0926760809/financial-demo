@@ -11,6 +11,8 @@ import (
 	"github.com/go-redis/redis/v8"
 )
 
+// 内存存储作为Redis的备用方案 - 已在trading.go中声明
+
 // 用戶資料結構
 type UserProfile struct {
 	UserID         string    `json:"user_id"`
@@ -38,24 +40,46 @@ type ResetAccountResponse struct {
 	Timestamp  string  `json:"timestamp"`
 }
 
-// 獲取用戶資料
+// 獲取用戶資料 - 帶有內存備用方案
 func GetUserProfile(c *gin.Context) {
 	userID := c.GetHeader("X-User-ID")
 	if userID == "" {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "用戶ID不能為空",
-		})
-		return
+		userID = "demo-user-123" // 提供默認用戶ID
 	}
 
-	ctx := context.Background()
+	// 首先嘗試從內存獲取
+	memoryMutex.RLock()
 	profileKey := fmt.Sprintf("user_profile:%s", userID)
+	if cached, exists := memoryStore[profileKey]; exists {
+		memoryMutex.RUnlock()
+		if profile, ok := cached.(*UserProfile); ok {
+			c.JSON(200, gin.H{
+				"success": true,
+				"profile": profile,
+				"message": "用戶資料獲取成功",
+			})
+			return
+		}
+	}
+	memoryMutex.RUnlock()
 
-	// 從Redis獲取用戶資料
-	profileJSON, err := rdb.Get(ctx, profileKey).Result()
-	if err == redis.Nil {
-		// 用戶資料不存在，創建默認資料
-		defaultProfile := &UserProfile{
+	// 嘗試從Redis獲取，失敗則使用默認值
+	ctx := context.Background()
+	var profile *UserProfile
+
+	if rdb != nil {
+		profileJSON, err := rdb.Get(ctx, profileKey).Result()
+		if err == nil {
+			var redisProfile UserProfile
+			if json.Unmarshal([]byte(profileJSON), &redisProfile) == nil {
+				profile = &redisProfile
+			}
+		}
+	}
+
+	// 如果Redis失敗或沒有數據，創建默認用戶資料
+	if profile == nil {
+		profile = &UserProfile{
 			UserID:         userID,
 			Email:          "demo@example.com",
 			DisplayName:    "演示用戶",
@@ -66,35 +90,22 @@ func GetUserProfile(c *gin.Context) {
 			UpdatedAt:      time.Now(),
 		}
 
-		// 保存到Redis
-		profileData, _ := json.Marshal(defaultProfile)
-		rdb.Set(ctx, profileKey, profileData, time.Hour*24*365)
+		// 保存到內存
+		memoryMutex.Lock()
+		memoryStore[profileKey] = profile
+		memoryMutex.Unlock()
 
-		c.JSON(http.StatusOK, gin.H{
-			"success": true,
-			"user":    defaultProfile,
-		})
-		return
-	} else if err != nil {
-		logger.WithError(err).Error("獲取用戶資料失敗")
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": "獲取用戶資料失敗",
-		})
-		return
+		// 嘗試保存到Redis（可選）
+		if rdb != nil {
+			profileData, _ := json.Marshal(profile)
+			rdb.Set(ctx, profileKey, profileData, time.Hour*24*365)
+		}
 	}
 
-	var profile UserProfile
-	if err := json.Unmarshal([]byte(profileJSON), &profile); err != nil {
-		logger.WithError(err).Error("解析用戶資料失敗")
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": "解析用戶資料失敗",
-		})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{
+	c.JSON(200, gin.H{
 		"success": true,
-		"user":    profile,
+		"profile": profile,
+		"message": "用戶資料獲取成功",
 	})
 }
 

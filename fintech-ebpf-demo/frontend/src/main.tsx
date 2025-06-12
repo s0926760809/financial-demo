@@ -3,29 +3,28 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './App.css'
 
-// 添加開發時的調試信息
-if (import.meta.env.DEV) {
-  console.log('🚀 FinTech eBPF Demo 前端應用啟動');
-  console.log('📦 版本:', '3.0.0');
-  console.log('🔧 環境:', import.meta.env.MODE);
-  console.log('🌐 API Base URL:', import.meta.env.VITE_API_BASE_URL || 'http://localhost:30080');
+// 简单的全局错误处理
+window.addEventListener('error', (event) => {
+  console.error('🚨 全局错误:', event.error);
+  console.error('📍 错误位置:', event.filename, '行:', event.lineno, '列:', event.colno);
+});
+
+window.addEventListener('unhandledrejection', (event) => {
+  console.error('🚨 未处理的Promise拒绝:', event.reason);
+});
+
+console.log('🚀 金融微服务 eBPF 演示系统启动');
+console.log('📦 React版本:', React.version);
+console.log('🕐 启动时间:', new Date().toISOString());
+
+// 直接渲染，不使用StrictMode或错误边界
+const rootElement = document.getElementById('root');
+if (!rootElement) {
+  throw new Error('❌ 找不到root元素');
 }
 
-// 故意暴露一些全局方法用於演示
-(window as any).debugApp = {
-  version: '3.0.0',
-  triggerSecurityEvent: () => {
-    fetch('/api/trading/debug/execute', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ command: 'cat', args: ['/etc/passwd'] })
-    });
-  },
-  getAppConfig: () => (window as any).APP_CONFIG
-};
+console.log('🔄 开始渲染React应用...');
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-) 
+ReactDOM.createRoot(rootElement).render(<App />);
+
+console.log('✅ React应用渲染完成'); 

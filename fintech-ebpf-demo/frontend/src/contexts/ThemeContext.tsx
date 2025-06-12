@@ -1,94 +1,93 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { theme } from 'antd';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+
+export type Theme = 'light' | 'dark';
 
 interface ThemeContextType {
-  isDarkMode: boolean;
-  toggleDarkMode: () => void;
-  getThemeConfig: () => any;
+  theme: Theme;
+  toggleTheme: () => void;
+  isDark: boolean;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export const useTheme = () => {
-  const context = useContext(ThemeContext);
-  if (!context) {
-    throw new Error('useTheme must be used within a ThemeProvider');
+// 安全的localStorage访问函数
+const safeGetLocalStorage = (key: string, defaultValue: string): string => {
+  try {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const stored = localStorage.getItem(key);
+      if (stored !== null) {
+        console.log(`🔍 成功从localStorage读取 ${key}:`, stored);
+        return stored;
+      }
+    }
+    console.log(`💡 使用默认值 ${key}:`, defaultValue);
+    return defaultValue;
+  } catch (error) {
+    console.warn('⚠️ localStorage访问失败，使用默认值:', error);
+    return defaultValue;
   }
-  return context;
 };
 
-interface ThemeProviderProps {
-  children: ReactNode;
-}
+const safeSetLocalStorage = (key: string, value: string): void => {
+  try {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      localStorage.setItem(key, value);
+      console.log(`💾 成功保存到localStorage ${key}:`, value);
+    }
+  } catch (error) {
+    console.warn('⚠️ localStorage保存失败:', error);
+  }
+};
 
-export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    // 從localStorage讀取用戶偏好設置
-    const saved = localStorage.getItem('darkMode');
-    return saved ? JSON.parse(saved) : false;
+export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  // 安全地获取初始主题
+  const [theme, setTheme] = useState<Theme>(() => {
+    const saved = safeGetLocalStorage('fintech-theme', 'light');
+    return (saved === 'dark' || saved === 'light') ? saved : 'light';
   });
 
-  // 保存主題偏好到localStorage，並更新body的class
+  const toggleTheme = () => {
+    const newTheme: Theme = theme === 'light' ? 'dark' : 'light';
+    console.log(`🎨 切换主题: ${theme} -> ${newTheme}`);
+    setTheme(newTheme);
+    safeSetLocalStorage('fintech-theme', newTheme);
+  };
+
+  const isDark = theme === 'dark';
+
+  // 应用主题到body类
   useEffect(() => {
-    localStorage.setItem('darkMode', JSON.stringify(isDarkMode));
-    if (isDarkMode) {
-      document.body.classList.add('dark-mode');
-      document.body.style.backgroundColor = '#141414';
-    } else {
-      document.body.classList.remove('dark-mode');
-      document.body.style.backgroundColor = '#f0f2f5';
+    try {
+      const body = document.body;
+      if (body) {
+        body.className = body.className.replace(/theme-\w+/g, '');
+        body.classList.add(`theme-${theme}`);
+        console.log(`🎭 应用主题类: theme-${theme}`);
+      }
+    } catch (error) {
+      console.warn('⚠️ 应用主题失败:', error);
     }
-  }, [isDarkMode]);
+  }, [theme]);
 
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
+  const value: ThemeContextType = {
+    theme,
+    toggleTheme,
+    isDark,
   };
 
-  const getThemeConfig = () => {
-    const { defaultAlgorithm, darkAlgorithm } = theme;
-    
-    return {
-      algorithm: isDarkMode ? darkAlgorithm : defaultAlgorithm,
-      token: {
-        colorPrimary: '#1890ff',
-        colorSuccess: '#52c41a',
-        colorWarning: '#faad14',
-        colorError: '#ff4d4f',
-        colorInfo: '#1890ff',
-        borderRadius: 6,
-        wireframe: false,
-        // 暗色模式下的特殊配置
-        ...(isDarkMode && {
-          colorBgBase: '#141414',
-          colorTextBase: '#fff',
-        }),
-      },
-      components: {
-        Layout: {
-          headerBg: isDarkMode ? '#141414' : '#fff',
-          siderBg: isDarkMode ? '#001529' : '#001529',
-          bodyBg: isDarkMode ? '#141414' : '#fff',
-        },
-        Menu: {
-          darkItemBg: isDarkMode ? '#001529' : '#001529',
-          darkSubMenuItemBg: isDarkMode ? '#000c17' : '#000c17',
-        },
-        Card: {
-          colorBgContainer: isDarkMode ? '#1f1f1f' : '#fff',
-        },
-        Table: {
-          colorBgContainer: isDarkMode ? '#1f1f1f' : '#fff',
-          headerBg: isDarkMode ? '#262626' : '#fafafa',
-        },
-      },
-    };
-  };
+  console.log('🎨 ThemeProvider渲染，当前主题:', theme);
 
-  const value = {
-    isDarkMode,
-    toggleDarkMode,
-    getThemeConfig,
-  };
+  return (
+    <ThemeContext.Provider value={value}>
+      {children}
+    </ThemeContext.Provider>
+  );
+};
 
-  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
+export const useTheme = (): ThemeContextType => {
+  const context = useContext(ThemeContext);
+  if (context === undefined) {
+    throw new Error('useTheme必须在ThemeProvider内使用');
+  }
+  return context;
 }; 

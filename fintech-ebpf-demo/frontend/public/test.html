@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>金融微服务 eBPF 测试页面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+        .status {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .success { color: #52c41a; }
+        .error { color: #ff4d4f; }
+        button {
+            background: #1890ff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #40a9ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 金融微服务 eBPF 安全演示系统</h1>
+        <h2>📊 系统状态检查</h2>
+        
+        <div id="status-frontend" class="status">
+            ✅ 前端页面: 正常加载
+        </div>
+        
+        <div id="status-api" class="status">
+            🔄 后端API: 检查中...
+        </div>
+        
+        <div id="status-trading" class="status">
+            🔄 交易服务: 检查中...
+        </div>
+        
+        <h2>🧪 API测试</h2>
+        <button onclick="testTradingAPI()">测试交易API</button>
+        <button onclick="testPortfolio()">测试投资组合</button>
+        <button onclick="testOrders()">测试订单</button>
+        
+        <h2>📝 测试结果</h2>
+        <div id="test-results"></div>
+        
+        <h2>🔗 导航</h2>
+        <button onclick="location.href='/'">返回主应用</button>
+        <button onclick="location.href='/debug'">调试信息</button>
+    </div>
+
+    <script>
+        // 测试API连接
+        async function testAPI(endpoint, elementId) {
+            const element = document.getElementById(elementId);
+            try {
+                const response = await fetch(endpoint);
+                if (response.ok) {
+                    element.innerHTML = `✅ ${endpoint}: 连接成功 (${response.status})`;
+                    element.className = 'status success';
+                } else {
+                    element.innerHTML = `⚠️ ${endpoint}: HTTP ${response.status}`;
+                    element.className = 'status error';
+                }
+            } catch (error) {
+                element.innerHTML = `❌ ${endpoint}: 连接失败 - ${error.message}`;
+                element.className = 'status error';
+            }
+        }
+
+        // 页面加载时自动测试
+        window.onload = function() {
+            testAPI('/api/v1/orders', 'status-api');
+            testAPI('/api/v1/portfolio', 'status-trading');
+        };
+
+        // 手动测试函数
+        async function testTradingAPI() {
+            const results = document.getElementById('test-results');
+            results.innerHTML = '<p>🔄 测试交易API...</p>';
+            
+            try {
+                const response = await fetch('/api/v1/orders', {
+                    headers: {
+                        'X-User-ID': 'test-user'
+                    }
+                });
+                const data = await response.text();
+                results.innerHTML = `<h3>交易API响应:</h3><pre>${data}</pre>`;
+            } catch (error) {
+                results.innerHTML = `<p class="error">❌ 错误: ${error.message}</p>`;
+            }
+        }
+
+        async function testPortfolio() {
+            const results = document.getElementById('test-results');
+            results.innerHTML = '<p>🔄 测试投资组合...</p>';
+            
+            try {
+                const response = await fetch('/api/v1/portfolio', {
+                    headers: {
+                        'X-User-ID': 'test-user'
+                    }
+                });
+                const data = await response.text();
+                results.innerHTML = `<h3>投资组合响应:</h3><pre>${data}</pre>`;
+            } catch (error) {
+                results.innerHTML = `<p class="error">❌ 错误: ${error.message}</p>`;
+            }
+        }
+
+        async function testOrders() {
+            const results = document.getElementById('test-results');
+            results.innerHTML = '<p>🔄 测试订单系统...</p>';
+            
+            try {
+                const response = await fetch('/api/v1/user/profile', {
+                    headers: {
+                        'X-User-ID': 'test-user'
+                    }
+                });
+                const data = await response.text();
+                results.innerHTML = `<h3>用户配置响应:</h3><pre>${data}</pre>`;
+            } catch (error) {
+                results.innerHTML = `<p class="error">❌ 错误: ${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html> 

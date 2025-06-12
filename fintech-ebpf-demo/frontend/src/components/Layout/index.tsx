@@ -60,7 +60,7 @@ const AppLayout: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
-  const { isDarkMode, toggleDarkMode } = useTheme();
+  const { isDark: isDarkMode, toggleTheme: toggleDarkMode } = useTheme();
   const [userName, setUserName] = useState('演示用戶');
   const { notifications, unreadCount, markAllAsRead, clearAll } = useNotifications();
 
