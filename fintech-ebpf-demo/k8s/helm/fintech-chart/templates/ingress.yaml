@@ -2,7 +2,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "fintech-chart.fullname" . }}
+  name: {{ include "fintech-chart.fullname" . }}-ingress
   labels:
     {{- include "fintech-chart.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
@@ -10,53 +10,67 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  ingressClassName: {{ .Values.ingress.className }}
+  ingressClassName: nginx
+  {{- if .Values.ingress.tls }}
+  tls:
+    {{- range .Values.ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- end }}
   rules:
-    - host: fintech-demo.local
+    {{- range .Values.ingress.hosts }}
+    - host: {{ .host | quote }}
       http:
         paths:
-          # 前端應用路由
-          - path: /
+          # API v1路由到trading-api (優先級最高)
+          - path: /api/v1
             pathType: Prefix
             backend:
               service:
-                name: {{ include "fintech-chart.fullname" . }}-frontend
+                name: trading-api-service
                 port:
-                  number: {{ .Values.frontend.service.port }}
-          # API 路由 - Trading API
-          - path: /api/trading
-            pathType: Prefix
-            backend:
-              service:
-                name: {{ include "fintech-chart.fullname" . }}-trading-api
-                port:
-                  number: {{ .Values.tradingApi.service.port }}
-          # API 路由 - Risk Engine
+                  number: 8080
+          # 其他API路由
           - path: /api/risk
             pathType: Prefix
             backend:
               service:
-                name: {{ include "fintech-chart.fullname" . }}-risk-engine
+                name: risk-engine-service
                 port:
-                  number: {{ .Values.riskEngine.service.port }}
-          # API 路由 - Payment Gateway
+                  number: 8081
           - path: /api/payment
             pathType: Prefix
             backend:
               service:
-                name: {{ include "fintech-chart.fullname" . }}-payment-gateway
+                name: payment-gateway-service
                 port:
-                  number: {{ .Values.paymentGateway.service.port }}
-          # API 路由 - Audit Service
+                  number: 8082
           - path: /api/audit
             pathType: Prefix
             backend:
               service:
-                name: {{ include "fintech-chart.fullname" . }}-audit-service
+                name: audit-service-service
                 port:
-                  number: {{ .Values.auditService.service.port }}
-  {{- with .Values.ingress.tls }}
-  tls:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
+                  number: 8083
+          # WebSocket路由
+          - path: /ws
+            pathType: Prefix
+            backend:
+              service:
+                name: audit-service-service
+                port:
+                  number: 8083
+          # 前端路由 - 預設處理（最低優先級）
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 8080
+    {{- end }}
 {{- end }} 

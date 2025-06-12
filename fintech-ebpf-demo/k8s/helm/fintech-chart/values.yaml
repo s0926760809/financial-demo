@@ -1,102 +1,136 @@
-# fintech-chart 的預設值
-# 這是一個 YAML 格式的檔案。
-# 在這裡聲明可以在模板中使用的變數。
+# Global settings
+global:
+  image:
+    tag: latest
+    pullPolicy: IfNotPresent
 
-# 全域設定
-replicaCount: 1
-
-image:
-  pullPolicy: IfNotPresent
-  # 全域映像檔標籤，可被各個服務獨立覆寫
-  tag: "latest"
-
-imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
-
-serviceAccount:
-  create: true
-  annotations: {}
-  name: ""
-
-podAnnotations: {}
-podSecurityContext: {}
-securityContext: {}
-
-# -- 前端服務設定 --
+# Frontend Configuration
 frontend:
   enabled: true
   replicaCount: 1
   image:
-    repository: yourregistry.azurecr.io/fintech-demo/frontend
-    # tag: "specific-frontend-tag" # 可獨立覆寫
+    repository: quay.io/fintech-demo/frontend
+    tag: "latest"
   service:
-    type: ClusterIP
     port: 8080
+    targetPort: 8080
 
-# --- 後端微服務設定 ---
-
-tradingApi:
-  enabled: true
+# Backend Services Common Configuration
+backend:
   replicaCount: 1
-  image:
-    repository: yourregistry.azurecr.io/fintech-demo/trading-api
-  service:
-    type: ClusterIP
-    port: 8080
 
-riskEngine:
-  enabled: true
-  replicaCount: 1
-  image:
-    repository: yourregistry.azurecr.io/fintech-demo/risk-engine
-  service:
-    type: ClusterIP
-    port: 8081
+backendServices:
+  - name: trading-api
+    image:
+      repository: quay.io/fintech-demo/trading-api
+      tag: latest
+    service:
+      port: 8080
+      targetPort: 8080
+    env:
+      - name: SERVER_PORT
+        value: "8080"
+      - name: DATABASE_HOST
+        value: "my-fintech-app-postgresql"
+      - name: DATABASE_USER
+        value: "fintech_user"
+      - name: DATABASE_PASSWORD
+        value: "password123"
+      - name: DATABASE_NAME
+        value: "fintech_demo"
+      - name: REDIS_HOST
+        value: "my-fintech-app-redis-master"
+      - name: REDIS_PASSWORD
+        value: ""
+  - name: risk-engine
+    image:
+      repository: quay.io/fintech-demo/risk-engine
+      tag: latest
+    service:
+      port: 8081
+      targetPort: 8081
+    env:
+      - name: DATABASE_HOST
+        value: "my-fintech-app-postgresql"
+      - name: DATABASE_USER
+        value: "fintech_user"
+      - name: DATABASE_PASSWORD
+        value: "password123"
+      - name: DATABASE_NAME
+        value: "fintech_demo"
+      - name: REDIS_HOST
+        value: "my-fintech-app-redis-master"
+      - name: REDIS_PASSWORD
+        value: ""
+  - name: payment-gateway
+    image:
+      repository: quay.io/fintech-demo/payment-gateway
+      tag: latest
+    service:
+      port: 8082
+      targetPort: 8082
+    env:
+      - name: DATABASE_HOST
+        value: "my-fintech-app-postgresql"
+      - name: DATABASE_USER
+        value: "fintech_user"
+      - name: DATABASE_PASSWORD
+        value: "password123"
+      - name: DATABASE_NAME
+        value: "fintech_demo"
+      - name: REDIS_HOST
+        value: "my-fintech-app-redis-master"
+      - name: REDIS_PASSWORD
+        value: ""
+  - name: audit-service
+    image:
+      repository: quay.io/fintech-demo/audit-service
+      tag: latest
+    service:
+      port: 8083
+      targetPort: 8083
+    env:
+      - name: DATABASE_HOST
+        value: "my-fintech-app-postgresql"
+      - name: DATABASE_USER
+        value: "fintech_user"
+      - name: DATABASE_PASSWORD
+        value: "password123"
+      - name: DATABASE_NAME
+        value: "fintech_demo"
+      - name: REDIS_HOST
+        value: "my-fintech-app-redis-master"
+      - name: REDIS_PASSWORD
+        value: ""
 
-paymentGateway:
-  enabled: true
-  replicaCount: 1
-  image:
-    repository: yourregistry.azurecr.io/fintech-demo/payment-gateway
-  service:
-    type: ClusterIP
-    port: 8082
-
-auditService:
-  enabled: true
-  replicaCount: 1
-  image:
-    repository: yourregistry.azurecr.io/fintech-demo/audit-service
-  service:
-    type: ClusterIP
-    port: 8083
-
-# --- 資料庫與其他依賴設定 ---
-# 在生產環境中，建議使用外部管理的資料庫。
-# 這裡預設為不透過此 Chart 部署，但保留了選項。
-
+# Database (PostgreSQL) Dependency Configuration
 postgresql:
-  enabled: false
-  # ... postgresql sub-chart values
+  enabled: true
+  auth:
+    username: "fintech_user"
+    password: "password123"
+    database: "fintech_demo"
+  primary:
+    persistence:
+      enabled: true
+      size: 10Gi
 
+# Cache (Redis) Dependency Configuration
 redis:
-  enabled: false
-  # ... redis sub-chart values
+  enabled: true
+  architecture: standalone
+  auth:
+    enabled: false
+  master:
+    persistence:
+      enabled: true
+      size: 5Gi
 
-# Ingress 配置 - 啟用以暴露服務
+# Ingress Configuration
 ingress:
   enabled: true
-  className: "nginx"
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
   hosts:
     - host: fintech-demo.local
-      paths:
-        - path: /
-          pathType: Prefix
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local 
+  tls: [] 

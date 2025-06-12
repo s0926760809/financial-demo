@@ -46,4 +46,27 @@ Chart 名稱和版本
 */}}
 {{- define "fintech-chart.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
+{{- end }}
+
+{{/*
+简化的微服务名称模板
+*/}}
+{{- define "fintech-chart.frontend.name" -}}
+frontend
+{{- end }}
+
+{{- define "fintech-chart.trading-api.name" -}}
+trading-api-service
+{{- end }}
+
+{{- define "fintech-chart.risk-engine.name" -}}
+risk-engine-service
+{{- end }}
+
+{{- define "fintech-chart.payment-gateway.name" -}}
+payment-gateway-service
+{{- end }}
+
+{{- define "fintech-chart.audit-service.name" -}}
+audit-service-service
 {{- end }} 

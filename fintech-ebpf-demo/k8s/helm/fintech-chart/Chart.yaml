@@ -9,4 +9,14 @@ type: application
 version: 0.1.0
 
 # 應用程式版本。這是你想要部署的應用程式版本。
-appVersion: "1.0.0" 
+appVersion: "1.0.0"
+
+dependencies:
+  - name: postgresql
+    version: "12.2.5"
+    repository: "https://charts.bitnami.com/bitnami"
+    condition: postgresql.enabled
+  - name: redis
+    version: "17.3.11"
+    repository: "https://charts.bitnami.com/bitnami"
+    condition: redis.enabled 
