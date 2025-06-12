@@ -1,0 +1,809 @@
+{"level":"info","msg":"交易處理器初始化完成","time":"2025-06-12T13:28:08+08:00"}
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /health                   --> trading-api/handlers.HealthCheck (5 handlers)
+[GIN-debug] POST   /api/v1/orders            --> trading-api/handlers.CreateOrder (5 handlers)
+[GIN-debug] GET    /api/v1/orders/:id        --> trading-api/handlers.GetOrder (5 handlers)
+[GIN-debug] PUT    /api/v1/orders/:id        --> trading-api/handlers.UpdateOrder (5 handlers)
+[GIN-debug] DELETE /api/v1/orders/:id        --> trading-api/handlers.CancelOrder (5 handlers)
+[GIN-debug] GET    /api/v1/orders            --> trading-api/handlers.GetUserOrders (5 handlers)
+[GIN-debug] GET    /api/v1/portfolio         --> trading-api/handlers.GetPortfolio (5 handlers)
+[GIN-debug] GET    /api/v1/portfolio/history --> trading-api/handlers.GetPortfolioHistory (5 handlers)
+[GIN-debug] GET    /api/v1/trades            --> trading-api/handlers.GetTradingHistory (5 handlers)
+[GIN-debug] GET    /api/v1/trading-stats     --> trading-api/handlers.GetTradingStats (5 handlers)
+[GIN-debug] GET    /api/v1/market/quote/:symbol --> trading-api/handlers.GetStockQuote (5 handlers)
+[GIN-debug] GET    /api/v1/market/stocks     --> trading-api/handlers.GetSupportedStocks (5 handlers)
+[GIN-debug] GET    /api/v1/user/profile      --> trading-api/handlers.GetUserProfile (5 handlers)
+[GIN-debug] PUT    /api/v1/user/profile      --> trading-api/handlers.UpdateUserProfile (5 handlers)
+[GIN-debug] POST   /api/v1/user/reset-account --> trading-api/handlers.ResetAccount (5 handlers)
+[GIN-debug] GET    /api/v1/system/config     --> trading-api/handlers.GetSystemConfig (5 handlers)
+[GIN-debug] PUT    /api/v1/system/config     --> trading-api/handlers.UpdateSystemConfig (5 handlers)
+[GIN-debug] GET    /api/v1/security/tests    --> trading-api/handlers.GetSecurityTestOverview (5 handlers)
+[GIN-debug] POST   /api/v1/security/test/command --> trading-api/handlers.TestCommandInjection (5 handlers)
+[GIN-debug] POST   /api/v1/security/test/file --> trading-api/handlers.TestFileAccess (5 handlers)
+[GIN-debug] POST   /api/v1/security/test/network --> trading-api/handlers.TestNetworkScan (5 handlers)
+[GIN-debug] POST   /api/v1/security/test/sensitive --> trading-api/handlers.TestSensitiveDataLeak (5 handlers)
+[GIN-debug] POST   /api/v1/security/test/sql --> trading-api/handlers.TestSQLInjection (5 handlers)
+[GIN-debug] POST   /api/v1/security/test/privilege --> trading-api/handlers.TestPrivilegeEscalation (5 handlers)
+[GIN-debug] POST   /api/v1/security/test/crypto --> trading-api/handlers.TestCryptoWeakness (5 handlers)
+[GIN-debug] POST   /api/v1/security/test/memory --> trading-api/handlers.TestMemoryDump (5 handlers)
+[GIN-debug] POST   /api/v1/security/test/comprehensive --> trading-api/handlers.RunComprehensiveSecurityTest (5 handlers)
+[GIN-debug] GET    /api/v1/monitoring/service --> main.getServiceMetrics (5 handlers)
+[GIN-debug] GET    /api/v1/monitoring/overview --> main.getSystemOverview (5 handlers)
+[GIN-debug] GET    /api/v1/monitoring/instances --> main.getInstancesInfo (5 handlers)
+[GIN-debug] GET    /api/v1/tetragon/events   --> trading-api/handlers.GetTetragonEvents (5 handlers)
+[GIN-debug] GET    /api/v1/tetragon/alerts   --> trading-api/handlers.GetSecurityAlerts (5 handlers)
+[GIN-debug] GET    /api/v1/tetragon/statistics --> trading-api/handlers.GetEventStatistics (5 handlers)
+[GIN-debug] GET    /api/v1/tetragon/ws       --> trading-api/handlers.TetragonWebSocketHandler (5 handlers)
+[GIN-debug] GET    /metrics                  --> main.main.WrapH.func2 (5 handlers)
+2025/06/12 13:28:08 🚀 Trading API 服務器啟動在端口 30080
+2025/06/12 13:28:08 📊 健康檢查: http://localhost:30080/health
+2025/06/12 13:28:08 📈 API文檔: http://localhost:30080/api/v1/
+2025/06/12 13:28:08 🚨 安全測試: http://localhost:30080/api/v1/security/tests
+2025/06/12 13:28:08 🔍 Tetragon事件: http://localhost:30080/api/v1/tetragon/events
+2025/06/12 13:28:08 📡 WebSocket事件流: ws://localhost:30080/api/v1/tetragon/ws
+2025/06/12 13:28:08 📊 Prometheus指標: http://localhost:30080/metrics
+{"change":-3.8899999999999864,"changePercent":-1.9193763260472623,"level":"info","msg":"獲取實時股價成功","price":198.78,"symbol":"AAPL","time":"2025-06-12T13:28:08+08:00"}
+[GIN] 2025/06/12 - 13:28:08 | 200 |  194.012292ms |             ::1 | GET      "/health"
+2025/06/12 13:28:16 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:28:16 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:28:16 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:28:19 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:28:19 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:28:19 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:28:23 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:28:23 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:28:23 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+{"change":-3.8899999999999864,"changePercent":-1.9193763260472623,"level":"info","msg":"獲取實時股價成功","price":198.78,"symbol":"AAPL","time":"2025-06-12T13:28:26+08:00"}
+[GIN] 2025/06/12 - 13:28:26 | 200 |     104.311ms |             ::1 | GET      "/health"
+2025/06/12 13:28:26 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:28:26 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:28:26 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:28:29 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:28:29 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:28:29 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:28:33 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:28:33 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:28:33 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+[GIN] 2025/06/12 - 13:28:35 | 200 |    5.699875ms |             ::1 | GET      "/api/v1/user/profile"
+[GIN] 2025/06/12 - 13:28:35 | 200 |     202.083µs |             ::1 | GET      "/api/v1/user/profile"
+[GIN] 2025/06/12 - 13:28:35 | 200 |     290.625µs |             ::1 | GET      "/api/v1/user/profile"
+[GIN] 2025/06/12 - 13:28:35 | 200 |     140.292µs |             ::1 | GET      "/api/v1/user/profile"
+{"endpoint":"/api/v1/portfolio","level":"info","msg":"投資組合查詢","time":"2025-06-12T13:28:35+08:00","user_id":"demo-user-123","user_ip":"::1"}
+[GIN] 2025/06/12 - 13:28:35 | 200 |     301.708µs |             ::1 | GET      "/api/v1/orders?limit=10"
+[GIN] 2025/06/12 - 13:28:35 | 200 |    1.580416ms |             ::1 | GET      "/api/v1/trading-stats"
+[GIN] 2025/06/12 - 13:28:35 | 200 |    1.721084ms |             ::1 | GET      "/api/v1/portfolio/history?period=1M"
+[GIN] 2025/06/12 - 13:28:35 | 200 |      222.75µs |             ::1 | GET      "/api/v1/trading-stats"
+[GIN] 2025/06/12 - 13:28:35 | 200 |    1.130709ms |             ::1 | GET      "/api/v1/orders?limit=10"
+[GIN] 2025/06/12 - 13:28:35 | 200 |     271.542µs |             ::1 | GET      "/api/v1/portfolio/history?period=1M"
+[GIN] 2025/06/12 - 13:28:35 | 200 |    2.614542ms |             ::1 | GET      "/api/v1/portfolio/history?period=1M"
+[GIN] 2025/06/12 - 13:28:35 | 200 |     219.542µs |             ::1 | GET      "/api/v1/portfolio/history?period=1M"
+{"change":-3.8899999999999864,"changePercent":-1.9193763260472623,"level":"info","msg":"獲取實時股價成功","price":198.78,"symbol":"AAPL","time":"2025-06-12T13:28:35+08:00"}
+[GIN] 2025/06/12 - 13:28:35 | 200 |   27.829459ms |             ::1 | GET      "/api/v1/portfolio"
+{"endpoint":"/api/v1/portfolio","level":"info","msg":"投資組合查詢","time":"2025-06-12T13:28:35+08:00","user_id":"demo-user-123","user_ip":"::1"}
+{"change":-3.8899999999999864,"changePercent":-1.9193763260472623,"level":"info","msg":"獲取實時股價成功","price":198.78,"symbol":"AAPL","time":"2025-06-12T13:28:35+08:00"}
+[GIN] 2025/06/12 - 13:28:35 | 200 |      21.736ms |             ::1 | GET      "/api/v1/portfolio"
+2025/06/12 13:28:36 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:28:36 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:28:36 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:28:40 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:28:40 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:28:40 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:28:43 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:28:43 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:28:43 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:28:46 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:28:46 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:28:46 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:28:49 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:28:49 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:28:49 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:28:53 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:28:53 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:28:53 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:28:56 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:28:56 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:28:56 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:28:59 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:28:59 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:28:59 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:29:02 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:29:02 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:29:02 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:29:05 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:29:05 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:29:05 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:29:09 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:29:09 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:29:09 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:29:12 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:29:12 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:29:12 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:29:15 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:29:15 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:29:15 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:29:18 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:29:18 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:29:18 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:29:22 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:29:22 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:29:22 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:29:25 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:29:25 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:29:25 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:29:28 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:29:28 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:29:28 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:29:31 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:29:31 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:29:31 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:29:34 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:29:34 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:29:34 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:29:38 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:29:38 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:29:38 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:29:41 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:29:41 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:29:41 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:29:44 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:29:44 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:29:44 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:29:47 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:29:47 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:29:47 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:29:50 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:29:50 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:29:50 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:29:53 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:29:53 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:29:53 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:29:57 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:29:57 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:29:57 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:30:00 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:30:00 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:30:00 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:30:03 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:30:03 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:30:03 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:30:06 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:30:06 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:30:06 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:30:09 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:30:09 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:30:09 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:30:13 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:30:13 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:30:13 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:30:16 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:30:16 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:30:16 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:30:19 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:30:19 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:30:19 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:30:22 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:30:22 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:30:22 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:30:25 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:30:25 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:30:25 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:30:29 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:30:29 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:30:29 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:30:32 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:30:32 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:30:32 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:30:35 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:30:35 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:30:35 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:30:38 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:30:38 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:30:38 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:30:42 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:30:42 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:30:42 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:30:45 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:30:45 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:30:45 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:30:48 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:30:48 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:30:48 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:30:51 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:30:51 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:30:51 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:30:55 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:30:55 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:30:55 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:30:58 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:30:58 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:30:58 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:31:01 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:31:01 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:31:01 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:31:04 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:31:04 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:31:04 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:31:07 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:31:07 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:31:07 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:31:11 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:31:11 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:31:11 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:31:14 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:31:14 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:31:14 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:31:17 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:31:17 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:31:17 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:31:20 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:31:20 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:31:20 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:31:23 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:31:23 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:31:23 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:31:27 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:31:27 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:31:27 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:31:30 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:31:30 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:31:30 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:31:34 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:31:34 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:31:34 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:31:37 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:31:37 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:31:37 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:31:41 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:31:41 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:31:41 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:31:44 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:31:44 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:31:44 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:31:47 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:31:47 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:31:47 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:31:50 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:31:50 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:31:50 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:31:53 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:31:53 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:31:53 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:31:56 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:31:56 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:31:56 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:32:00 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:32:00 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:32:00 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:32:03 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:32:03 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:32:03 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:32:06 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:32:06 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:32:06 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:32:09 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:32:09 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:32:09 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:32:13 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:32:13 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:32:13 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:32:16 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:32:16 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:32:16 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:32:19 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:32:19 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:32:19 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:32:23 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:32:23 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:32:23 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:32:26 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:32:26 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:32:26 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:32:29 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:32:29 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:32:29 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:32:32 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:32:32 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:32:32 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:32:36 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:32:36 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:32:36 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:32:39 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:32:39 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:32:39 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:32:42 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:32:42 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:32:42 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:32:46 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:32:46 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:32:46 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:32:49 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:32:49 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:32:49 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:32:52 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:32:52 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:32:52 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:32:56 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:32:56 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:32:56 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:32:59 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:32:59 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:32:59 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:33:02 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:33:02 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:33:02 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:33:05 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:33:05 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:33:05 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:33:09 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:33:09 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:33:09 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:33:12 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:33:12 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:33:12 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:33:15 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:33:15 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:33:15 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:33:18 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:33:18 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:33:18 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:33:22 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:33:22 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:33:22 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:33:25 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:33:25 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:33:25 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:33:28 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:33:28 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:33:28 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:33:32 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:33:32 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:33:32 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:33:35 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:33:35 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:33:35 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:33:38 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:33:38 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:33:38 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:33:42 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:33:42 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:33:42 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:33:45 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:33:45 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:33:45 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:33:48 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:33:48 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:33:48 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:33:51 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:33:51 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:33:51 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:33:55 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:33:55 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:33:55 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:33:58 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:33:58 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:33:58 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:34:01 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:34:01 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:34:01 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:34:05 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:34:05 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:34:05 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:34:08 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:34:08 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:34:08 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:34:11 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:34:11 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:34:11 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:34:15 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:34:15 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:34:15 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:34:18 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:34:18 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:34:18 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:34:21 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:34:21 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:34:21 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:34:25 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:34:25 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:34:25 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:34:28 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:34:28 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:34:28 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:34:32 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:34:32 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:34:32 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:34:35 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:34:35 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:34:35 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:34:38 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:34:38 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:34:38 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:34:41 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:34:41 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:34:41 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:34:45 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:34:45 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:34:45 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:34:48 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:34:48 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:34:48 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:34:51 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:34:51 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:34:51 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:34:55 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:34:55 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:34:55 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:34:58 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:34:58 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:34:58 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:35:02 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:35:02 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:35:02 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:35:05 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:35:05 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:35:05 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:35:08 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:35:08 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:35:08 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:35:12 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:35:12 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:35:12 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:35:15 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:35:15 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:35:15 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:35:18 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:35:18 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:35:18 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:35:22 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:35:22 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:35:22 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:35:26 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:35:26 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:35:26 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:35:29 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:35:29 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:35:29 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:35:32 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:35:32 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:35:32 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:35:36 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:35:36 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:35:36 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:35:39 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:35:39 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:35:39 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:35:43 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:35:43 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:35:43 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:35:46 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:35:46 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:35:46 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:35:50 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:35:50 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:35:50 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:35:53 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:35:53 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:35:53 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:35:57 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:35:57 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:35:57 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:36:00 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:36:00 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:36:00 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:36:04 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:36:04 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:36:04 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:36:07 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:36:07 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:36:07 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:36:10 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:36:10 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:36:10 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:36:14 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:36:14 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:36:14 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:36:17 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:36:17 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:36:17 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:36:21 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:36:21 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:36:21 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:36:24 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:36:24 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:36:24 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:36:27 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:36:27 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:36:27 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:36:31 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:36:31 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:36:31 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:36:34 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:36:34 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:36:34 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:36:38 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:36:38 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:36:38 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:36:41 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:36:41 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:36:41 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:36:44 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:36:44 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:36:44 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:36:48 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:36:48 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:36:48 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:36:51 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:36:51 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:36:51 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:36:55 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:36:55 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:36:55 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:36:58 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:36:58 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:36:58 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:37:02 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:37:02 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:37:02 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:37:05 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:37:05 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:37:05 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:37:08 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:37:08 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:37:08 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:37:12 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:37:12 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:37:12 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:37:15 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:37:15 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:37:15 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:37:19 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:37:19 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:37:19 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:37:22 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:37:22 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:37:22 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:37:25 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:37:25 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:37:25 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:37:29 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:37:29 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:37:29 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:37:32 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:37:32 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:37:32 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:37:36 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:37:36 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:37:36 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:37:39 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:37:39 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:37:39 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:37:42 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:37:42 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:37:42 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:37:46 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:37:46 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:37:46 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:37:49 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:37:49 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:37:49 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:37:53 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:37:53 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:37:53 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:37:56 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:37:56 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:37:56 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:37:59 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:37:59 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:37:59 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:38:03 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:38:03 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:38:03 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:38:06 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:38:06 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:38:06 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:38:10 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:38:10 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:38:10 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:38:13 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:38:13 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:38:13 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:38:16 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:38:16 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:38:16 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:38:20 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:38:20 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:38:20 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:38:23 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:38:23 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:38:23 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:38:27 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:38:27 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:38:27 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:38:30 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:38:30 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:38:30 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:38:33 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:38:33 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:38:33 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:38:37 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:38:37 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:38:37 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:38:40 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:38:40 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:38:40 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:38:43 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:38:43 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:38:43 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:38:47 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:38:47 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:38:47 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:38:50 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:38:50 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:38:50 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:38:54 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:38:54 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:38:54 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:38:57 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:38:57 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:38:57 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:39:00 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:39:00 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:39:00 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:39:03 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:39:03 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:39:03 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:39:07 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:39:07 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:39:07 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:39:10 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:39:10 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:39:10 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:39:13 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:39:13 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:39:13 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:39:17 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:39:17 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:39:17 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:39:20 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:39:20 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:39:20 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:39:23 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:39:23 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:39:23 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:39:27 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:39:27 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:39:27 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:39:30 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:39:30 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:39:30 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:39:33 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:39:33 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:39:33 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:39:37 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:39:37 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:39:37 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:39:40 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:39:40 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:39:40 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:39:43 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:39:43 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:39:43 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:39:47 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:39:47 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:39:47 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:39:50 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:39:50 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:39:50 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:39:53 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:39:53 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:39:53 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:39:57 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:39:57 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:39:57 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:40:00 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:40:00 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:40:00 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:40:03 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:40:03 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:40:03 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:40:07 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:40:07 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:40:07 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:40:10 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:40:10 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:40:10 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:40:14 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:40:14 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:40:14 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:40:17 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:40:17 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:40:17 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:40:20 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:40:20 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:40:20 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:40:24 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:40:24 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:40:24 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:40:27 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:40:27 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:40:27 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:40:30 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:40:30 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:40:30 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:40:34 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:40:34 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:40:34 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:40:37 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:40:37 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:40:37 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:40:41 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:40:41 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:40:41 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:40:44 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:40:44 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:40:44 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:40:47 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:40:47 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:40:47 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:40:51 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:40:51 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:40:51 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:40:54 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:40:54 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:40:54 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:40:57 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:40:57 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:40:57 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:41:01 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:41:01 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:41:01 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:41:04 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:41:04 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:41:04 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:41:08 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:41:08 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:41:08 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:41:11 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:41:11 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:41:11 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:41:14 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:41:14 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:41:14 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:41:18 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:41:18 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:41:18 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:41:21 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:41:21 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:41:21 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:41:24 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:41:24 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:41:24 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:41:28 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:41:28 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:41:28 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:41:31 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:41:31 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:41:31 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:41:35 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:41:35 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:41:35 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:41:38 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:41:38 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:41:38 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:41:41 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:41:41 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:41:41 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:41:45 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:41:45 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:41:45 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:41:48 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:41:48 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:41:48 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd
+2025/06/12 13:41:52 kubectl 不可用，生成模擬事件: exit status 1
+2025/06/12 13:41:52 🚨 安全告警: HIGH - 可疑命令執行: curl 訪問外部域名
+2025/06/12 13:41:52 🚨 安全告警: CRITICAL - 敏感文件訪問: /etc/passwd

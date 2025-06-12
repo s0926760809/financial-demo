@@ -1,0 +1,22 @@
+server:
+  port: "30083"
+  host: "0.0.0.0"
+  mode: "release"
+
+database:
+  host: "localhost"
+  port: "5432"
+  user: "postgres"
+  password: "password"
+  dbname: "fintech_demo"
+
+redis:
+  host: "localhost"
+  port: "6379"
+  password: ""
+  db: 0
+
+audit:
+  log_retention_days: 90
+  log_directory: "/tmp/audit"
+  sensitive_fields: ["password", "ssn", "credit_card", "bank_account"] 

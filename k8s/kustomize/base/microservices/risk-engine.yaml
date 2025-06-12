@@ -1,0 +1,213 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: risk-engine-config
+  namespace: fintech-demo
+data:
+  config.yaml: |
+    server:
+      port: "8081"
+      host: "0.0.0.0"
+      mode: "release"
+    database:
+      host: "postgresql-service"
+      port: "5432"
+      user: "risk_user"
+      password: "risk_pass"
+      dbname: "risk_db"
+    redis:
+      host: "redis-service"
+      port: "6379"
+      password: "redis_password"
+      db: 1
+    risk:
+      max_order_value: 100000.0
+      high_risk_symbols: ["CRYPTO", "MEME", "PENNY"]
+      cpu_intensive_mode: true
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: risk-engine
+  namespace: fintech-demo
+  labels:
+    app: risk-engine
+    tier: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: risk-engine
+  template:
+    metadata:
+      labels:
+        app: risk-engine
+        tier: backend
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8081"
+        prometheus.io/path: "/metrics"
+        tetragon.io/monitor: "cpu-intensive"
+        tetragon.io/policy: "risk-assessment"
+        security.policy/file-access: "sensitive"
+        security.policy/cpu-intensive: "true"
+    spec:
+      containers:
+      - name: risk-engine
+        image: fintech-demo/risk-engine:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8081
+          name: http
+        env:
+        - name: DATABASE_HOST
+          value: "postgresql-service"
+        - name: DATABASE_USER
+          value: "risk_user"
+        - name: DATABASE_PASSWORD
+          value: "risk_pass"
+        - name: DATABASE_NAME
+          value: "risk_db"
+        - name: REDIS_HOST
+          value: "redis-service"
+        - name: REDIS_PASSWORD
+          value: "redis_password"
+        - name: GIN_MODE
+          value: "release"
+        # 故意暴露敏感配置
+        - name: RISK_ENGINE_DEBUG
+          value: "true"
+        - name: CPU_INTENSIVE_MODE
+          value: "true"
+        volumeMounts:
+        - name: config-volume
+          mountPath: /app/config
+        - name: risk-logs
+          mountPath: /var/log/risk
+        # 故意掛載敏感文件系統
+        - name: host-sys
+          mountPath: /host/sys
+          readOnly: true
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        # 故意給予特權權限
+        securityContext:
+          privileged: true  # 完全特權模式
+          allowPrivilegeEscalation: true
+          runAsUser: 0
+          capabilities:
+            add:
+            - SYS_ADMIN
+            - NET_ADMIN
+            - SYS_PTRACE  # 允許進程追蹤
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8081
+          initialDelaySeconds: 45
+          periodSeconds: 15
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8081
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        # 啟動時執行一些可疑操作
+        lifecycle:
+          postStart:
+            exec:
+              command:
+              - "/bin/sh"
+              - "-c"
+              - |
+                # 創建風險評估相關的敏感文件
+                mkdir -p /root/risk_configs
+                echo "risk_api_key=risk_secret_12345" > /root/risk_configs/.env
+                echo "ml_model_key=model_secret_67890" >> /root/risk_configs/.env
+                # 故意讀取系統信息
+                cat /proc/cpuinfo > /var/log/risk/system_info.log
+                cat /proc/meminfo >> /var/log/risk/system_info.log
+                # 設置權限
+                chmod 600 /root/risk_configs/.env
+      volumes:
+      - name: config-volume
+        configMap:
+          name: risk-engine-config
+      - name: risk-logs
+        emptyDir: {}
+      - name: host-sys
+        hostPath:
+          path: /sys
+          type: Directory
+      securityContext:
+        runAsUser: 0
+        fsGroup: 0
+      # 節點親和性 - 更喜歡CPU密集型節點
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            preference:
+              matchExpressions:
+              - key: node-type
+                operator: In
+                values: ["compute-optimized"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: risk-engine-service
+  namespace: fintech-demo
+  labels:
+    app: risk-engine
+spec:
+  type: NodePort
+  ports:
+  - port: 8081
+    targetPort: 8081
+    nodePort: 30081
+    protocol: TCP
+    name: http
+  selector:
+    app: risk-engine
+---
+# Risk Engine 專用的網絡策略
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: risk-engine-netpol
+  namespace: fintech-demo
+spec:
+  podSelector:
+    matchLabels:
+      app: risk-engine
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: trading-api
+    ports:
+    - protocol: TCP
+      port: 8081
+  - from: []  # 故意允許所有入站（用於演示）
+    ports:
+    - protocol: TCP
+      port: 8081
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: postgresql
+  - to:
+    - podSelector:
+        matchLabels:
+          app: redis
+  - to: []  # 允許所有出站流量（用於演示外部連接） 

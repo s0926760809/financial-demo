@@ -1,0 +1,39 @@
+
+> fintech-ebpf-demo-frontend@3.0.0 dev
+> vite
+
+Re-optimizing dependencies because lockfile has changed
+
+  VITE v5.4.19  ready in 764 ms
+
+  ➜  Local:   http://localhost:3000/
+  ➜  Network: http://192.168.0.203:3000/
+  ➜  Network: http://192.168.192.245:3000/
+Sending Request to the Target: GET /api/v1/user/profile
+Received Response from the Target: 200 /api/v1/user/profile
+Sending Request to the Target: GET /api/v1/user/profile
+Received Response from the Target: 200 /api/v1/user/profile
+Sending Request to the Target: GET /api/v1/user/profile
+Received Response from the Target: 200 /api/v1/user/profile
+Sending Request to the Target: GET /api/v1/user/profile
+Received Response from the Target: 200 /api/v1/user/profile
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/trading-stats
+Sending Request to the Target: GET /api/v1/portfolio/history?period=1M
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/trading-stats
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio/history?period=1M
+Sending Request to the Target: GET /api/v1/trading-stats
+Sending Request to the Target: GET /api/v1/portfolio/history?period=1M
+Received Response from the Target: 200 /api/v1/trading-stats
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio/history?period=1M
+Sending Request to the Target: GET /api/v1/portfolio/history?period=1M
+Received Response from the Target: 200 /api/v1/portfolio/history?period=1M
+Sending Request to the Target: GET /api/v1/portfolio/history?period=1M
+Received Response from the Target: 200 /api/v1/portfolio/history?period=1M
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/portfolio

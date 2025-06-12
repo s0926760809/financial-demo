@@ -1,0 +1,140 @@
+# Global settings
+global:
+  image:
+    tag: latest
+    pullPolicy: IfNotPresent
+
+# Image pull secrets for private registries
+imagePullSecrets:
+  - name: quay-pull-secret
+
+# Frontend Configuration
+frontend:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: quay.io/s0926760809/fintech-demo/frontend
+    tag: "v1.8"
+  service:
+    port: 80
+    targetPort: 80
+
+# Backend Services Common Configuration
+backend:
+  replicaCount: 1
+
+backendServices:
+  - name: trading-api
+    image:
+      repository: quay.io/s0926760809/fintech-demo/trading-api
+      tag: v1.0
+    service:
+      port: 8080
+      targetPort: 8080
+    env:
+      - name: SERVER_PORT
+        value: "8080"
+      - name: DATABASE_HOST
+        value: "fintech-demo-postgresql"
+      - name: DATABASE_USER
+        value: "fintech_user"
+      - name: DATABASE_PASSWORD
+        value: "password123"
+      - name: DATABASE_NAME
+        value: "fintech_demo"
+      - name: REDIS_HOST
+        value: "fintech-demo-redis-master"
+      - name: REDIS_PASSWORD
+        value: ""
+  - name: risk-engine
+    image:
+      repository: quay.io/s0926760809/fintech-demo/risk-engine
+      tag: v1.0
+    service:
+      port: 8081
+      targetPort: 8081
+    env:
+      - name: DATABASE_HOST
+        value: "fintech-demo-postgresql"
+      - name: DATABASE_USER
+        value: "fintech_user"
+      - name: DATABASE_PASSWORD
+        value: "password123"
+      - name: DATABASE_NAME
+        value: "fintech_demo"
+      - name: REDIS_HOST
+        value: "fintech-demo-redis-master"
+      - name: REDIS_PASSWORD
+        value: ""
+  - name: payment-gateway
+    image:
+      repository: quay.io/s0926760809/fintech-demo/payment-gateway
+      tag: v1.0
+    service:
+      port: 8082
+      targetPort: 8082
+    env:
+      - name: DATABASE_HOST
+        value: "fintech-demo-postgresql"
+      - name: DATABASE_USER
+        value: "fintech_user"
+      - name: DATABASE_PASSWORD
+        value: "password123"
+      - name: DATABASE_NAME
+        value: "fintech_demo"
+      - name: REDIS_HOST
+        value: "fintech-demo-redis-master"
+      - name: REDIS_PASSWORD
+        value: ""
+  - name: audit-service
+    image:
+      repository: quay.io/s0926760809/fintech-demo/audit-service
+      tag: v1.0
+    service:
+      port: 8083
+      targetPort: 8083
+    env:
+      - name: DATABASE_HOST
+        value: "fintech-demo-postgresql"
+      - name: DATABASE_USER
+        value: "fintech_user"
+      - name: DATABASE_PASSWORD
+        value: "password123"
+      - name: DATABASE_NAME
+        value: "fintech_demo"
+      - name: REDIS_HOST
+        value: "fintech-demo-redis-master"
+      - name: REDIS_PASSWORD
+        value: ""
+
+# Database (PostgreSQL) Dependency Configuration
+postgresql:
+  enabled: true
+  auth:
+    username: "fintech_user"
+    password: "password123"
+    database: "fintech_demo"
+  primary:
+    persistence:
+      enabled: true
+      size: 10Gi
+
+# Cache (Redis) Dependency Configuration
+redis:
+  enabled: true
+  architecture: standalone
+  auth:
+    enabled: false
+  master:
+    persistence:
+      enabled: true
+      size: 5Gi
+
+# Ingress Configuration
+ingress:
+  enabled: true
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+  hosts:
+    - host: fintech-demo.local
+  tls: [] 
