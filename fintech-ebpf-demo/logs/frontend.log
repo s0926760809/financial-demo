@@ -2,14 +2,13 @@
 > fintech-ebpf-demo-frontend@3.0.0 dev
 > vite
 
+Re-optimizing dependencies because lockfile has changed
 
-  VITE v5.4.19  ready in 331 ms
+  VITE v5.4.19  ready in 764 ms
 
   ➜  Local:   http://localhost:3000/
-  ➜  Network: http://192.168.1.217:3000/
+  ➜  Network: http://192.168.0.203:3000/
   ➜  Network: http://192.168.192.245:3000/
-  ➜  Network: http://10.211.55.2:3000/
-  ➜  Network: http://10.37.129.2:3000/
 Sending Request to the Target: GET /api/v1/user/profile
 Received Response from the Target: 200 /api/v1/user/profile
 Sending Request to the Target: GET /api/v1/user/profile
@@ -18,83 +17,23 @@ Sending Request to the Target: GET /api/v1/user/profile
 Received Response from the Target: 200 /api/v1/user/profile
 Sending Request to the Target: GET /api/v1/user/profile
 Received Response from the Target: 200 /api/v1/user/profile
-Sending Request to the Target: POST /api/v1/security/test/command
-Received Response from the Target: 200 /api/v1/security/test/command
-Sending Request to the Target: POST /api/v1/security/test/file
-Received Response from the Target: 200 /api/v1/security/test/file
-Sending Request to the Target: POST /api/v1/security/test/command
-Received Response from the Target: 200 /api/v1/security/test/command
-Sending Request to the Target: POST /api/v1/security/test/network
-Received Response from the Target: 400 /api/v1/security/test/network
-Sending Request to the Target: POST /api/v1/security/test/sensitive
-Received Response from the Target: 400 /api/v1/security/test/sensitive
-Sending Request to the Target: POST /api/v1/security/test/privilege
-Received Response from the Target: 400 /api/v1/security/test/privilege
-Sending Request to the Target: POST /api/v1/security/test/privilege
-Received Response from the Target: 400 /api/v1/security/test/privilege
-Sending Request to the Target: POST /api/v1/security/test/crypto
-Received Response from the Target: 400 /api/v1/security/test/crypto
-Sending Request to the Target: POST /api/v1/security/test/crypto
-Received Response from the Target: 400 /api/v1/security/test/crypto
-Sending Request to the Target: POST /api/v1/security/test/memory
-Received Response from the Target: 400 /api/v1/security/test/memory
-Sending Request to the Target: POST /api/v1/security/test/memory
-Received Response from the Target: 400 /api/v1/security/test/memory
-Sending Request to the Target: POST /api/v1/security/test/privilege
-Received Response from the Target: 400 /api/v1/security/test/privilege
-Sending Request to the Target: POST /api/v1/security/test/sensitive
-Received Response from the Target: 400 /api/v1/security/test/sensitive
-Sending Request to the Target: POST /api/v1/security/test/command
-Received Response from the Target: 200 /api/v1/security/test/command
-Sending Request to the Target: POST /api/v1/security/test/file
-Received Response from the Target: 200 /api/v1/security/test/file
-Sending Request to the Target: POST /api/v1/security/test/network
-Received Response from the Target: 400 /api/v1/security/test/network
-Sending Request to the Target: POST /api/v1/security/test/sensitive
-Received Response from the Target: 400 /api/v1/security/test/sensitive
-Sending Request to the Target: POST /api/v1/security/test/privilege
-Received Response from the Target: 400 /api/v1/security/test/privilege
-Sending Request to the Target: POST /api/v1/security/test/crypto
-Received Response from the Target: 400 /api/v1/security/test/crypto
-Sending Request to the Target: POST /api/v1/security/test/memory
-Received Response from the Target: 400 /api/v1/security/test/memory
-Sending Request to the Target: POST /api/v1/security/test/sql
-Received Response from the Target: 200 /api/v1/security/test/sql
-Sending Request to the Target: POST /api/v1/security/test/file
-Received Response from the Target: 200 /api/v1/security/test/file
-Sending Request to the Target: POST /api/v1/security/test/file
-Received Response from the Target: 200 /api/v1/security/test/file
-Sending Request to the Target: POST /api/v1/security/test/network
-Received Response from the Target: 400 /api/v1/security/test/network
-Sending Request to the Target: POST /api/v1/security/test/network
-Received Response from the Target: 400 /api/v1/security/test/network
-5:47:29 AM [vite] hmr update /src/pages/Security/index.tsx
-Sending Request to the Target: POST /api/v1/security/test/command
-Received Response from the Target: 200 /api/v1/security/test/command
-Sending Request to the Target: POST /api/v1/security/test/file
-Received Response from the Target: 200 /api/v1/security/test/file
-Sending Request to the Target: POST /api/v1/security/test/file
-Received Response from the Target: 200 /api/v1/security/test/file
-Sending Request to the Target: POST /api/v1/security/test/network
-Received Response from the Target: 200 /api/v1/security/test/network
-Sending Request to the Target: POST /api/v1/security/test/sensitive
-Received Response from the Target: 200 /api/v1/security/test/sensitive
-Sending Request to the Target: POST /api/v1/security/test/privilege
-Received Response from the Target: 200 /api/v1/security/test/privilege
-Sending Request to the Target: POST /api/v1/security/test/crypto
-Received Response from the Target: 200 /api/v1/security/test/crypto
-Sending Request to the Target: POST /api/v1/security/test/memory
-Received Response from the Target: 200 /api/v1/security/test/memory
-Sending Request to the Target: POST /api/v1/security/test/sql
-Received Response from the Target: 200 /api/v1/security/test/sql
-5:49:02 AM [vite] changed tsconfig file detected: /Users/tujenwei/Desktop/finacial-demo/fintech-ebpf-demo/frontend/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
-5:49:02 AM [vite] hmr update /src/pages/Security/index.tsx
-5:49:02 AM [vite] hmr update /src/pages/Portfolio/index.tsx
-Sending Request to the Target: GET /api/v1/user/profile
-Received Response from the Target: 200 /api/v1/user/profile
-Sending Request to the Target: GET /api/v1/user/profile
-Received Response from the Target: 200 /api/v1/user/profile
-Sending Request to the Target: GET /api/v1/user/profile
-Received Response from the Target: 200 /api/v1/user/profile
-Sending Request to the Target: GET /api/v1/user/profile
-Received Response from the Target: 200 /api/v1/user/profile
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Sending Request to the Target: GET /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/trading-stats
+Sending Request to the Target: GET /api/v1/portfolio/history?period=1M
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/trading-stats
+Sending Request to the Target: GET /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio/history?period=1M
+Sending Request to the Target: GET /api/v1/trading-stats
+Sending Request to the Target: GET /api/v1/portfolio/history?period=1M
+Received Response from the Target: 200 /api/v1/trading-stats
+Received Response from the Target: 200 /api/v1/orders?limit=10
+Received Response from the Target: 200 /api/v1/portfolio/history?period=1M
+Sending Request to the Target: GET /api/v1/portfolio/history?period=1M
+Received Response from the Target: 200 /api/v1/portfolio/history?period=1M
+Sending Request to the Target: GET /api/v1/portfolio/history?period=1M
+Received Response from the Target: 200 /api/v1/portfolio/history?period=1M
+Received Response from the Target: 200 /api/v1/portfolio
+Sending Request to the Target: GET /api/v1/portfolio
+Received Response from the Target: 200 /api/v1/portfolio

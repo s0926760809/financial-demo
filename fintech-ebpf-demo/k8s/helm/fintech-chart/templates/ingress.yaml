@@ -1,0 +1,62 @@
+{{- if .Values.ingress.enabled -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "fintech-chart.fullname" . }}
+  labels:
+    {{- include "fintech-chart.labels" . | nindent 4 }}
+  {{- with .Values.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  ingressClassName: {{ .Values.ingress.className }}
+  rules:
+    - host: fintech-demo.local
+      http:
+        paths:
+          # 前端應用路由
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "fintech-chart.fullname" . }}-frontend
+                port:
+                  number: {{ .Values.frontend.service.port }}
+          # API 路由 - Trading API
+          - path: /api/trading
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "fintech-chart.fullname" . }}-trading-api
+                port:
+                  number: {{ .Values.tradingApi.service.port }}
+          # API 路由 - Risk Engine
+          - path: /api/risk
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "fintech-chart.fullname" . }}-risk-engine
+                port:
+                  number: {{ .Values.riskEngine.service.port }}
+          # API 路由 - Payment Gateway
+          - path: /api/payment
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "fintech-chart.fullname" . }}-payment-gateway
+                port:
+                  number: {{ .Values.paymentGateway.service.port }}
+          # API 路由 - Audit Service
+          - path: /api/audit
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "fintech-chart.fullname" . }}-audit-service
+                port:
+                  number: {{ .Values.auditService.service.port }}
+  {{- with .Values.ingress.tls }}
+  tls:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }} 

@@ -10,7 +10,7 @@ spec:
   type: {{ .Values.frontend.service.type }}
   ports:
     - port: {{ .Values.frontend.service.port }}
-      targetPort: http
+      targetPort: 8080
       protocol: TCP
       name: http
   selector:
@@ -36,7 +36,7 @@ spec:
       name: http
   selector:
     {{- include "fintech-chart.selectorLabels" . | nindent 4 }}
-    app.kubernetes.io/component: trading-api # 這需要對應到 trading-api 的 deployment label
+    app.kubernetes.io/component: trading-api
 ---
 {{- end }}
 
@@ -57,7 +57,49 @@ spec:
       name: http
   selector:
     {{- include "fintech-chart.selectorLabels" . | nindent 4 }}
-    app.kubernetes.io/component: risk-engine # 這需要對應到 risk-engine 的 deployment label
+    app.kubernetes.io/component: risk-engine
+---
+{{- end }}
+
+{{- if .Values.paymentGateway.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "fintech-chart.fullname" . }}-payment-gateway
+  labels:
+    {{- include "fintech-chart.labels" . | nindent 4 }}
+    app.kubernetes.io/component: payment-gateway
+spec:
+  type: {{ .Values.paymentGateway.service.type }}
+  ports:
+    - port: {{ .Values.paymentGateway.service.port }}
+      targetPort: {{ .Values.paymentGateway.service.port }}
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "fintech-chart.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: payment-gateway
+---
+{{- end }}
+
+{{- if .Values.auditService.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "fintech-chart.fullname" . }}-audit-service
+  labels:
+    {{- include "fintech-chart.labels" . | nindent 4 }}
+    app.kubernetes.io/component: audit-service
+spec:
+  type: {{ .Values.auditService.service.type }}
+  ports:
+    - port: {{ .Values.auditService.service.port }}
+      targetPort: {{ .Values.auditService.service.port }}
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "fintech-chart.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: audit-service
 ---
 {{- end }}
 
