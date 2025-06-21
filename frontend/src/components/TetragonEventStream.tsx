@@ -86,7 +86,7 @@ const TetragonEventStream: React.FC = () => {
   const [selectedSeverity, setSelectedSeverity] = useState<string>('');
   const [selectedEventType, setSelectedEventType] = useState<string>('');
   const [maxEvents, setMaxEvents] = useState(50);
-  const [enableAlerts, setEnableAlerts] = useState(true);
+  const [enableAlerts, setEnableAlerts] = useState(false); // 默认关闭弹窗警报
   
   const wsRef = useRef<WebSocket | null>(null);
   const [connectionStatus, setConnectionStatus] = useState<'connecting' | 'connected' | 'disconnected'>('disconnected');
@@ -117,9 +117,8 @@ const TetragonEventStream: React.FC = () => {
     
     // 構建WebSocket URL
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const host = window.location.hostname;
-    const port = '30080'; // Trading API 端口
-    const wsUrl = `${protocol}//${host}:${port}/api/v1/tetragon/ws`;
+    const host = window.location.host;
+    const wsUrl = `${protocol}//${host}/ws/events`;
 
     wsRef.current = new WebSocket(wsUrl);
 
@@ -206,14 +205,15 @@ const TetragonEventStream: React.FC = () => {
       return updated;
     });
 
-    if (isRunning && enableAlerts && (newEvent.severity === 'CRITICAL' || newEvent.severity === 'HIGH')) {
-      notification.warning({
-        message: `${newEvent.severity} 安全事件`,
-        description: newEvent.description,
-        duration: 8,
-        icon: <ExclamationCircleOutlined style={{ color: newEvent.severity === 'CRITICAL' ? '#ff4d4f' : '#faad14' }} />,
-      });
-    }
+    // 注释掉弹窗警报代码，避免干扰用户操作
+    // if (isRunning && enableAlerts && (newEvent.severity === 'CRITICAL' || newEvent.severity === 'HIGH')) {
+    //   notification.warning({
+    //     message: `${newEvent.severity} 安全事件`,
+    //     description: newEvent.description,
+    //     duration: 8,
+    //     icon: <ExclamationCircleOutlined style={{ color: newEvent.severity === 'CRITICAL' ? '#ff4d4f' : '#faad14' }} />,
+    //   });
+    // }
   };
 
   // 獲取事件和告警數據

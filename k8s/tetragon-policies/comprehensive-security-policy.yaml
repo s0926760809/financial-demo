@@ -1,0 +1,233 @@
+apiVersion: cilium.io/v1alpha1
+kind: TracingPolicy
+metadata:
+  name: comprehensive-security-monitoring
+  namespace: fintech-demo
+spec:
+  kprobes:
+  # 1. 命令注入检测 - 监控进程执行
+  - call: "security_bprm_check"
+    syscall: false
+    args:
+    - index: 0
+      type: "linux_binprm"
+    selectors:
+    - matchBinaries:
+      - operator: "In"
+        values:
+        - "/bin/sh"
+        - "/bin/bash"
+        - "/usr/bin/wget"
+        - "/usr/bin/curl"
+        - "/usr/bin/nc"
+        - "/usr/bin/nmap"
+        - "/usr/bin/ping"
+        - "/usr/bin/ps"
+        - "/usr/bin/whoami"
+        - "/usr/bin/id"
+    - matchNamespaces:
+      - operator: "In"
+        values:
+        - "fintech-demo"
+
+  # 2. 系统调用监控 - 监控敏感文件访问
+  - call: "sys_openat"
+    syscall: true
+    args:
+    - index: 1
+      type: "string"
+    selectors:
+    - matchArgs:
+      - index: 1
+        operator: "Postfix"
+        values:
+        - "/etc/passwd"
+        - "/etc/shadow"
+        - "/etc/ssh/"
+        - "/proc/"
+        - "/sys/"
+
+  # 3. 网络连接监控
+  - call: "tcp_connect"
+    syscall: false
+    args:
+    - index: 0
+      type: "sock"
+
+---
+apiVersion: cilium.io/v1alpha1
+kind: TracingPolicy
+metadata:
+  name: enhanced-privilege-monitoring
+spec:
+  kprobes:
+  # 权限提升检测 - 监控特权系统调用
+  - call: "sys_setuid"
+    syscall: true
+    args:
+    - index: 0
+      type: "int"
+    selectors:
+    - matchArgs:
+      - index: 0
+        operator: "Equal"
+        values:
+        - "0"  # root
+
+  # 监控sudo执行
+  - call: "security_bprm_check"
+    syscall: false
+    args:
+    - index: 0
+      type: "linux_binprm"
+    selectors:
+    - matchBinaries:
+      - operator: "In"
+        values:
+        - "/usr/bin/sudo"
+        - "/bin/su"
+
+---
+apiVersion: cilium.io/v1alpha1
+kind: TracingPolicy
+metadata:
+  name: advanced-security-monitoring
+spec:
+  kprobes:
+  # 文件写入监控
+  - call: "sys_write"
+    syscall: true
+    args:
+    - index: 0
+      type: "fd"
+
+  # UDP网络监控
+  - call: "udp_sendmsg"
+    syscall: false
+    args:
+    - index: 0
+      type: "sock"
+
+---
+apiVersion: cilium.io/v1alpha1
+kind: TracingPolicy
+metadata:
+  name: network-security-monitoring
+  namespace: fintech-demo
+spec:
+  kprobes:
+  # 网络连接监控
+  - call: "tcp_connect"
+    syscall: false
+    args:
+    - index: 0
+      type: "sock"
+
+  # DNS查询监控
+  - call: "udp_sendmsg"
+    syscall: false
+    args:
+    - index: 0
+      type: "sock"
+    selectors:
+    - matchArgs:
+      - index: 0
+        operator: "DPort"
+        values:
+        - "53"
+    - matchNamespaces:
+      - operator: "In"
+        values:
+        - "fintech-demo"
+
+---
+apiVersion: cilium.io/v1alpha1
+kind: TracingPolicy
+metadata:
+  name: database-security-monitoring
+  namespace: fintech-demo
+spec:
+  kprobes:
+  # 数据库连接监控
+  - call: "tcp_connect"
+    syscall: false
+    args:
+    - index: 0
+      type: "sock"
+    selectors:
+    - matchArgs:
+      - index: 0
+        operator: "DPort"
+        values:
+        - "5432"  # PostgreSQL
+        - "3306"  # MySQL
+        - "6379"  # Redis
+        - "27017" # MongoDB
+    - matchNamespaces:
+      - operator: "In"
+        values:
+        - "fintech-demo"
+
+---
+apiVersion: cilium.io/v1alpha1
+kind: TracingPolicy
+metadata:
+  name: file-security-monitoring
+spec:
+  kprobes:
+  # 文件访问监控
+  - call: "sys_openat"
+    syscall: true
+    args:
+    - index: 1
+      type: "string"
+    selectors:
+    - matchArgs:
+      - index: 1
+        operator: "Postfix"
+        values:
+        - "/etc/passwd"
+        - "/etc/shadow"
+        - "/etc/ssh/"
+        - "/var/log/"
+        - "/proc/"
+        - "/sys/"
+        - "/root/"
+
+  # 文件写入监控
+  - call: "sys_write"
+    syscall: true
+    args:
+    - index: 0
+      type: "fd"
+
+---
+apiVersion: cilium.io/v1alpha1
+kind: TracingPolicy
+metadata:
+  name: network-security-monitoring
+spec:
+  kprobes:
+  # TCP连接监控
+  - call: "tcp_connect"
+    syscall: false
+    args:
+    - index: 0
+      type: "sock"
+
+  # UDP消息监控
+  - call: "udp_sendmsg"
+    syscall: false
+    args:
+    - index: 0
+      type: "sock"
+    selectors:
+    - matchArgs:
+      - index: 0
+        operator: "DPort"
+        values:
+        - "53"
+    - matchNamespaces:
+      - operator: "In"
+        values:
+        - "fintech-demo" 

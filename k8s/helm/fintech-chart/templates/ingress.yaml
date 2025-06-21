@@ -5,8 +5,12 @@ metadata:
   name: {{ include "fintech-chart.fullname" . }}-ingress
   labels:
     {{- include "fintech-chart.labels" . | nindent 4 }}
-  {{- with .Values.ingress.annotations }}
   annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    nginx.ingress.kubernetes.io/websocket-services: "{{ include "fintech-chart.fullname" . }}-tetragon-stream"
+  {{- with .Values.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
@@ -56,6 +60,14 @@ spec:
                 name: audit-service-service
                 port:
                   number: 8083
+          # Tetragon WebSocket事件流路由
+          - path: /ws/events
+            pathType: Prefix
+            backend:
+              service:
+                name: fintech-demo-fintech-chart-tetragon-stream
+                port:
+                  number: 8090
           # WebSocket路由
           - path: /ws
             pathType: Prefix

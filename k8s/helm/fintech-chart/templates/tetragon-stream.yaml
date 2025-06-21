@@ -1,0 +1,120 @@
+{{- if .Values.tetragonStream.enabled }}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "fintech-chart.fullname" . }}-tetragon-stream
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "fintech-chart.labels" . | nindent 4 }}
+    app.kubernetes.io/component: tetragon-stream
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "fintech-chart.fullname" . }}-tetragon-stream
+  labels:
+    {{- include "fintech-chart.labels" . | nindent 4 }}
+    app.kubernetes.io/component: tetragon-stream
+rules:
+- apiGroups: [""]
+  resources: ["namespaces"]
+  verbs: ["get", "list"]
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: [""]
+  resources: ["pods/log"]
+  verbs: ["get"]
+- apiGroups: [""]
+  resources: ["pods/exec"]
+  verbs: ["create"]
+- apiGroups: ["cilium.io"]
+  resources: ["tracingpolicies"]
+  verbs: ["get", "list", "watch"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "fintech-chart.fullname" . }}-tetragon-stream
+  labels:
+    {{- include "fintech-chart.labels" . | nindent 4 }}
+    app.kubernetes.io/component: tetragon-stream
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "fintech-chart.fullname" . }}-tetragon-stream
+subjects:
+- kind: ServiceAccount
+  name: {{ include "fintech-chart.fullname" . }}-tetragon-stream
+  namespace: {{ .Release.Namespace }}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "fintech-chart.fullname" . }}-tetragon-stream
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "fintech-chart.labels" . | nindent 4 }}
+    app.kubernetes.io/component: tetragon-stream
+spec:
+  replicas: {{ .Values.tetragonStream.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "fintech-chart.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: tetragon-stream
+  template:
+    metadata:
+      labels:
+        {{- include "fintech-chart.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: tetragon-stream
+    spec:
+      serviceAccountName: {{ include "fintech-chart.fullname" . }}-tetragon-stream
+      containers:
+      - name: tetragon-stream
+        image: "{{ .Values.tetragonStream.image.repository }}:{{ .Values.tetragonStream.image.tag }}"
+        imagePullPolicy: {{ .Values.global.image.pullPolicy }}
+        ports:
+        - containerPort: {{ .Values.tetragonStream.service.targetPort }}
+          name: http
+        env:
+        - name: PORT
+          value: "{{ .Values.tetragonStream.service.targetPort }}"
+        resources:
+          {{- toYaml .Values.tetragonStream.resources | nindent 10 }}
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: {{ .Values.tetragonStream.service.targetPort }}
+          initialDelaySeconds: 10
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: {{ .Values.tetragonStream.service.targetPort }}
+          initialDelaySeconds: 5
+          periodSeconds: 10
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "fintech-chart.fullname" . }}-tetragon-stream
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "fintech-chart.labels" . | nindent 4 }}
+    app.kubernetes.io/component: tetragon-stream
+spec:
+  type: ClusterIP
+  ports:
+  - port: {{ .Values.tetragonStream.service.port }}
+    targetPort: {{ .Values.tetragonStream.service.targetPort }}
+    protocol: TCP
+    name: http
+  selector:
+    {{- include "fintech-chart.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: tetragon-stream
+{{- end }} 

@@ -15,6 +15,7 @@ import {
   BugOutlined,
   WifiOutlined,
   InfoCircleOutlined,
+  SettingOutlined,
 } from '@ant-design/icons';
 import styles from './Security.module.css';
 import PageTitle from '../../components/PageTitle';
@@ -26,6 +27,7 @@ import NetworkAttackPanel from './NetworkAttackPanel';
 import DnsLogTable from './DnsLogTable';
 import HttpFlowTable from './HttpFlowTable';
 import SecurityDocumentation from './SecurityDocumentation';
+import AlertSettingsPage from './AlertSettingsPage';
 
 const { Title, Paragraph } = Typography;
 
@@ -68,7 +70,7 @@ const SecurityPage: React.FC = () => {
     }
 
     if (newEvent.level === 'critical' || newEvent.level === 'high') {
-      message.error(`高危安全警報: ${newEvent.summary}`);
+      console.log(`高危安全警報: ${newEvent.summary}`);
     }
   }, []);
 
@@ -139,7 +141,7 @@ const SecurityPage: React.FC = () => {
                   <SecurityTestPanel onRunTest={handleRunTest} isTesting={isTesting} />
                 </Col>
                 <Col lg={14} xs={24}>
-                  <AllEventsLog events={allEvents} title="實時安全事件日誌 (All Events)" />
+                  <AllEventsLog />
                 </Col>
               </Row>
             )
@@ -158,6 +160,11 @@ const SecurityPage: React.FC = () => {
                 </Col>
               </Row>
             )
+          },
+          {
+            key: "3",
+            label: <span><SettingOutlined /> 警報設置</span>,
+            children: <AlertSettingsPage />
           }
         ]}
       />

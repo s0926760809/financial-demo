@@ -1,0 +1,50 @@
+apiVersion: cilium.io/v1alpha1
+kind: TracingPolicy
+metadata:
+  name: comprehensive-security-monitoring
+spec:
+  kprobes:
+  # 1. 命令注入检测 - 监控进程执行
+  - call: "security_bprm_check"
+    syscall: false
+    args:
+    - index: 0
+      type: "linux_binprm"
+    selectors:
+    - matchBinaries:
+      - operator: "In"
+        values:
+        - "/bin/sh"
+        - "/bin/bash"
+        - "/usr/bin/wget"
+        - "/usr/bin/curl"
+        - "/usr/bin/nc"
+        - "/usr/bin/nmap"
+        - "/usr/bin/ping"
+        - "/usr/bin/ps"
+        - "/usr/bin/whoami"
+        - "/usr/bin/id"
+        - "/usr/bin/sudo"
+        - "/bin/su"
+
+  # 2. 系统调用监控
+  - call: "sys_openat"
+    syscall: true
+    args:
+    - index: 1
+      type: "string"
+    selectors:
+    - matchArgs:
+      - index: 1
+        operator: "Postfix"
+        values:
+        - "/etc/passwd"
+        - "/etc/shadow"
+        - "/etc/ssh/"
+
+  # 3. 网络连接监控
+  - call: "tcp_connect"
+    syscall: false
+    args:
+    - index: 0
+      type: "sock" 
