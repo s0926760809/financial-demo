@@ -71,7 +71,7 @@ const AppLayout: React.FC = () => {
       });
       if (response.ok) {
         const data = await response.json();
-        setUserName(data.profile.name || '演示用戶');
+        setUserName(data.user.display_name || '演示用戶');
       }
     } catch (error) {
       console.error("無法獲取用戶資料:", error);
