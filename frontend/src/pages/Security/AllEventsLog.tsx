@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import {
   Card,
   Table,
@@ -86,11 +86,11 @@ const AllEventsLog: React.FC = () => {
   const [namespaceInfo, setNamespaceInfo] = useState<NamespaceResponse | null>(null);
   const [services, setServices] = useState<string[]>([]);
   
-  // WebSocket连接
+  // WebSocket連接
   const [ws, setWs] = useState<WebSocket | null>(null);
   const [connectionStatus, setConnectionStatus] = useState<'connecting' | 'connected' | 'disconnected'>('connecting');
 
-  // 统计信息
+  // 統計資訊
   const stats = useMemo(() => {
     const levelCount = events.reduce((acc, event) => {
       acc[event.level] = (acc[event.level] || 0) + 1;
@@ -121,7 +121,7 @@ const AllEventsLog: React.FC = () => {
     };
   }, [events, filteredEvents]);
 
-  // 初始化WebSocket连接
+  // 初始化WebSocket連接
   useEffect(() => {
     const connectWebSocket = () => {
       try {
@@ -133,9 +133,9 @@ const AllEventsLog: React.FC = () => {
         const websocket = new WebSocket(wsUrl);
         
         websocket.onopen = () => {
-          console.log('WebSocket连接已建立');
+          console.log('WebSocket連接已建立');
           setConnectionStatus('connected');
-          message.success('实时事件流连接成功');
+          message.success('即時事件流連接成功');
         };
         
         websocket.onmessage = (event) => {
@@ -143,36 +143,36 @@ const AllEventsLog: React.FC = () => {
             const data = JSON.parse(event.data);
             
             if (data.type === 'recent_events') {
-              // 处理历史事件
+              // 處理歷史事件
               setEvents(data.events || []);
               setLoading(false);
             } else {
-              // 处理新事件
+              // 處理新事件
               setEvents(prev => {
                 const newEvents = [data, ...prev];
-                return newEvents.slice(0, 200); // 保持最新200个事件
+                return newEvents.slice(0, 200); // 保持最新200個事件
               });
             }
           } catch (error) {
-            console.error('解析WebSocket消息失败:', error);
+            console.error('解析WebSocket訊息失敗:', error);
           }
         };
         
         websocket.onclose = () => {
-          console.log('WebSocket连接已关闭');
+          console.log('WebSocket連接已關閉');
           setConnectionStatus('disconnected');
-          // 3秒后重连
+          // 3秒後重連
           setTimeout(connectWebSocket, 3000);
         };
         
         websocket.onerror = (error) => {
-          console.error('WebSocket连接错误:', error);
+          console.error('WebSocket連接錯誤:', error);
           setConnectionStatus('disconnected');
         };
         
         setWs(websocket);
       } catch (error) {
-        console.error('WebSocket连接失败:', error);
+        console.error('WebSocket連接失敗:', error);
         setConnectionStatus('disconnected');
         setTimeout(connectWebSocket, 3000);
       }
@@ -180,7 +180,7 @@ const AllEventsLog: React.FC = () => {
 
     connectWebSocket();
 
-    // 清理函数
+    // 清理函數
     return () => {
       if (ws) {
         ws.close();
@@ -188,7 +188,7 @@ const AllEventsLog: React.FC = () => {
     };
   }, []);
 
-  // 获取namespace和service列表
+  // 獲取namespace和service列表
   useEffect(() => {
     const fetchMetadata = async () => {
       try {
@@ -212,18 +212,18 @@ const AllEventsLog: React.FC = () => {
           setServices(servicesData.services || []);
         }
       } catch (error) {
-        console.error('获取元数据失败:', error);
+        console.error('獲取元資料失敗:', error);
       }
     };
     
-    // 每10秒更新一次元数据
+    // 每10秒更新一次元資料
     fetchMetadata();
     const interval = setInterval(fetchMetadata, 10000);
     
     return () => clearInterval(interval);
   }, []);
 
-  // 过滤逻辑
+  // 過濾邏輯
   useEffect(() => {
     let filtered = events;
 
@@ -241,27 +241,27 @@ const AllEventsLog: React.FC = () => {
       );
     }
 
-    // 级别过滤
+    // 級別過濾
     if (levelFilter) {
       filtered = filtered.filter(event => event.level === levelFilter);
     }
 
-    // 事件类型过滤
+    // 事件類型過濾
     if (typeFilter) {
       filtered = filtered.filter(event => event.type === typeFilter);
     }
 
-    // 命名空间过滤
+    // 命名空間過濾
     if (namespaceFilter) {
       filtered = filtered.filter(event => event.namespace === namespaceFilter);
     }
 
-    // 服务过滤
+    // 服務過濾
     if (serviceFilter) {
       filtered = filtered.filter(event => event.service === serviceFilter);
     }
 
-    // Pod名称过滤
+    // Pod名稱過濾
     if (podNameFilter) {
       filtered = filtered.filter(event => 
         event.pod_name.toLowerCase().includes(podNameFilter.toLowerCase())
@@ -271,49 +271,103 @@ const AllEventsLog: React.FC = () => {
     setFilteredEvents(filtered);
   }, [events, searchText, levelFilter, typeFilter, namespaceFilter, serviceFilter, podNameFilter]);
 
-  // 生成搜索建议
+  // 生成搜索建議
   const searchOptions: SearchOption[] = useMemo(() => {
     const options: SearchOption[] = [];
     
-    // 添加命名空间建议
+    // 添加命名空間建議
     namespaces.forEach(ns => {
       options.push({
         value: ns,
-        label: `📁 命名空间: ${ns}`,
+        label: `📁 命名空間: ${ns}`,
         category: 'namespace'
       });
     });
     
-    // 添加服务建议
+    // 添加服務建議
     services.forEach(svc => {
+      const serviceIcon = svc === 'trading-api' ? '💹' :
+                         svc === 'payment-gateway' ? '💳' :
+                         svc === 'risk-engine' ? '⚠️' :
+                         svc === 'audit-service' ? '📋' :
+                         svc === 'frontend' ? '🌐' :
+                         svc === 'database' ? '🗄️' :
+                         svc === 'cache' ? '🔄' :
+                         svc === 'security-monitor' ? '🛡️' : 
+                         svc === 'fintech-microservice' ? '🏦' : '🔧';
+      
       options.push({
         value: svc,
-        label: `🔧 服务: ${svc}`,
+        label: `${serviceIcon} 服務: ${svc}`,
         category: 'service'
       });
     });
     
-    // 添加Pod名称建议
-    const uniquePods = [...new Set(events.map(e => e.pod_name).filter(Boolean))].slice(0, 10);
-    uniquePods.forEach(pod => {
+    // 添加 fintech-demo Pod 名稱建議（優先顯示）
+    const fintechPods = [...new Set(events
+      .filter(e => e.namespace === 'fintech-demo' && e.pod_name)
+      .map(e => e.pod_name)
+    )].slice(0, 8);
+    
+    fintechPods.forEach(pod => {
+      const serviceType = pod.includes('trading') ? '💹' : 
+                         pod.includes('payment') ? '💳' :
+                         pod.includes('risk') ? '⚠️' :
+                         pod.includes('audit') ? '📋' :
+                         pod.includes('frontend') ? '🌐' :
+                         pod.includes('postgresql') ? '🗄️' :
+                         pod.includes('redis') ? '🔄' : 
+                         pod.includes('tetragon') ? '🛡️' : '📦';
+      
       options.push({
         value: pod,
-        label: `📦 Pod: ${pod}`,
-        category: 'pod'
+        label: `${serviceType} FinTech Pod: ${pod}`,
+        category: 'fintech-pod'
       });
     });
     
-    // 添加常用搜索词
-    const commonTerms = [
-      '进程执行', '系统调用', '进程退出', '敏感文件访问',
-      'fintech-demo', 'trading', 'payment', 'risk', 'audit',
-      'postgres', 'pg_isready', 'tcp_connect', 'udp_sendmsg'
+    // 添加其他Pod名稱建議
+    const otherPods = [...new Set(events
+      .filter(e => e.namespace !== 'fintech-demo' && e.pod_name)
+      .map(e => e.pod_name)
+    )].slice(0, 5);
+    
+    otherPods.forEach(pod => {
+      options.push({
+        value: pod,
+        label: `📦 系統 Pod: ${pod}`,
+        category: 'system-pod'
+      });
+    });
+    
+    // 添加常用搜索詞和安全事件觸發詞
+    const securityTerms = [
+      // 金融服務相關
+      'trading-api', 'payment-gateway', 'risk-engine', 'audit-service',
+      'postgresql', 'redis', 'frontend',
+      // 事件類型
+      '進程執行', '系統調用', '進程退出', '敏感文件訪問',
+      'process_exec', 'process_kprobe', 'process_exit',
+      // 常見系統調用
+      'tcp_connect', 'udp_sendmsg', 'pg_isready', 'redis-cli',
+      // 安全測試相關
+      '/etc/passwd', '/etc/shadow', 'curl', 'wget', 'nmap'
     ];
     
-    commonTerms.forEach(term => {
+    securityTerms.forEach(term => {
+      const termIcon = term.includes('exec') || term.includes('執行') ? '🚀' :
+                      term.includes('kprobe') || term.includes('調用') ? '🔍' :
+                      term.includes('exit') || term.includes('退出') ? '🔚' :
+                      term.includes('tcp') || term.includes('udp') ? '🌐' :
+                      term.includes('/etc') ? '⚠️' :
+                      term.includes('trading') ? '💹' :
+                      term.includes('payment') ? '💳' :
+                      term.includes('risk') ? '⚠️' :
+                      term.includes('audit') ? '📋' : '🔍';
+      
       options.push({
         value: term,
-        label: `🔍 搜索: ${term}`,
+        label: `${termIcon} 搜索: ${term}`,
         category: 'search'
       });
     });
@@ -321,7 +375,7 @@ const AllEventsLog: React.FC = () => {
     return options;
   }, [namespaces, services, events]);
 
-  // 清除所有过滤器
+  // 清除所有過濾器
   const clearFilters = () => {
     setSearchText('');
     setLevelFilter('');
@@ -329,7 +383,7 @@ const AllEventsLog: React.FC = () => {
     setNamespaceFilter('');
     setServiceFilter('');
     setPodNameFilter('');
-    message.info('已清除所有过滤条件');
+    message.info('已清除所有過濾條件');
   };
 
   // 刷新事件
@@ -344,17 +398,17 @@ const AllEventsLog: React.FC = () => {
       if (response.ok) {
         const data = await response.json();
         setEvents(data.events || []);
-        message.success(`已刷新事件列表，共 ${data.total} 个事件`);
+        message.success(`已刷新事件列表，共 ${data.total} 個事件`);
       }
     } catch (error) {
-      console.error('刷新事件失败:', error);
-      message.error('刷新事件失败');
+      console.error('刷新事件失敗:', error);
+      message.error('刷新事件失敗');
     } finally {
       setLoading(false);
     }
   };
 
-  // 获取级别标签颜色
+  // 獲取級別標籤顏色
   const getLevelColor = (level: string) => {
     switch (level) {
       case 'critical': return 'red';
@@ -367,7 +421,7 @@ const AllEventsLog: React.FC = () => {
     }
   };
 
-  // 获取级别图标
+  // 獲取級別圖標
   const getLevelIcon = (level: string) => {
     switch (level) {
       case 'critical': return <ExclamationCircleOutlined style={{ color: '#ff4d4f' }} />;
@@ -380,7 +434,7 @@ const AllEventsLog: React.FC = () => {
     }
   };
 
-  // 获取事件类型颜色
+  // 獲取事件類型顏色
   const getTypeColor = (type: string) => {
     switch (type) {
       case 'process_exec': return 'blue';
@@ -392,7 +446,7 @@ const AllEventsLog: React.FC = () => {
     }
   };
 
-  // 获取连接状态颜色
+  // 獲取連接狀態顏色
   const getConnectionStatusColor = () => {
     switch (connectionStatus) {
       case 'connected': return 'success';
@@ -402,10 +456,10 @@ const AllEventsLog: React.FC = () => {
     }
   };
 
-  // 快速过滤菜单
+  // 快速過濾菜單
   const quickFilterMenu = (
     <Menu>
-      <Menu.SubMenu key="level" title="按级别过滤" icon={<SecurityScanOutlined />}>
+      <Menu.SubMenu key="level" title="按級別過濾" icon={<SecurityScanOutlined />}>
         <Menu.Item key="critical" onClick={() => setLevelFilter('critical')}>
           <ExclamationCircleOutlined style={{ color: '#ff4d4f' }} /> Critical ({stats.levels.critical || 0})
         </Menu.Item>
@@ -416,7 +470,7 @@ const AllEventsLog: React.FC = () => {
           <InfoCircleOutlined /> Info ({stats.levels.info || 0})
         </Menu.Item>
       </Menu.SubMenu>
-      <Menu.SubMenu key="namespace" title="按命名空间过滤" icon={<ClusterOutlined />}>
+      <Menu.SubMenu key="namespace" title="按命名空間過濾" icon={<ClusterOutlined />}>
         {Object.entries(stats.namespaces).slice(0, 8).map(([ns, count]) => (
           <Menu.Item key={ns} onClick={() => setNamespaceFilter(ns)}>
             📁 {ns} ({count})
@@ -425,15 +479,15 @@ const AllEventsLog: React.FC = () => {
       </Menu.SubMenu>
       <Menu.Divider />
       <Menu.Item key="clear" onClick={clearFilters} icon={<ClearOutlined />}>
-        清除所有过滤
+        清除所有過濾
       </Menu.Item>
     </Menu>
   );
 
-  // 表格列定义
+  // 表格列定義
   const columns = [
     {
-      title: '时间',
+      title: '時間',
       dataIndex: 'time',
       key: 'time',
       width: 160,
@@ -453,7 +507,7 @@ const AllEventsLog: React.FC = () => {
       ),
     },
     {
-      title: '级别',
+      title: '級別',
       dataIndex: 'level',
       key: 'level',
       width: 100,
@@ -467,7 +521,7 @@ const AllEventsLog: React.FC = () => {
       ),
     },
     {
-      title: '类型',
+      title: '類型',
       dataIndex: 'type',
       key: 'type',
       width: 140,
@@ -478,7 +532,7 @@ const AllEventsLog: React.FC = () => {
       ),
     },
     {
-      title: '命名空间',
+      title: '命名空間',
       dataIndex: 'namespace',
       key: 'namespace',
       width: 140,
@@ -498,7 +552,7 @@ const AllEventsLog: React.FC = () => {
       ),
     },
     {
-      title: 'Pod名称',
+      title: 'Pod名稱',
       dataIndex: 'pod_name',
       key: 'pod_name',
       width: 220,
@@ -519,7 +573,7 @@ const AllEventsLog: React.FC = () => {
       ),
     },
     {
-      title: '服务',
+      title: '服務',
       dataIndex: 'service',
       key: 'service',
       width: 120,
@@ -561,14 +615,14 @@ const AllEventsLog: React.FC = () => {
       key: 'action',
       width: 80,
       render: (_: any, record: TetragonEvent) => (
-        <Tooltip title="查看详细信息">
+        <Tooltip title="查看詳細信息">
           <Button
             type="text"
             size="small"
             icon={<EyeOutlined />}
             onClick={() => {
-              message.info('详细信息功能开发中...');
-              console.log('事件详情:', record);
+              message.info('詳細信息功能開發中...');
+              console.log('事件詳情:', record);
             }}
           />
         </Tooltip>
@@ -591,13 +645,13 @@ const AllEventsLog: React.FC = () => {
             <Space size={16}>
               <SecurityScanOutlined style={{ fontSize: '24px', color: '#1890ff' }} />
               <Title level={3} style={{ margin: 0, color: '#1890ff' }}>
-                Tetragon 安全事件监控
+                Tetragon 安全事件監控
               </Title>
               <Badge 
                 status={getConnectionStatusColor()} 
                 text={
-                  connectionStatus === 'connected' ? '实时连接' :
-                  connectionStatus === 'connecting' ? '连接中...' : '连接断开'
+                  connectionStatus === 'connected' ? '即時連接' :
+                  connectionStatus === 'connecting' ? '連接中...' : '連接斷開'
                 }
               />
             </Space>
@@ -621,12 +675,12 @@ const AllEventsLog: React.FC = () => {
       </Header>
 
       <Content style={{ padding: '24px' }}>
-        {/* 统计卡片 */}
+        {/* 統計卡片 */}
         <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
           <Col span={6}>
             <Card size="small">
               <Statistic
-                title="总事件数"
+                title="總事件數"
                 value={stats.total}
                 prefix={<DatabaseOutlined />}
                 valueStyle={{ color: '#1890ff' }}
@@ -656,7 +710,7 @@ const AllEventsLog: React.FC = () => {
           <Col span={6}>
             <Card size="small">
               <Statistic
-                title="过滤结果"
+                title="過濾結果"
                 value={stats.filtered}
                 prefix={<FilterOutlined />}
                 valueStyle={{ color: '#52c41a' }}
@@ -665,14 +719,14 @@ const AllEventsLog: React.FC = () => {
           </Col>
         </Row>
 
-        {/* 命名空间信息 */}
+        {/* 命名空間信息 */}
         {namespaceInfo && (
           <Alert
             message={
               <Space>
                 <ClusterOutlined />
-                <Text strong>命名空间监控状态：</Text>
-                <Text>总计 {namespaceInfo.total} 个命名空间</Text>
+                <Text strong>命名空間監控狀態：</Text>
+                <Text>總計 {namespaceInfo.total} 個命名空間</Text>
                 <Text type="secondary">
                   (K8s API: {namespaceInfo.from_k8s} | 事件中: {namespaceInfo.from_events})
                 </Text>
@@ -684,19 +738,19 @@ const AllEventsLog: React.FC = () => {
           />
         )}
 
-        {/* 搜索和过滤区域 */}
+        {/* 搜索和過濾區域 */}
         <Card 
           title={
             <Space>
               <FilterOutlined />
-              <span>事件过滤器</span>
+              <span>事件過濾器</span>
             </Space>
           }
           extra={
             <Space>
               <Dropdown overlay={quickFilterMenu} placement="bottomRight">
                 <Button icon={<FilterOutlined />}>
-                  快速过滤 <DownOutlined />
+                  快速過濾 <DownOutlined />
                 </Button>
               </Dropdown>
               <Button 
@@ -717,7 +771,7 @@ const AllEventsLog: React.FC = () => {
                 <Text strong>智能搜索</Text>
                 <AutoComplete
                   style={{ width: '100%' }}
-                  placeholder="搜索事件内容、Pod名称、命名空间..."
+                  placeholder="搜索事件內容、Pod名稱、命名空間..."
                   options={searchOptions}
                   value={searchText}
                   onChange={setSearchText}
@@ -731,9 +785,9 @@ const AllEventsLog: React.FC = () => {
             </Col>
             <Col span={4}>
               <Space direction="vertical" style={{ width: '100%' }}>
-                <Text strong>事件级别</Text>
+                <Text strong>事件級別</Text>
                 <Select
-                  placeholder="选择级别"
+                  placeholder="選擇級別"
                   value={levelFilter}
                   onChange={setLevelFilter}
                   style={{ width: '100%' }}
@@ -762,9 +816,9 @@ const AllEventsLog: React.FC = () => {
             </Col>
             <Col span={4}>
               <Space direction="vertical" style={{ width: '100%' }}>
-                <Text strong>事件类型</Text>
+                <Text strong>事件類型</Text>
                 <Select
-                  placeholder="选择类型"
+                  placeholder="選擇類型"
                   value={typeFilter}
                   onChange={setTypeFilter}
                   style={{ width: '100%' }}
@@ -780,9 +834,9 @@ const AllEventsLog: React.FC = () => {
             </Col>
             <Col span={4}>
               <Space direction="vertical" style={{ width: '100%' }}>
-                <Text strong>命名空间</Text>
+                <Text strong>命名空間</Text>
                 <Select
-                  placeholder="选择命名空间"
+                  placeholder="選擇命名空間"
                   value={namespaceFilter}
                   onChange={setNamespaceFilter}
                   style={{ width: '100%' }}
@@ -802,9 +856,9 @@ const AllEventsLog: React.FC = () => {
             </Col>
             <Col span={4}>
               <Space direction="vertical" style={{ width: '100%' }}>
-                <Text strong>Pod名称</Text>
+                <Text strong>Pod名稱</Text>
                 <Input
-                  placeholder="输入Pod名称"
+                  placeholder="輸入Pod名稱"
                   value={podNameFilter}
                   onChange={(e) => setPodNameFilter(e.target.value)}
                   prefix={<SearchOutlined />}
@@ -820,14 +874,14 @@ const AllEventsLog: React.FC = () => {
           title={
             <Space>
               <MonitorOutlined />
-              <span>实时事件流</span>
+              <span>即時事件流</span>
               <Badge count={filteredEvents.length} showZero color="#1890ff" />
             </Space>
           }
           extra={
             <Space>
               <Text type="secondary">
-                显示 {filteredEvents.length} / {events.length} 个事件
+                顯示 {filteredEvents.length} / {events.length} 個事件
               </Text>
               <Badge 
                 status={getConnectionStatusColor()} 
@@ -846,7 +900,7 @@ const AllEventsLog: React.FC = () => {
               showSizeChanger: true,
               showQuickJumper: true,
               showTotal: (total, range) => 
-                `第 ${range[0]}-${range[1]} 条，共 ${total} 条事件`,
+                `第 ${range[0]}-${range[1]} 條，共 ${total} 條事件`,
             }}
             scroll={{ x: 1200, y: 600 }}
             size="small"
@@ -859,7 +913,7 @@ const AllEventsLog: React.FC = () => {
         </Card>
       </Content>
 
-      {/* 自定义样式 */}
+      {/* 自定義樣式 */}
       <style>{`
         .critical-row {
           background-color: #fff2f0 !important;

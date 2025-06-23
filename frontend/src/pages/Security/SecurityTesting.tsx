@@ -90,7 +90,7 @@ const SecurityTesting: React.FC = () => {
   const fetchSecurityTests = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:30080/api/v1/security/tests');
+      const response = await axios.get('/api/v1/security/tests');
       if (response.data.success) {
         setTests(response.data.tests);
       }
@@ -106,7 +106,7 @@ const SecurityTesting: React.FC = () => {
   const executeTest = async (test: SecurityTest, parameters: any) => {
     try {
       setLoading(true);
-      const response = await axios.post(`http://localhost:30080${test.endpoint}`, parameters, {
+      const response = await axios.post(`${test.endpoint}`, parameters, {
         headers: {
           'X-User-ID': 'security-tester',
         },

@@ -19,12 +19,12 @@ interface SecurityTestPanelProps {
 }
 
 const generalTests: SecurityTest[] = [
-    { id: 'st-1', name: '進程信息收集', endpoint: 'command', icon: <CodeOutlined />, description: '模擬攻擊者執行 `ps aux` 和 `id` 命令來收集系統信息。', payload: { command: "ps aux" } },
-    { id: 'st-2', name: '讀取敏感文件', endpoint: 'file', icon: <FileTextOutlined />, description: '嘗試讀取 `/etc/shadow` 文件，一個典型的權限探測行為。', payload: { file_path: "/etc/shadow", action: "read" } },
-    { id: 'st-3', name: '內存轉儲', endpoint: 'memory', icon: <HddOutlined />, description: '模擬使用 `gcore` 轉儲進程內存，可能包含敏感信息。', payload: { dump_type: "process", pid: 1 } },
-    { id: 'st-4', name: '權限提升探測', endpoint: 'privilege', icon: <LockOutlined />, description: '執行 `sudo -l` 來檢查當前用戶可以通過 sudo 執行的命令。', payload: { action: "sudo" } },
-    { id: 'st-5', name: '網絡掃描', endpoint: 'network', icon: <ExportOutlined />, description: '模擬網絡掃描攻擊，探測內部服務。', payload: { target: "localhost", ports: [22, 80, 443], scan_type: "tcp" } },
-    { id: 'st-6', name: '敏感數據洩露', endpoint: 'sensitive', icon: <BugOutlined />, description: '模擬敏感數據處理和洩露。', payload: { data_type: "credit_card", action: "generate" } },
+    { id: 'st-1', name: '進程資訊收集', endpoint: 'command', icon: <CodeOutlined />, description: '模擬攻擊者執行 `ps aux` 和 `id` 指令來收集系統資訊。', payload: { command: "ps aux" } },
+    { id: 'st-2', name: '讀取敏感檔案', endpoint: 'file', icon: <FileTextOutlined />, description: '嘗試讀取 `/etc/shadow` 檔案，一個典型的權限探測行為。', payload: { file_path: "/etc/shadow", action: "read" } },
+    { id: 'st-3', name: '記憶體轉儲', endpoint: 'memory', icon: <HddOutlined />, description: '模擬使用 `gcore` 轉儲進程記憶體，可能包含敏感資訊。', payload: { dump_type: "process", pid: 1 } },
+    { id: 'st-4', name: '權限提升探測', endpoint: 'privilege', icon: <LockOutlined />, description: '執行 `sudo -l` 來檢查當前使用者可以透過 sudo 執行的指令。', payload: { action: "sudo" } },
+    { id: 'st-5', name: '網路掃描', endpoint: 'network', icon: <ExportOutlined />, description: '模擬網路掃描攻擊，探測內部服務。', payload: { target: "localhost", ports: [22, 80, 443], scan_type: "tcp" } },
+    { id: 'st-6', name: '敏感資料洩露', endpoint: 'sensitive', icon: <BugOutlined />, description: '模擬敏感資料處理和洩露。', payload: { data_type: "credit_card", action: "generate" } },
     { id: 'st-7', name: 'SQL注入測試', endpoint: 'sql', icon: <ClusterOutlined />, description: '測試SQL注入漏洞。', payload: { query: "admin' OR '1'='1", test_type: "union" } },
 ];
 

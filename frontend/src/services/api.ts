@@ -38,6 +38,7 @@ export const connectWebSocket = (onMessage: (event: Event) => void): WebSocket =
   const wsHost = window.location.host;
   // In development, the Vite server proxies WebSocket requests.
   // In production, the WebSocket server should be available at the same host.
+  // Use the ingress WebSocket endpoint for both dev and production
   const wsUrl = `${wsProtocol}//${wsHost}/ws/events`;
   
   console.log(`Connecting to WebSocket: ${wsUrl}`);
@@ -46,7 +47,7 @@ export const connectWebSocket = (onMessage: (event: Event) => void): WebSocket =
 
   ws.onopen = () => {
     console.log('WebSocket connection established');
-    message.success('已連接到實時事件流');
+    message.success('已連接到即時事件流');
   };
 
   ws.onmessage = (event) => {
@@ -65,7 +66,7 @@ export const connectWebSocket = (onMessage: (event: Event) => void): WebSocket =
 
   ws.onclose = () => {
     console.log('WebSocket connection closed');
-    message.warning('已從實時事件流斷開');
+    message.warning('已從即時事件流斷開');
   };
 
   return ws;

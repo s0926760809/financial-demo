@@ -9,29 +9,23 @@
     <meta name="author" content="FinTech Security Team" />
     
     <!-- 故意暴露一些元信息用於安全演示 -->
-    <meta name="build-version" content="3.0.0" />
-    <meta name="api-endpoint" content="http://localhost:30080" />
+    <meta name="build-version" content="4.8.4" />
+    <meta name="api-endpoint" content="/api/v1" />
     <meta name="debug-mode" content="enabled" />
     
     <title>金融微服務 eBPF 安全演示</title>
     
-    <!-- 預加載關鍵資源 -->
-    <link rel="preconnect" href="http://localhost:30080">
-    <link rel="preconnect" href="http://localhost:30081">
-    <link rel="preconnect" href="http://localhost:30082">
-    <link rel="preconnect" href="http://localhost:30083">
-    
     <!-- 故意添加一些不安全的內聯腳本用於演示 -->
     <script>
-      // 故意暴露全局變量
+      // 故意暴露全局變量 - 使用相對路徑以適應Kubernetes環境
       window.APP_CONFIG = {
-        version: '3.0.0',
+        version: '4.8.4',
         apiKey: 'demo_api_key_12345',
         endpoints: {
-          trading: 'http://localhost:30080',
-          risk: 'http://localhost:30081',
-          payment: 'http://localhost:30082',
-          audit: 'http://localhost:30083'
+          trading: '/api/v1',
+          risk: '/api/risk',
+          payment: '/api/payment',
+          audit: '/api/audit'
         }
       };
     </script>
@@ -42,7 +36,7 @@
     <!-- 故意添加隱藏的調試信息 -->
     <div id="debug-info" style="display: none;">
       <span>Debug Mode: Enabled</span>
-      <span>Build Time: 2023-12-01T10:00:00Z</span>
+      <span>Build Time: 2025-06-22T20:30:00Z</span>
       <span>Admin Token: admin_token_67890</span>
     </div>
     

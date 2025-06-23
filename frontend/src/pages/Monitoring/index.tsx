@@ -203,7 +203,7 @@ const Monitoring: React.FC = () => {
   // 獲取系統概覽數據
   const fetchSystemOverview = async () => {
     try {
-      const response = await fetch('http://localhost:30080/api/v1/monitoring/overview');
+      const response = await fetch('/api/v1/monitoring/overview');
       if (response.ok) {
         const data = await response.json();
         setSystemOverview(data);
@@ -216,7 +216,7 @@ const Monitoring: React.FC = () => {
   // 獲取服務實例信息
   const fetchServiceInstances = async () => {
     try {
-      const response = await fetch('http://localhost:30080/api/v1/monitoring/instances');
+      const response = await fetch('/api/v1/monitoring/instances');
       if (response.ok) {
         const data = await response.json();
         setServiceInstances(data.instances || []);

@@ -45,12 +45,12 @@ const SecurityPage: React.FC = () => {
 
     if (eventType === 'DNS_LOOKUP' && specificData.names) {
       eventType = 'DNS';
-      summary = `DNS query for ${specificData.names.join(', ')}`;
+      summary = `DNS查詢 ${specificData.names.join(', ')}`;
     } else if (eventType.startsWith('HTTP') && specificData.http) {
       eventType = 'HTTP';
       summary = `${specificData.http.method} ${specificData.http.url} - ${specificData.http.status_code}`;
     } else if (eventType === 'PROCESS_EXEC' && specificData.process) {
-      summary = `Process executed: ${specificData.process.binary}`;
+      summary = `進程執行: ${specificData.process.binary}`;
     }
 
     const newEvent: Event = { 
@@ -121,7 +121,7 @@ const SecurityPage: React.FC = () => {
               </Space>
             </div>
             <Paragraph type="secondary" style={{ marginTop: '8px' }}>
-              基於 eBPF/Tetragon 的實時威脅檢測與響應。點擊下方按鈕可模擬各種安全威脅場景，並在下方的事件日誌中觀察 Tetragon 捕獲到的內核級別事件。
+              基於 eBPF/Tetragon 的即時威脅檢測與響應。點擊下方按鈕可模擬各種安全威脅場景，並在下方的事件日誌中觀察 Tetragon 捕獲到的內核級別事件。
             </Paragraph>
           </Card>
         </Col>
@@ -163,14 +163,14 @@ const SecurityPage: React.FC = () => {
           },
           {
             key: "3",
-            label: <span><SettingOutlined /> 警報設置</span>,
+            label: <span><SettingOutlined /> 警報設定</span>,
             children: <AlertSettingsPage />
           }
         ]}
       />
       
       <Drawer
-        title="安全測試說明文檔"
+        title="安全測試說明文件"
         placement="right"
         onClose={onCloseDrawer}
         open={isDrawerVisible}

@@ -55,10 +55,15 @@ cd backend/payment-gateway && go build -o main .
 cd backend/audit-service && go build -o audit-service .
 cd backend/tetragon-stream && go build -o tetragon-stream .
 
+# Test individual services
+cd backend/trading-api && go test ./...
+cd backend/risk-engine && go test ./...
+
 # Run services (ports: 30080, 30081, 30082, 30083)
 ./trading-api > ../../logs/trading-api.log 2>&1 &
 ./risk-engine > ../../logs/risk-engine.log 2>&1 &
-# etc.
+./main > ../../logs/payment-gateway.log 2>&1 &
+./audit-service > ../../logs/audit-service.log 2>&1 &
 ```
 
 ### System Management Scripts
@@ -171,6 +176,7 @@ User → Nginx Ingress → Frontend (nginx) → Backend APIs
 - Ant Design components used throughout - follow existing patterns
 - Real-time features implemented via WebSocket connections
 - Security monitoring dashboard in `/security` route
+- Husky pre-commit hooks ensure code quality with ESLint and Prettier
 
 ### Backend Development  
 - All services use Gin framework with similar structure
@@ -179,6 +185,8 @@ User → Nginx Ingress → Frontend (nginx) → Backend APIs
 - Configuration via YAML files in each service directory
 - Tetragon integration primarily in trading-api service
 - WebSocket implementation in audit-service
+- Go version 1.23+ required
+- Services use Redis for caching and session storage
 
 ### Testing Strategy
 - Frontend: Jest + React Testing Library + Playwright for E2E

@@ -21,7 +21,7 @@ frontend:
   replicaCount: 2  # 增加副本數以提升可用性
   image:
     repository: quay.io/s0926760809/frontend
-    tag: "v4.8"
+    tag: "v4.8.6"
     pullPolicy: Always
   service:
     type: ClusterIP
@@ -55,7 +55,7 @@ tetragonStream:
   replicaCount: 1
   image:
     repository: quay.io/s0926760809/tetragon-stream
-    tag: "v4.8"
+    tag: "v4.8.1"
     pullPolicy: Always
   service:
     type: ClusterIP
@@ -223,7 +223,7 @@ backendServices:
     description: "審計服務 - 日誌記錄與合規監控"
     image:
       repository: quay.io/s0926760809/fintech-demo/audit-service
-      tag: v4.8
+      tag: v4.8.1
     service:
       type: ClusterIP
       port: 8083
@@ -272,6 +272,28 @@ postgresql:
       enabled: true
       size: 20Gi  # 增加儲存空間
       storageClass: ""  # 可指定特定的 StorageClass
+    # 數據庫初始化配置
+    initdb:
+      scripts:
+        # 參考 ConfigMap 中的初始化腳本
+        01-init-schema.sql: |
+          -- 此腳本將從 ConfigMap 中載入
+          \echo 'Loading database schema from ConfigMap...'
+        02-insert-sample-data.sql: |
+          -- 此腳本將從 ConfigMap 中載入  
+          \echo 'Loading sample data from ConfigMap...'
+        03-verify-setup.sql: |
+          -- 此腳本將從 ConfigMap 中載入
+          \echo 'Verifying database setup from ConfigMap...'
+    # 掛載初始化腳本 ConfigMap (暫時註釋以避免掛載問題)
+    # extraVolumes:
+    #   - name: postgresql-init-scripts
+    #     configMap:
+    #       name: fintech-demo-fintech-chart-postgresql-init
+    # extraVolumeMounts:
+    #   - name: postgresql-init-scripts
+    #     mountPath: /docker-entrypoint-initdb.d
+    #     readOnly: true
     resources:
       requests:
         memory: "256Mi"
@@ -339,10 +361,7 @@ ingress:
   enabled: true
   className: "nginx"  # 指定 Ingress Class
   annotations:
-    nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    # 移除全局 rewrite-target，避免静态资源路径问题
-    # nginx.ingress.kubernetes.io/rewrite-target: /$1
     # WebSocket 支援 (用於實時監控)
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
@@ -352,27 +371,38 @@ ingress:
   hosts:
     - host: fintech-demo.local
       paths:
-        - path: /(.*)
-          pathType: Prefix
-          backend:
-            service:
-              name: frontend
-              port:
-                number: 80
-        - path: /api/(.*)
+        # API路由 - 必須在前端路由之前
+        - path: /api
           pathType: Prefix
           backend:
             service:
               name: trading-api-service
               port:
                 number: 8080
-        - path: /tetragon/(.*)
+        # WebSocket路由
+        - path: /ws
           pathType: Prefix
           backend:
             service:
               name: fintech-demo-fintech-chart-tetragon-stream
               port:
                 number: 8090
+        # Tetragon API路由
+        - path: /tetragon
+          pathType: Prefix
+          backend:
+            service:
+              name: fintech-demo-fintech-chart-tetragon-stream
+              port:
+                number: 8090
+        # 前端路由 - 必須在最後，作為默認路由
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: frontend
+              port:
+                number: 80
   # TLS 憑證配置
   tls:
     - secretName: fintech-demo-tls

@@ -6,10 +6,10 @@ description: 一個用於部署金融微服務 eBPF 演示系統的 Helm Chart�
 type: application
 
 # Chart 版本。當你修改 Chart 時應該增加此版本。
-version: 4.0.0
+version: 4.8.2
 
 # 應用程式版本。這是你想要部署的應用程式版本。
-appVersion: "4.0.0"
+appVersion: "4.8.1"
 
 dependencies:
   - name: postgresql

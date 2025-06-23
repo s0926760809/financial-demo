@@ -1,5 +1,6 @@
 import React from 'react';
-import { Card, Table, Typography, Tag } from 'antd';
+import { Card, Table, Typography, Tag, Space } from 'antd';
+import { GlobalOutlined, ArrowRightOutlined } from '@ant-design/icons';
 import { Event } from '../../types';
 
 const { Title } = Typography;
@@ -20,41 +21,44 @@ const HttpFlowTable: React.FC<HttpFlowTableProps> = ({ events, style }) => {
         },
         {
             title: '方法',
-            dataIndex: ['data', 'http', 'method'],
+            dataIndex: 'method',
             key: 'method',
             width: 80,
-            render: (method: string) => <Tag color={method === 'GET' ? 'green' : 'orange'}>{method}</Tag>
+            render: (method: string) => <Tag color="green">{method}</Tag>
         },
         {
             title: 'URL',
-            dataIndex: ['data', 'http', 'url'],
+            dataIndex: 'url',
             key: 'url',
+            render: (url: string) => (
+                <Space>
+                    <GlobalOutlined />
+                    <span style={{ fontSize: '12px', fontFamily: 'monospace' }}>{url}</span>
+                </Space>
+            )
         },
         {
             title: '狀態碼',
-            dataIndex: ['data', 'http', 'status_code'],
-            key: 'status',
-            width: 90,
-            render: (status: number) => {
-                let color = 'default';
-                if (status >= 500) color = 'volcano';
-                else if (status >= 400) color = 'red';
-                else if (status >= 300) color = 'orange';
-                else if (status >= 200) color = 'green';
-                return <Tag color={color}>{status}</Tag>;
-            }
+            dataIndex: 'status_code',
+            key: 'status_code',
+            width: 100,
+            render: (status: number) => (
+                <Tag color={status >= 400 ? 'red' : status >= 300 ? 'orange' : 'blue'}>
+                    {status}
+                </Tag>
+            )
         },
         {
-            title: '來源進程',
-            dataIndex: 'process_name',
-            key: 'process_name',
-            width: 120,
+            title: 'Pod 名稱',
+            dataIndex: 'pod_name',
+            key: 'pod_name',
+            width: 200,
         },
     ];
 
     return (
         <Card style={style}>
-            <Title level={5}>HTTP 請求流 (HTTP Flow)</Title>
+            <Title level={5}>HTTP 流量日誌 (HTTP Flows)</Title>
             <Table
                 columns={columns}
                 dataSource={events}

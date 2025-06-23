@@ -224,7 +224,7 @@ const Portfolio: React.FC = () => {
   // 獲取交易統計
   const fetchTradingStats = async () => {
     try {
-      const response = await fetch('/api/v1/stats', {
+      const response = await fetch('/api/v1/trading-stats', {
         headers: {
           'X-User-ID': 'demo-user-123'
         }

@@ -182,9 +182,9 @@ func main() {
 	router.Use(auditMiddleware())
 
 	// 路由
-	router.POST("/audit/log", logAuditEvent)
-	router.GET("/audit/search", searchLogs)
-	router.POST("/audit/export", exportLogs)
+	router.POST("/log", logAuditEvent)
+	router.GET("/search", searchLogs)
+	router.POST("/export", exportLogs)
 	router.GET("/health", healthCheck)
 	router.GET("/metrics", gin.WrapH(promhttp.Handler()))
 

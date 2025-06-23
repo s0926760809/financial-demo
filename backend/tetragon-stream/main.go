@@ -424,13 +424,40 @@ func (es *EventStreamer) convertTetragonEvent(rawEvent map[string]interface{}) *
 		}
 	}
 	
-	// 确定服务类型
-	if namespace == "fintech-demo" || strings.Contains(podName, "trading") || 
-	   strings.Contains(podName, "payment") || strings.Contains(podName, "risk") || 
-	   strings.Contains(podName, "audit") {
+	// 确定服务类型 - 更精确的 fintech-demo Pod 识别
+	if namespace == "fintech-demo" {
+		// 根据 Pod 名称确定具体服务
+		if strings.Contains(podName, "trading-api") {
+			service = "trading-api"
+		} else if strings.Contains(podName, "payment-gateway") {
+			service = "payment-gateway"
+		} else if strings.Contains(podName, "risk-engine") {
+			service = "risk-engine"
+		} else if strings.Contains(podName, "audit-service") {
+			service = "audit-service"
+		} else if strings.Contains(podName, "frontend") {
+			service = "frontend"
+		} else if strings.Contains(podName, "postgresql") {
+			service = "database"
+		} else if strings.Contains(podName, "redis") {
+			service = "cache"
+		} else if strings.Contains(podName, "tetragon-stream") {
+			service = "security-monitor"
+		} else {
+			service = "fintech-microservice"
+		}
+		
+		// 提升金融服务事件的级别
+		if level == "info" {
+			level = "medium"
+		}
+		summary = "🏦 " + summary
+	} else if strings.Contains(podName, "trading") || strings.Contains(podName, "payment") || 
+	          strings.Contains(podName, "risk") || strings.Contains(podName, "audit") || 
+	          strings.Contains(podName, "fintech") {
 		service = "fintech-microservice"
 		if level == "info" {
-			level = "high" // 提升金融服务事件的级别
+			level = "medium"
 		}
 		summary = "🏦 " + summary
 	} else {
