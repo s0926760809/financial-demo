@@ -1,0 +1,76 @@
+# 敏感檔案 - 包含密碼和認證資訊
+CLAUDE.md
+
+# 日誌檔案
+logs/
+*.log
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# 前端建構產物
+frontend/dist/
+frontend/build/
+frontend/.vite/
+
+# Go 建構產物
+backend/*/main
+backend/*/trading-api
+backend/*/risk-engine
+backend/*/payment-gateway
+backend/*/audit-service
+backend/*/tetragon-stream
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# 測試報告
+scripts/testing/unit-test/reports/
+
+# IDE 和編輯器
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 作業系統
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# 暫存檔案
+*.tmp
+*.temp
+.cache/
+
+# 環境變數
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Docker
+*.tar
+
+# Kubernetes 敏感檔案
+*secret*.yaml
+*secrets*.yaml
+
+# Helm 
+charts/*.tgz
+
+# 備份檔案
+*.backup
+*.bak

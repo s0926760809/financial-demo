@@ -1,9 +1,0 @@
-# frontend-replicas.patch.yaml
-# 這個 patch 用於增加 frontend deployment 的副本數量
-
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: frontend-deployment # 名稱必須與 base 中的資源名稱完全一樣
-spec:
-  replicas: 3 

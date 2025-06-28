@@ -20,8 +20,8 @@ frontend:
   enabled: true
   replicaCount: 2  # 增加副本數以提升可用性
   image:
-    repository: quay.io/s0926760809/frontend
-    tag: "v4.8.6"
+    repository: quay.io/s0926760809/fintech-frontend
+    tag: "latest"
     pullPolicy: Always
   service:
     type: ClusterIP
@@ -54,8 +54,8 @@ tetragonStream:
   enabled: true
   replicaCount: 1
   image:
-    repository: quay.io/s0926760809/tetragon-stream
-    tag: "v4.8.1"
+    repository: quay.io/s0926760809/fintech-tetragon-stream
+    tag: "latest"
     pullPolicy: Always
   service:
     type: ClusterIP
@@ -111,8 +111,8 @@ backendServices:
   - name: trading-api
     description: "交易 API 服務 - 核心交易邏輯處理"
     image:
-      repository: quay.io/s0926760809/fintech-demo/trading-api
-      tag: v4.8
+      repository: quay.io/s0926760809/fintech-trading-api
+      tag: latest
     service:
       type: ClusterIP
       port: 8080
@@ -154,8 +154,8 @@ backendServices:
   - name: risk-engine
     description: "風險引擎服務 - 風險評估與控制"
     image:
-      repository: quay.io/s0926760809/fintech-demo/risk-engine
-      tag: v4.8
+      repository: quay.io/s0926760809/fintech-risk-engine
+      tag: latest
     service:
       type: ClusterIP
       port: 8081
@@ -189,8 +189,8 @@ backendServices:
   - name: payment-gateway
     description: "支付閘道服務 - 支付處理與管理"
     image:
-      repository: quay.io/s0926760809/fintech-demo/payment-gateway
-      tag: v4.8
+      repository: quay.io/s0926760809/fintech-payment-gateway
+      tag: latest
     service:
       type: ClusterIP
       port: 8082
@@ -222,8 +222,8 @@ backendServices:
   - name: audit-service
     description: "審計服務 - 日誌記錄與合規監控"
     image:
-      repository: quay.io/s0926760809/fintech-demo/audit-service
-      tag: v4.8.1
+      repository: quay.io/s0926760809/fintech-audit-service
+      tag: latest
     service:
       type: ClusterIP
       port: 8083

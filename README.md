@@ -406,6 +406,7 @@ curl -w "@curl-format.txt" -s http://localhost:30080/health
 - 📊 [Tetragon集成指南](./TETRAGON_INTEGRATION.md) - eBPF監控詳細說明
 - 🔧 [服務管理指南](./SCRIPTS_GUIDE.md) - 原有的腳本指南
 - 🧪 [測試報告](./scripts/testing/unit-test/reports/) - 自動生成的測試結果
+- ⚡ [Helm 部署手冊](./HELM_DEPLOYMENT_MANUAL.md) - **完整的生產部署指南**
 
 ---
 
